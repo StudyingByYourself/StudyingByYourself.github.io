@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>windows自建博客：Hexo+Kaze+Gitee</title>
+    <url>/2022/04/03/</url>
+    <content><![CDATA[<p><strong>1</strong> <strong>安装</strong> <a href="http://nodejs.cn/download/">node.js</a></p>
+<p><strong>2</strong> <strong>安装</strong> <strong>hexo</strong></p>
+<p><strong>2.1</strong> <strong>切换软件源</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install -g cnpm --registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210405141211.png"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cnpm -v</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210405141241.png"></p>
+<p><strong>2.2</strong> <strong>安装hexo</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cnpm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+
+<p><strong>2.3</strong> <strong>初始化</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo init</span><br></pre></td></tr></table></figure>
+
+<p><strong>windows下没有sudo，需要以管理员身份运行</strong></p>
+<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210405141257.png"></p>
+<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210405141302.png"></p>
+<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210405141308.png"></p>
+<p><strong>2.4</strong> <strong>启动hexo</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210405141315.png"></p>
+<span id="more"></span>
+
+<p><strong>3 切换主题Kaze</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/theme-kaze/hexo-theme-kaze.git</span><br></pre></td></tr></table></figure>
+
+<p><strong>修改_config.yml的theme:hexo-theme-Kaze</strong></p>
+<p><strong>4 托管Gitee</strong></p>
+<p><strong>5 参考资料</strong></p>
+<blockquote>
+<p>Hexo+Kaze+Gitee Pages 搭建静态博客网站 <a href="https://blog.csdn.net/u013129932/article/details/111143797">https://blog.csdn.net/u013129932/article/details/111143797</a></p>
+<p>添加码云上的SSH公钥 <a href="https://blog.csdn.net/hjtcn/article/details/78995073?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-9&amp;spm=1001.2101.3001.4242">https://blog.csdn.net/hjtcn/article/details/78995073?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-9&amp;spm=1001.2101.3001.4242</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>网站搭建</category>
+      </categories>
+      <tags>
+        <tag>beign</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>learn-java</title>
+    <url>/2021/04/05/</url>
+    <content><![CDATA[<p><strong>jdk、jre与jvm的概念和区别：从上到下依次属于包含关系</strong></p>
+<table>
+<thead>
+<tr>
+<th>英文名</th>
+<th>中文名</th>
+<th>简称</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Java Development Kit</td>
+<td>Java开发工具包</td>
+<td>jdk</td>
+</tr>
+<tr>
+<td>Java Runtime Environment</td>
+<td>Java运行环境</td>
+<td>jre</td>
+</tr>
+<tr>
+<td>Java Virtual Machine</td>
+<td>Java虚拟机</td>
+<td>jvm</td>
+</tr>
+</tbody></table>
+<p><strong>第三章-Java的基本程序设计结构</strong></p>
+<p>基本数据类型</p>
+<table>
+<thead>
+<tr>
+<th>基本数据类型</th>
+<th></th>
+<th></th>
+<th>取值范围</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>bye</td>
+<td>1字节</td>
+<td>-2^7^ ~ 2^7^ - 1</td>
+<td></td>
+</tr>
+<tr>
+<td>short</td>
+<td>2字节</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>int</td>
+<td>4字节</td>
+<td></td>
+<td>正好超过20亿</td>
+</tr>
+<tr>
+<td>long</td>
+<td>8字节</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>float</td>
+<td>4字节</td>
+<td></td>
+<td>有效位数为6~7位</td>
+</tr>
+<tr>
+<td>double</td>
+<td>8字节</td>
+<td></td>
+<td>有效位数为15位</td>
+</tr>
+<tr>
+<td>char</td>
+<td>1字节</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>boolean</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>注：Java没有任何无符号形式的byte、short、int、long</p>
+<p>常量</p>
+<p>常量用 <em><strong>final</strong></em> 修饰，习惯上全大写，一旦被赋值之后就不能再修改。</p>
+<p>类常量 static final XXX_XXX，同一个类的其他方法也可以使用这个常量。</p>
+<p>字符串</p>
+<p>提取字符串：substring(a, b)    表示[a, b)</p>
+<p>拼接字符串：join(“a”, “b”, “c”)</p>
+<p>初始化顺序</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">LifeCycle</span> &#123;</span><br><span class="line">    <span class="comment">// 静态属性</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">String</span> <span class="variable">staticName</span> <span class="operator">=</span> getStaticName();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 静态方法块</span></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        System.out.println(staticName);</span><br><span class="line">        System.out.println(<span class="string">&quot;静态方法块初始化&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 普通属性</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> getName();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 普通方法块</span></span><br><span class="line">    &#123;</span><br><span class="line">        System.out.println(name);</span><br><span class="line">        System.out.println(<span class="string">&quot;普通方法块初始化&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 构造函数</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">LifeCycle</span><span class="params">()</span></span><br><span class="line">    &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;构造函数初始化&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">getName</span><span class="params">()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> <span class="string">&quot;普通属性初始化&quot;</span>;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">getStaticName</span><span class="params">()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">statiName</span> <span class="operator">=</span> <span class="string">&quot;静态属性初始化&quot;</span>;</span><br><span class="line">        <span class="keyword">return</span> statiName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">LifeCycle</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210407231039.png"> </p>
+<p><strong>Java语法：《Java核心技术卷1》、《Java编程思想》</strong></p>
+<p><strong>JVM：《深入理解Java虚拟机》</strong></p>
+<p><strong>并发：《Java高并发程序设计》、《Java并发编程实战》</strong></p>
+<p><strong>缓存：《Redis设计与实现》、《Redis深度历险：核心原理与应用实践》</strong></p>
+<p><strong>数据库：《MySQL必知必会》、《MySQL技术内幕：InnoDB 存储引擎》、《高性能MySQL》</strong></p>
+<p><strong>数据结构和算法：《大话数据结构》、《剑指offer》</strong></p>
+<p><strong>计算机网络：《<strong><strong>图解TCP&#x2F;IP</strong></strong>》、《计算机网络：自顶向下方法》</strong></p>
+<p><strong>操作系统：《现代操作系统》</strong></p>
+<p><strong>Linux：《鸟哥linux私房菜》、《Linux内核设计与实现》</strong></p>
+<p><strong>Spring：《Spring实战》、《Spring技术内幕》、《Spring Boot编程思想》</strong></p>
+<p>cd themes</p>
+<p>git clone <a href="https://github.com/theme-kaze/hexo-theme-kaze.git">https://github.com/theme-kaze/hexo-theme-kaze.git</a></p>
+<p>在source下新建_data文件下_</p>
+<p>cp _config.yml source&#x2F;_data&#x2F;kaze_config.yml</p>
+<p>language修改成zh-CN</p>
+<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210420004941.png"></p>
+<p>url修改成对应的网站</p>
+<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210420005105.png"></p>
+<p>这些还需要尝试</p>
+<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210420005219.png"></p>
+<p>theme修改成hexo-theme-Kaze</p>
+<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210420005307.png"></p>
+<p>网站部署到gitee</p>
+<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210420005423.png"></p>
+<p>版本切换来适应配置文件</p>
+<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210420010844.png"></p>
+<p>回退hexo版本</p>
+<p>cnpm install -g <a href="mailto:&#x68;&#101;&#x78;&#x6f;&#x40;&#x34;&#x2e;&#50;&#46;&#x31;">&#x68;&#101;&#x78;&#x6f;&#x40;&#x34;&#x2e;&#50;&#46;&#x31;</a></p>
+]]></content>
+      <tags>
+        <tag>java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>gdb调试</title>
+    <url>/2021/04/05/</url>
+    <content><![CDATA[<p>1、解决gdb attch报错: Operation not permitted</p>
+<blockquote>
+<p>Attaching to process 6122 Could not attach to process.  If your uid matches the uid of the target process, check the setting of &#x2F;proc&#x2F;sys&#x2F;kernel&#x2F;yama&#x2F;ptrace_scope, or try again as the root user.  For more details, see &#x2F;etc&#x2F;sysctl.d&#x2F;10-ptrace.conf ptrace: Operation not permitted. &#x2F;mnt&#x2F;hgfs&#x2F;mint&#x2F;gdb_demo&#x2F;6122: No such file or directory.</p>
+</blockquote>
+<p>原因是Ubuntu 16.04 的&#x2F;etc&#x2F;sysctl.d&#x2F;10-ptrace.conf文件中最后一行默认kernel.yama.ptrace_scope &#x3D; 1 这个值不允许用户使用普通账户使用attach ID连接程序进行调试，需要使用超级用户权限才能连接。可以把kernel.yama.ptrace_scope的值改为 0，即 sudo vim &#x2F;etc&#x2F;sysctl.d&#x2F;10-ptrace.conf 将最后一行改为  kernel.yama.ptrace_scope &#x3D; 0，保存退出。 重启系统后，普通用户就可以使用attach ID连接程序调试了。</p>
+<p>2、gdb调试不出现源码</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gcc demo.c -Wl,--strip-debug -o demo</span><br></pre></td></tr></table></figure>
+
+<p>3、入参与出参</p>
+<table>
+<thead>
+<tr>
+<th>CPU</th>
+<th>入参</th>
+<th>出参</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>x86</td>
+<td>ebp+8,，ebp+12，ebp+16，ebp+20</td>
+<td>eax</td>
+</tr>
+<tr>
+<td>x86_64</td>
+<td>rdi，rsi，rdx， rcx， r8， r9</td>
+<td>rax</td>
+</tr>
+<tr>
+<td>arm64</td>
+<td>x0， x1， x2</td>
+<td>x0</td>
+</tr>
+</tbody></table>
+<p>4、条件断点—查看出参</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gdb attach `pidof demo1`</span><br><span class="line">handle SIG35 SIG36 SIGUSR2 nostop noprint</span><br><span class="line"><span class="built_in">set</span> heigh 0</span><br><span class="line">def ops</span><br><span class="line">bt</span><br><span class="line">i r</span><br><span class="line">x/s <span class="variable">$rdi</span></span><br><span class="line">p <span class="variable">$rsi</span></span><br><span class="line"><span class="built_in">set</span> <span class="variable">$a</span>=<span class="variable">$rdx</span></span><br><span class="line">fin</span><br><span class="line">x/5wx <span class="variable">$a</span></span><br><span class="line">x/s <span class="variable">$a</span></span><br><span class="line">p *(unsigned int*)(<span class="variable">$a</span>+16)</span><br><span class="line">det</span><br><span class="line">q</span><br><span class="line">end</span><br><span class="line">b addStudent</span><br><span class="line"><span class="built_in">command</span></span><br><span class="line">ops</span><br><span class="line">end</span><br><span class="line">c</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>gdb</category>
+      </categories>
+  </entry>
+</search>
