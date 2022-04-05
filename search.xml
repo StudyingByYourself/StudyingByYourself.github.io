@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>常见汇编指令</title>
-    <url>/2022/04/04/</url>
+    <url>/zhoukqi/zhoukqi/2022/04/04/</url>
     <content><![CDATA[<p><font size=3> 以demo.c为例，取消栈保护编译选项。 </font> </p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">FuncC</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">0x900C</span>;</span><br><span class="line">    <span class="type">void</span> *b = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">long</span>));</span><br><span class="line">    <span class="type">char</span> str[<span class="number">20</span>] = <span class="string">&quot;Hello World!&quot;</span>;</span><br><span class="line">    <span class="type">int</span> arr[<span class="number">10</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="built_in">memset</span>(arr, <span class="string">&#x27;c&#x27;</span>, <span class="keyword">sizeof</span>(<span class="type">char</span>) * <span class="number">120</span>);</span><br><span class="line">    <span class="built_in">free</span>(b);</span><br><span class="line">    b = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -53,7 +53,7 @@
   </entry>
   <entry>
     <title>windows自建博客：Hexo+Kaze+Gitee</title>
-    <url>/2022/04/03/</url>
+    <url>/zhoukqi/zhoukqi/2022/04/03/</url>
     <content><![CDATA[<p><strong>1</strong> <strong>安装</strong> <a href="http://nodejs.cn/download/">node.js</a></p>
 <p><strong>2</strong> <strong>安装</strong> <strong>hexo</strong></p>
 <p><strong>2.1</strong> <strong>切换软件源</strong></p>
@@ -98,8 +98,52 @@
       </tags>
   </entry>
   <entry>
+    <title>gdb调试</title>
+    <url>/zhoukqi/zhoukqi/2021/04/05/</url>
+    <content><![CDATA[<p>1、解决gdb attch报错: Operation not permitted</p>
+<blockquote>
+<p>Attaching to process 6122 Could not attach to process.  If your uid matches the uid of the target process, check the setting of &#x2F;proc&#x2F;sys&#x2F;kernel&#x2F;yama&#x2F;ptrace_scope, or try again as the root user.  For more details, see &#x2F;etc&#x2F;sysctl.d&#x2F;10-ptrace.conf ptrace: Operation not permitted. &#x2F;mnt&#x2F;hgfs&#x2F;mint&#x2F;gdb_demo&#x2F;6122: No such file or directory.</p>
+</blockquote>
+<p>原因是Ubuntu 16.04 的&#x2F;etc&#x2F;sysctl.d&#x2F;10-ptrace.conf文件中最后一行默认kernel.yama.ptrace_scope &#x3D; 1 这个值不允许用户使用普通账户使用attach ID连接程序进行调试，需要使用超级用户权限才能连接。可以把kernel.yama.ptrace_scope的值改为 0，即 sudo vim &#x2F;etc&#x2F;sysctl.d&#x2F;10-ptrace.conf 将最后一行改为  kernel.yama.ptrace_scope &#x3D; 0，保存退出。 重启系统后，普通用户就可以使用attach ID连接程序调试了。</p>
+<p>2、gdb调试不出现源码</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gcc demo.c -Wl,--strip-debug -o demo</span><br></pre></td></tr></table></figure>
+
+<p>3、入参与出参</p>
+<table>
+<thead>
+<tr>
+<th>CPU</th>
+<th>入参</th>
+<th>出参</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>x86</td>
+<td>ebp+8,，ebp+12，ebp+16，ebp+20</td>
+<td>eax</td>
+</tr>
+<tr>
+<td>x86_64</td>
+<td>rdi，rsi，rdx， rcx， r8， r9</td>
+<td>rax</td>
+</tr>
+<tr>
+<td>arm64</td>
+<td>x0， x1， x2</td>
+<td>x0</td>
+</tr>
+</tbody></table>
+<p>4、条件断点—查看出参</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gdb attach `pidof demo1`</span><br><span class="line">handle SIG35 SIG36 SIGUSR2 nostop noprint</span><br><span class="line"><span class="built_in">set</span> heigh 0</span><br><span class="line">def ops</span><br><span class="line">bt</span><br><span class="line">i r</span><br><span class="line">x/s <span class="variable">$rdi</span></span><br><span class="line">p <span class="variable">$rsi</span></span><br><span class="line"><span class="built_in">set</span> <span class="variable">$a</span>=<span class="variable">$rdx</span></span><br><span class="line">fin</span><br><span class="line">x/5wx <span class="variable">$a</span></span><br><span class="line">x/s <span class="variable">$a</span></span><br><span class="line">p *(unsigned int*)(<span class="variable">$a</span>+16)</span><br><span class="line">det</span><br><span class="line">q</span><br><span class="line">end</span><br><span class="line">b addStudent</span><br><span class="line"><span class="built_in">command</span></span><br><span class="line">ops</span><br><span class="line">end</span><br><span class="line">c</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>gdb</category>
+      </categories>
+  </entry>
+  <entry>
     <title>learn-java</title>
-    <url>/2021/04/05/</url>
+    <url>/zhoukqi/zhoukqi/2021/04/05/</url>
     <content><![CDATA[<p><strong>jdk、jre与jvm的概念和区别：从上到下依次属于包含关系</strong></p>
 <table>
 <thead>
@@ -228,49 +272,5 @@
       <tags>
         <tag>java</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>gdb调试</title>
-    <url>/2021/04/05/</url>
-    <content><![CDATA[<p>1、解决gdb attch报错: Operation not permitted</p>
-<blockquote>
-<p>Attaching to process 6122 Could not attach to process.  If your uid matches the uid of the target process, check the setting of &#x2F;proc&#x2F;sys&#x2F;kernel&#x2F;yama&#x2F;ptrace_scope, or try again as the root user.  For more details, see &#x2F;etc&#x2F;sysctl.d&#x2F;10-ptrace.conf ptrace: Operation not permitted. &#x2F;mnt&#x2F;hgfs&#x2F;mint&#x2F;gdb_demo&#x2F;6122: No such file or directory.</p>
-</blockquote>
-<p>原因是Ubuntu 16.04 的&#x2F;etc&#x2F;sysctl.d&#x2F;10-ptrace.conf文件中最后一行默认kernel.yama.ptrace_scope &#x3D; 1 这个值不允许用户使用普通账户使用attach ID连接程序进行调试，需要使用超级用户权限才能连接。可以把kernel.yama.ptrace_scope的值改为 0，即 sudo vim &#x2F;etc&#x2F;sysctl.d&#x2F;10-ptrace.conf 将最后一行改为  kernel.yama.ptrace_scope &#x3D; 0，保存退出。 重启系统后，普通用户就可以使用attach ID连接程序调试了。</p>
-<p>2、gdb调试不出现源码</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gcc demo.c -Wl,--strip-debug -o demo</span><br></pre></td></tr></table></figure>
-
-<p>3、入参与出参</p>
-<table>
-<thead>
-<tr>
-<th>CPU</th>
-<th>入参</th>
-<th>出参</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>x86</td>
-<td>ebp+8,，ebp+12，ebp+16，ebp+20</td>
-<td>eax</td>
-</tr>
-<tr>
-<td>x86_64</td>
-<td>rdi，rsi，rdx， rcx， r8， r9</td>
-<td>rax</td>
-</tr>
-<tr>
-<td>arm64</td>
-<td>x0， x1， x2</td>
-<td>x0</td>
-</tr>
-</tbody></table>
-<p>4、条件断点—查看出参</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gdb attach `pidof demo1`</span><br><span class="line">handle SIG35 SIG36 SIGUSR2 nostop noprint</span><br><span class="line"><span class="built_in">set</span> heigh 0</span><br><span class="line">def ops</span><br><span class="line">bt</span><br><span class="line">i r</span><br><span class="line">x/s <span class="variable">$rdi</span></span><br><span class="line">p <span class="variable">$rsi</span></span><br><span class="line"><span class="built_in">set</span> <span class="variable">$a</span>=<span class="variable">$rdx</span></span><br><span class="line">fin</span><br><span class="line">x/5wx <span class="variable">$a</span></span><br><span class="line">x/s <span class="variable">$a</span></span><br><span class="line">p *(unsigned int*)(<span class="variable">$a</span>+16)</span><br><span class="line">det</span><br><span class="line">q</span><br><span class="line">end</span><br><span class="line">b addStudent</span><br><span class="line"><span class="built_in">command</span></span><br><span class="line">ops</span><br><span class="line">end</span><br><span class="line">c</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>gdb</category>
-      </categories>
   </entry>
 </search>
