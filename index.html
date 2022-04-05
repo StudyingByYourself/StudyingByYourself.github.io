@@ -12,7 +12,7 @@
 
 <link rel="stylesheet" href="/css/main.css">
 
-
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=consolas:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
@@ -158,6 +158,144 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/04/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.png">
+      <meta itemprop="name" content="Kaiqi Zhou">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="数风流人物，还看今朝">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/04/" class="post-title-link" itemprop="url">常见汇编指令</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-04-04 11:28:18" itemprop="dateCreated datePublished" datetime="2022-04-04T11:28:18+08:00">2022-04-04</time>
+            </span>
+
+          
+            <span id="/2022/04/04/" class="post-meta-item leancloud_visitors" data-flag-title="常见汇编指令" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/04/04/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/04/04/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><font size=3> 以demo.c为例，取消栈保护编译选项。 </font> </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">FuncC</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">0x900C</span>;</span><br><span class="line">    <span class="type">void</span> *b = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">long</span>));</span><br><span class="line">    <span class="type">char</span> str[<span class="number">20</span>] = <span class="string">&quot;Hello World!&quot;</span>;</span><br><span class="line">    <span class="type">int</span> arr[<span class="number">10</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="built_in">memset</span>(arr, <span class="string">&#x27;c&#x27;</span>, <span class="keyword">sizeof</span>(<span class="type">char</span>) * <span class="number">120</span>);</span><br><span class="line">    <span class="built_in">free</span>(b);</span><br><span class="line">    b = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -fno-stack-protector -g demo.c -o demo</span><br></pre></td></tr></table></figure>
+
+<p>x86_64下的汇编指令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">(gdb) disassemble FuncC</span><br><span class="line">Dump of assembler code <span class="keyword">for</span> <span class="keyword">function</span> FuncC:</span><br><span class="line">   0x000055555555471a &lt;+0&gt;:     push   %rbp</span><br><span class="line">   0x000055555555471b &lt;+1&gt;:     mov    %rsp,%rbp</span><br><span class="line">   0x000055555555471e &lt;+4&gt;:     sub    <span class="variable">$0x60</span>,%rsp</span><br><span class="line">   0x0000555555554722 &lt;+8&gt;:     movl   <span class="variable">$0x900c</span>,-0x4(%rbp)</span><br><span class="line">   0x0000555555554729 &lt;+15&gt;:    mov    <span class="variable">$0x8</span>,%edi</span><br><span class="line">   0x000055555555472e &lt;+20&gt;:    callq  0x5555555545f0 &lt;malloc@plt&gt;</span><br><span class="line">   0x0000555555554733 &lt;+25&gt;:    mov    %rax,-0x10(%rbp)</span><br><span class="line">   0x0000555555554737 &lt;+29&gt;:    movabs <span class="variable">$0x6f57206f6c6c6548</span>,%rax</span><br><span class="line">   0x0000555555554741 &lt;+39&gt;:    mov    <span class="variable">$0x21646c72</span>,%edx</span><br><span class="line">   0x0000555555554746 &lt;+44&gt;:    mov    %rax,-0x30(%rbp)</span><br><span class="line">   0x000055555555474a &lt;+48&gt;:    mov    %rdx,-0x28(%rbp)</span><br><span class="line">   0x000055555555474e &lt;+52&gt;:    movl   <span class="variable">$0x0</span>,-0x20(%rbp)</span><br><span class="line">   0x0000555555554755 &lt;+59&gt;:    movq   <span class="variable">$0x0</span>,-0x60(%rbp)</span><br><span class="line">   0x000055555555475d &lt;+67&gt;:    movq   <span class="variable">$0x0</span>,-0x58(%rbp)</span><br><span class="line">   0x0000555555554765 &lt;+75&gt;:    movq   <span class="variable">$0x0</span>,-0x50(%rbp)</span><br><span class="line">   0x000055555555476d &lt;+83&gt;:    movq   <span class="variable">$0x0</span>,-0x48(%rbp)</span><br><span class="line">   0x0000555555554775 &lt;+91&gt;:    movq   <span class="variable">$0x0</span>,-0x40(%rbp)</span><br><span class="line">   0x000055555555477d &lt;+99&gt;:    lea    -0x60(%rbp),%rax</span><br><span class="line">   0x0000555555554781 &lt;+103&gt;:   mov    <span class="variable">$0x78</span>,%edx</span><br><span class="line">   0x0000555555554786 &lt;+108&gt;:   mov    <span class="variable">$0x63</span>,%esi</span><br><span class="line">   0x000055555555478b &lt;+113&gt;:   mov    %rax,%rdi</span><br><span class="line">   0x000055555555478e &lt;+116&gt;:   callq  0x5555555545e0 &lt;memset@plt&gt;</span><br><span class="line">   0x0000555555554793 &lt;+121&gt;:   mov    -0x10(%rbp),%rax</span><br><span class="line">   0x0000555555554797 &lt;+125&gt;:   mov    %rax,%rdi</span><br><span class="line">   0x000055555555479a &lt;+128&gt;:   callq  0x5555555545c0 &lt;free@plt&gt;</span><br><span class="line">   0x000055555555479f &lt;+133&gt;:   movq   <span class="variable">$0x0</span>,-0x10(%rbp)</span><br><span class="line">   0x00005555555547a7 &lt;+141&gt;:   mov    <span class="variable">$0x3</span>,%eax</span><br><span class="line">   0x00005555555547ac &lt;+146&gt;:   leaveq</span><br><span class="line">   0x00005555555547ad &lt;+147&gt;:   retq</span><br></pre></td></tr></table></figure>
+
+<p>push开栈，开栈大小&#x3D;96字节，rsp是栈顶，rbp是栈底</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">0x000055555555471a &lt;+0&gt;:     push   %rbp</span><br><span class="line">0x000055555555471b &lt;+1&gt;:     mov    %rsp,%rbp</span><br><span class="line">0x000055555555471e &lt;+4&gt;:     sub    <span class="variable">$0x60</span>,%rsp</span><br><span class="line">(gdb) i r <span class="variable">$rbp</span> <span class="variable">$rsp</span></span><br><span class="line">rbp            0x7fffffffe390   0x7fffffffe390</span><br><span class="line">rsp            0x7fffffffe330   0x7fffffffe330</span><br></pre></td></tr></table></figure>
+
+<p>x86指令</p>
+<table>
+<thead>
+<tr>
+<th><strong>指令</strong></th>
+<th></th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>lea</td>
+<td>leaq a(b, c, d), %rax</td>
+<td>先计算地址a + b + c * d，然后把最终地址载到寄存器rax中</td>
+</tr>
+<tr>
+<td>shr</td>
+<td>$0x4, %rdi</td>
+<td>rdi &gt;&gt; 4</td>
+</tr>
+</tbody></table>
+<p>arm指令</p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th></th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>mov</td>
+<td>mov x1, x0</td>
+<td>将寄存器x0的值复制到寄存器x1中</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -497,7 +635,7 @@
 <p>版本切换来适应配置文件</p>
 <p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210420010844.png"></p>
 <p>回退hexo版本</p>
-<p>cnpm install -g <a href="mailto:&#x68;&#101;&#x78;&#x6f;&#x40;&#x34;&#x2e;&#50;&#46;&#x31;">&#x68;&#101;&#x78;&#x6f;&#x40;&#x34;&#x2e;&#50;&#46;&#x31;</a></p>
+<p>cnpm install -g <a href="mailto:&#104;&#x65;&#120;&#x6f;&#x40;&#x34;&#x2e;&#50;&#46;&#49;">&#104;&#x65;&#120;&#x6f;&#x40;&#x34;&#x2e;&#50;&#46;&#49;</a></p>
 
       
     </div>
@@ -725,7 +863,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -776,13 +914,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">3k</span>
+    <span title="站点总字数">5k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3 分钟</span>
+    <span title="站点阅读时长">5 分钟</span>
 </div><div>
     <!--添加总阅读次数-->
     <div>
