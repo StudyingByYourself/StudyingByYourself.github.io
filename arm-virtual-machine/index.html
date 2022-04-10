@@ -20,19 +20,19 @@
     var CONFIG = {"hostname":"zhoukaiqi.gitee.io","root":"/zhoukaiqi/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="1、解决gdb attch报错: Operation not permitted  Attaching to process 6122 Could not attach to process.  If your uid matches the uid of the target process, check the setting of &#x2F;proc&#x2F;sys&#x2F;kerne">
+  <meta name="description" content="1.安装arm交叉编译工具链 安装交叉编译工具链 gcc-aarch64-linux-gnu 1sudo apt-get install gcc-aarch64-linux-gnu 建立软链接，否则后面执行的时候会报动态库找不到的错误 12sudo ln -s &#x2F;usr&#x2F;aarch64-linux-gnu&#x2F;lib&#x2F;libc.so.6 &#x2F;lib&#x2F;libc.so.6sudo ln -s &#x2F;usr&#x2F;aa">
 <meta property="og:type" content="article">
-<meta property="og:title" content="gdb调试">
-<meta property="og:url" content="https://zhoukaiqi.gitee.io/2021/04/05/index.html">
+<meta property="og:title" content="x86_64搭建arm环境">
+<meta property="og:url" content="https://zhoukaiqi.gitee.io/arm-virtual-machine/index.html">
 <meta property="og:site_name" content="数风流人物，还看今朝">
-<meta property="og:description" content="1、解决gdb attch报错: Operation not permitted  Attaching to process 6122 Could not attach to process.  If your uid matches the uid of the target process, check the setting of &#x2F;proc&#x2F;sys&#x2F;kerne">
+<meta property="og:description" content="1.安装arm交叉编译工具链 安装交叉编译工具链 gcc-aarch64-linux-gnu 1sudo apt-get install gcc-aarch64-linux-gnu 建立软链接，否则后面执行的时候会报动态库找不到的错误 12sudo ln -s &#x2F;usr&#x2F;aarch64-linux-gnu&#x2F;lib&#x2F;libc.so.6 &#x2F;lib&#x2F;libc.so.6sudo ln -s &#x2F;usr&#x2F;aa">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-04-05T07:00:31.000Z">
-<meta property="article:modified_time" content="2022-04-03T15:24:19.042Z">
+<meta property="article:published_time" content="2022-04-10T16:29:02.000Z">
+<meta property="article:modified_time" content="2022-04-10T16:29:02.000Z">
 <meta property="article:author" content="Kaiqi Zhou">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://zhoukaiqi.gitee.io/2021/04/05/">
+<link rel="canonical" href="https://zhoukaiqi.gitee.io/arm-virtual-machine/">
 
 
 <script id="page-configurations">
@@ -45,7 +45,7 @@
   };
 </script>
 
-  <title>gdb调试 | 数风流人物，还看今朝</title>
+  <title>x86_64搭建arm环境 | 数风流人物，还看今朝</title>
   
 
 
@@ -167,7 +167,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhoukaiqi.gitee.io/2021/04/05/">
+    <link itemprop="mainEntityOfPage" href="https://zhoukaiqi.gitee.io/arm-virtual-machine/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/zhoukaiqi/images/header.png">
@@ -180,7 +180,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          gdb调试
+          x86_64搭建arm环境
         </h1>
 
         <div class="post-meta">
@@ -190,27 +190,20 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-04-05 15:00:31" itemprop="dateCreated datePublished" datetime="2021-04-05T15:00:31+08:00">2021-04-05</time>
+              <time title="创建时间：2022-04-11 00:29:02" itemprop="dateCreated datePublished" datetime="2022-04-11T00:29:02+08:00">2022-04-11</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-03 23:24:19" itemprop="dateModified" datetime="2022-04-03T23:24:19+08:00">2022-04-03</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/zhoukaiqi/categories/gdb/" itemprop="url" rel="index"><span itemprop="name">gdb</span></a>
+                  <a href="/zhoukaiqi/categories/arm-virtual-machine/" itemprop="url" rel="index"><span itemprop="name">arm-virtual-machine</span></a>
                 </span>
             </span>
 
           
-            <span id="/zhoukaiqi/2021/04/05/" class="post-meta-item leancloud_visitors" data-flag-title="gdb调试" title="阅读次数">
+            <span id="/zhoukaiqi/arm-virtual-machine/" class="post-meta-item leancloud_visitors" data-flag-title="x86_64搭建arm环境" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -225,8 +218,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/zhoukaiqi/2021/04/05/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/zhoukaiqi/2021/04/05/" itemprop="commentCount"></span>
+    <a title="valine" href="/zhoukaiqi/arm-virtual-machine/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/zhoukaiqi/arm-virtual-machine/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -236,7 +229,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1k</span>
+              <span>1.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -255,43 +248,30 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>1、解决gdb attch报错: Operation not permitted</p>
-<blockquote>
-<p>Attaching to process 6122 Could not attach to process.  If your uid matches the uid of the target process, check the setting of &#x2F;proc&#x2F;sys&#x2F;kernel&#x2F;yama&#x2F;ptrace_scope, or try again as the root user.  For more details, see &#x2F;etc&#x2F;sysctl.d&#x2F;10-ptrace.conf ptrace: Operation not permitted. &#x2F;mnt&#x2F;hgfs&#x2F;mint&#x2F;gdb_demo&#x2F;6122: No such file or directory.</p>
-</blockquote>
-<p>原因是Ubuntu 16.04 的&#x2F;etc&#x2F;sysctl.d&#x2F;10-ptrace.conf文件中最后一行默认kernel.yama.ptrace_scope &#x3D; 1 这个值不允许用户使用普通账户使用attach ID连接程序进行调试，需要使用超级用户权限才能连接。可以把kernel.yama.ptrace_scope的值改为 0，即 sudo vim &#x2F;etc&#x2F;sysctl.d&#x2F;10-ptrace.conf 将最后一行改为  kernel.yama.ptrace_scope &#x3D; 0，保存退出。 重启系统后，普通用户就可以使用attach ID连接程序调试了。</p>
-<p>2、gdb调试不出现源码</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc demo.c -Wl,--strip-debug -o demo</span><br></pre></td></tr></table></figure>
-
-<p>3、入参与出参</p>
-<table>
-<thead>
-<tr>
-<th>CPU</th>
-<th>入参</th>
-<th>出参</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>x86</td>
-<td>ebp+8,，ebp+12，ebp+16，ebp+20</td>
-<td>eax</td>
-</tr>
-<tr>
-<td>x86_64</td>
-<td>rdi，rsi，rdx， rcx， r8， r9</td>
-<td>rax</td>
-</tr>
-<tr>
-<td>arm64</td>
-<td>x0， x1， x2</td>
-<td>x0</td>
-</tr>
-</tbody></table>
-<p>4、条件断点—查看出参</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">gdb attach `pidof demo1`</span><br><span class="line">handle SIG35 SIG36 SIGUSR2 nostop noprint</span><br><span class="line"><span class="built_in">set</span> heigh 0</span><br><span class="line">def ops</span><br><span class="line">bt</span><br><span class="line">i r</span><br><span class="line">x/s <span class="variable">$rdi</span></span><br><span class="line">p <span class="variable">$rsi</span></span><br><span class="line"><span class="built_in">set</span> <span class="variable">$a</span>=<span class="variable">$rdx</span></span><br><span class="line">fin</span><br><span class="line">x/5wx <span class="variable">$a</span></span><br><span class="line">x/s <span class="variable">$a</span></span><br><span class="line">p *(unsigned int*)(<span class="variable">$a</span>+16)</span><br><span class="line">det</span><br><span class="line">q</span><br><span class="line">end</span><br><span class="line">b addStudent</span><br><span class="line"><span class="built_in">command</span></span><br><span class="line">ops</span><br><span class="line">end</span><br><span class="line">c</span><br></pre></td></tr></table></figure>
-
-
+        <h6 id="1-安装arm交叉编译工具链">1.安装arm交叉编译工具链</h6>
+<p>安装交叉编译工具链 <code>gcc-aarch64-linux-gnu</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install gcc-aarch64-linux-gnu</span><br></pre></td></tr></table></figure>
+<p>建立软链接，否则后面执行的时候会报动态库找不到的错误</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">ln</span> -s /usr/aarch64-linux-gnu/lib/libc.so.6 /lib/libc.so.6</span><br><span class="line">sudo <span class="built_in">ln</span> -s /usr/aarch64-linux-gnu/lib/ld-linux-aarch64.so.1 /lib/ld-linux-aarch64.so.1</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<h6 id="2-安装arm模拟器qemu">2.安装arm模拟器qemu</h6>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install qemu</span><br></pre></td></tr></table></figure>
+<p>编译<code>a.out</code>并执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">zkq@zkq-vm:~$ aarch64-linux-gnu-gcc main.c</span><br><span class="line">zkq@zkq-vm:~$ file a.out</span><br><span class="line">a.out: ELF 64-bit LSB shared object, ARM aarch64, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, <span class="keyword">for</span> GNU/Linux 3.7.0, BuildID[sha1]=6ef0ca0c6462e038e589b6e1d52220a680007588, not stripped</span><br><span class="line">zkq@zkq-vm:~$ qemu-aarch64 a.out</span><br><span class="line">hello world</span><br></pre></td></tr></table></figure>
+<h6 id="3-通过gdb调试arm程序">3. 通过gdb调试arm程序</h6>
+<p>gdb调试arm程序的原理：qemu端作为gdb server启动可执行程序，另一端作为gdb client连接gdb server，进行本地远程调试。</p>
+<p>首先安装多平台的gdb工具</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install gdb-multiarch</span><br></pre></td></tr></table></figure>
+<p>重新编译示例代码<code>main.c</code>，注意，这次加上了参数<code>--static</code>。加上这个参数后，生成的可执行文件为静态链接的。<strong>如果不加这个参数，gdb调试的时候单步执行功能不正常，符号表也找不到。</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aarch64-linux-gnu-gcc --static -g main.c</span><br></pre></td></tr></table></figure>
+<p>通过下面的命令启动可执行程序<code>a.out</code>, 选项<code>-g</code>指明了gdb的监听端口，这里选择的是1234。该指令运行后，当前窗口会被阻塞住。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qemu-aarch64 -g 1234 a.out</span><br></pre></td></tr></table></figure>
+<p>新开一个命令行窗口，启动gdb client，进入gdb交互界面</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gdb-multiarch a.out</span><br></pre></td></tr></table></figure>
+<p>在gdb交互界面输入以下内容就可以连接到server端</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">target remote localhost:1234</span><br></pre></td></tr></table></figure>
+<p>接下来，就可以正常使用gdb的相关功能调试程序了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(gdb) b main</span><br><span class="line">Breakpoint 1 at 0x102e8: file main.c, line 5.</span><br><span class="line">(gdb) c</span><br><span class="line">Continuing.</span><br><span class="line"></span><br><span class="line">Breakpoint 1, main () at main.c:5</span><br><span class="line">5	    <span class="built_in">printf</span>(<span class="string">&quot;hello world\n&quot;</span>);	</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -320,11 +300,11 @@
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/zhoukaiqi/2021/04/05/" rel="next" title="learn-java">
-      learn-java <i class="fa fa-chevron-right"></i>
+    <a href="/zhoukaiqi/assembly-x86_64/" rel="prev" title="x86_84常见汇编指令">
+      <i class="fa fa-chevron-left"></i> x86_84常见汇编指令
     </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -384,6 +364,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%85arm%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7%E9%93%BE"><span class="nav-text">1.安装arm交叉编译工具链</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-%E5%AE%89%E8%A3%85arm%E6%A8%A1%E6%8B%9F%E5%99%A8qemu"><span class="nav-text">2.安装arm模拟器qemu</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-%E9%80%9A%E8%BF%87gdb%E8%B0%83%E8%AF%95arm%E7%A8%8B%E5%BA%8F"><span class="nav-text">3. 通过gdb调试arm程序</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -399,17 +380,13 @@
       <div class="site-state-item site-state-posts">
           <a href="/zhoukaiqi/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
         <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">分类</span>
-      </div>
-      <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">2</span>
-        <span class="site-state-item-name">标签</span>
       </div>
   </nav>
 </div>
@@ -456,7 +433,7 @@
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">5 分钟</span>
+    <span title="站点阅读时长">4 分钟</span>
 </div><div>
     <!--添加总阅读次数-->
     <div>

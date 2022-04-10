@@ -1,19 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>常见汇编指令</title>
-    <url>/zhoukaiqi/2022/04/04/</url>
-    <content><![CDATA[<p><font size=3> 以demo.c为例，取消栈保护编译选项。 </font> </p>
+    <title>x86_64搭建arm环境</title>
+    <url>/zhoukaiqi/arm-virtual-machine/</url>
+    <content><![CDATA[<h6 id="1-安装arm交叉编译工具链">1.安装arm交叉编译工具链</h6>
+<p>安装交叉编译工具链 <code>gcc-aarch64-linux-gnu</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install gcc-aarch64-linux-gnu</span><br></pre></td></tr></table></figure>
+<p>建立软链接，否则后面执行的时候会报动态库找不到的错误</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo <span class="built_in">ln</span> -s /usr/aarch64-linux-gnu/lib/libc.so.6 /lib/libc.so.6</span><br><span class="line">sudo <span class="built_in">ln</span> -s /usr/aarch64-linux-gnu/lib/ld-linux-aarch64.so.1 /lib/ld-linux-aarch64.so.1</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<h6 id="2-安装arm模拟器qemu">2.安装arm模拟器qemu</h6>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install qemu</span><br></pre></td></tr></table></figure>
+<p>编译<code>a.out</code>并执行</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">zkq@zkq-vm:~$ aarch64-linux-gnu-gcc main.c</span><br><span class="line">zkq@zkq-vm:~$ file a.out</span><br><span class="line">a.out: ELF 64-bit LSB shared object, ARM aarch64, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, <span class="keyword">for</span> GNU/Linux 3.7.0, BuildID[sha1]=6ef0ca0c6462e038e589b6e1d52220a680007588, not stripped</span><br><span class="line">zkq@zkq-vm:~$ qemu-aarch64 a.out</span><br><span class="line">hello world</span><br></pre></td></tr></table></figure>
+<h6 id="3-通过gdb调试arm程序">3. 通过gdb调试arm程序</h6>
+<p>gdb调试arm程序的原理：qemu端作为gdb server启动可执行程序，另一端作为gdb client连接gdb server，进行本地远程调试。</p>
+<p>首先安装多平台的gdb工具</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install gdb-multiarch</span><br></pre></td></tr></table></figure>
+<p>重新编译示例代码<code>main.c</code>，注意，这次加上了参数<code>--static</code>。加上这个参数后，生成的可执行文件为静态链接的。<strong>如果不加这个参数，gdb调试的时候单步执行功能不正常，符号表也找不到。</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">aarch64-linux-gnu-gcc --static -g main.c</span><br></pre></td></tr></table></figure>
+<p>通过下面的命令启动可执行程序<code>a.out</code>, 选项<code>-g</code>指明了gdb的监听端口，这里选择的是1234。该指令运行后，当前窗口会被阻塞住。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">qemu-aarch64 -g 1234 a.out</span><br></pre></td></tr></table></figure>
+<p>新开一个命令行窗口，启动gdb client，进入gdb交互界面</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gdb-multiarch a.out</span><br></pre></td></tr></table></figure>
+<p>在gdb交互界面输入以下内容就可以连接到server端</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">target remote localhost:1234</span><br></pre></td></tr></table></figure>
+<p>接下来，就可以正常使用gdb的相关功能调试程序了</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">(gdb) b main</span><br><span class="line">Breakpoint 1 at 0x102e8: file main.c, line 5.</span><br><span class="line">(gdb) c</span><br><span class="line">Continuing.</span><br><span class="line"></span><br><span class="line">Breakpoint 1, main () at main.c:5</span><br><span class="line">5	    <span class="built_in">printf</span>(<span class="string">&quot;hello world\n&quot;</span>);	</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>arm-virtual-machine</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>x86_84常见汇编指令</title>
+    <url>/zhoukaiqi/assembly-x86_64/</url>
+    <content><![CDATA[<p>以demo.c为例，取消栈保护编译选项。</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">FuncC</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">0x900C</span>;</span><br><span class="line">    <span class="type">void</span> *b = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">long</span>));</span><br><span class="line">    <span class="type">char</span> str[<span class="number">20</span>] = <span class="string">&quot;Hello World!&quot;</span>;</span><br><span class="line">    <span class="type">int</span> arr[<span class="number">10</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="built_in">memset</span>(arr, <span class="string">&#x27;c&#x27;</span>, <span class="keyword">sizeof</span>(<span class="type">char</span>) * <span class="number">120</span>);</span><br><span class="line">    <span class="built_in">free</span>(b);</span><br><span class="line">    b = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gcc -fno-stack-protector -g demo.c -o demo</span><br></pre></td></tr></table></figure>
-
-<p>x86_64下的汇编指令</p>
+<span id="more"></span>
+<p>1 x86_64下的汇编指令</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">(gdb) disassemble FuncC</span><br><span class="line">Dump of assembler code <span class="keyword">for</span> <span class="keyword">function</span> FuncC:</span><br><span class="line">   0x000055555555471a &lt;+0&gt;:     push   %rbp</span><br><span class="line">   0x000055555555471b &lt;+1&gt;:     mov    %rsp,%rbp</span><br><span class="line">   0x000055555555471e &lt;+4&gt;:     sub    <span class="variable">$0x60</span>,%rsp</span><br><span class="line">   0x0000555555554722 &lt;+8&gt;:     movl   <span class="variable">$0x900c</span>,-0x4(%rbp)</span><br><span class="line">   0x0000555555554729 &lt;+15&gt;:    mov    <span class="variable">$0x8</span>,%edi</span><br><span class="line">   0x000055555555472e &lt;+20&gt;:    callq  0x5555555545f0 &lt;malloc@plt&gt;</span><br><span class="line">   0x0000555555554733 &lt;+25&gt;:    mov    %rax,-0x10(%rbp)</span><br><span class="line">   0x0000555555554737 &lt;+29&gt;:    movabs <span class="variable">$0x6f57206f6c6c6548</span>,%rax</span><br><span class="line">   0x0000555555554741 &lt;+39&gt;:    mov    <span class="variable">$0x21646c72</span>,%edx</span><br><span class="line">   0x0000555555554746 &lt;+44&gt;:    mov    %rax,-0x30(%rbp)</span><br><span class="line">   0x000055555555474a &lt;+48&gt;:    mov    %rdx,-0x28(%rbp)</span><br><span class="line">   0x000055555555474e &lt;+52&gt;:    movl   <span class="variable">$0x0</span>,-0x20(%rbp)</span><br><span class="line">   0x0000555555554755 &lt;+59&gt;:    movq   <span class="variable">$0x0</span>,-0x60(%rbp)</span><br><span class="line">   0x000055555555475d &lt;+67&gt;:    movq   <span class="variable">$0x0</span>,-0x58(%rbp)</span><br><span class="line">   0x0000555555554765 &lt;+75&gt;:    movq   <span class="variable">$0x0</span>,-0x50(%rbp)</span><br><span class="line">   0x000055555555476d &lt;+83&gt;:    movq   <span class="variable">$0x0</span>,-0x48(%rbp)</span><br><span class="line">   0x0000555555554775 &lt;+91&gt;:    movq   <span class="variable">$0x0</span>,-0x40(%rbp)</span><br><span class="line">   0x000055555555477d &lt;+99&gt;:    lea    -0x60(%rbp),%rax</span><br><span class="line">   0x0000555555554781 &lt;+103&gt;:   mov    <span class="variable">$0x78</span>,%edx</span><br><span class="line">   0x0000555555554786 &lt;+108&gt;:   mov    <span class="variable">$0x63</span>,%esi</span><br><span class="line">   0x000055555555478b &lt;+113&gt;:   mov    %rax,%rdi</span><br><span class="line">   0x000055555555478e &lt;+116&gt;:   callq  0x5555555545e0 &lt;memset@plt&gt;</span><br><span class="line">   0x0000555555554793 &lt;+121&gt;:   mov    -0x10(%rbp),%rax</span><br><span class="line">   0x0000555555554797 &lt;+125&gt;:   mov    %rax,%rdi</span><br><span class="line">   0x000055555555479a &lt;+128&gt;:   callq  0x5555555545c0 &lt;free@plt&gt;</span><br><span class="line">   0x000055555555479f &lt;+133&gt;:   movq   <span class="variable">$0x0</span>,-0x10(%rbp)</span><br><span class="line">   0x00005555555547a7 &lt;+141&gt;:   mov    <span class="variable">$0x3</span>,%eax</span><br><span class="line">   0x00005555555547ac &lt;+146&gt;:   leaveq</span><br><span class="line">   0x00005555555547ad &lt;+147&gt;:   retq</span><br></pre></td></tr></table></figure>
-
-<p>push开栈，开栈大小&#x3D;96字节，rsp是栈顶，rbp是栈底</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">0x000055555555471a &lt;+0&gt;:     push   %rbp</span><br><span class="line">0x000055555555471b &lt;+1&gt;:     mov    %rsp,%rbp</span><br><span class="line">0x000055555555471e &lt;+4&gt;:     sub    <span class="variable">$0x60</span>,%rsp</span><br><span class="line">(gdb) i r <span class="variable">$rbp</span> <span class="variable">$rsp</span></span><br><span class="line">rbp            0x7fffffffe390   0x7fffffffe390</span><br><span class="line">rsp            0x7fffffffe330   0x7fffffffe330</span><br></pre></td></tr></table></figure>
-
+<p>push开栈，开栈大小=96字节，rsp是栈顶，rbp是栈底</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">0x000055555555471a &lt;+0&gt;:     push   %rbp</span><br><span class="line">0x000055555555471b &lt;+1&gt;:     mov    %rsp,%rbp</span><br><span class="line">0x000055555555471e &lt;+4&gt;:     sub    <span class="variable">$0x60</span>,%rsp</span><br><span class="line">(gdb) i r <span class="variable">$rsp</span> <span class="variable">$rbp</span></span><br><span class="line">rsp            0x7fffffffe330   0x7fffffffe330</span><br><span class="line">rbp            0x7fffffffe390   0x7fffffffe390</span><br></pre></td></tr></table></figure>
+<p>将0x900c存入rbp - 4的地址，对应代码第3行</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">0x0000555555554722 &lt;+8&gt;:     movl   <span class="variable">$0x900c</span>,-0x4(%rbp)</span><br><span class="line">(gdb) x/26wx <span class="variable">$rsp</span></span><br><span class="line">0x7fffffffe330: 0xf7ffea98      0x00007fff      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe340: 0x00000000      0x00000000      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe350: 0xffffffff      0x00000000      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe360: 0xf7ffa268      0x00007fff      0xf7ffe710      0x00007fff</span><br><span class="line">0x7fffffffe370: 0x00000000      0x00000000      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe380: 0x00000000      0x00000000      0x00000000      0x0000900c</span><br><span class="line">0x7fffffffe390: 0xffffe3b0      0x00007fff</span><br></pre></td></tr></table></figure>
 <p>x86指令</p>
 <table>
 <thead>
@@ -23,7 +53,8 @@
 <th>含义</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>lea</td>
 <td>leaq a(b, c, d), %rax</td>
 <td>先计算地址a + b + c * d，然后把最终地址载到寄存器rax中</td>
@@ -33,7 +64,8 @@
 <td>$0x4, %rdi</td>
 <td>rdi &gt;&gt; 4</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <p>arm指令</p>
 <table>
 <thead>
@@ -43,71 +75,26 @@
 <th>含义</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>mov</td>
 <td>mov x1, x0</td>
 <td>将寄存器x0的值复制到寄存器x1中</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 ]]></content>
-  </entry>
-  <entry>
-    <title>windows自建博客：Hexo+Kaze+Gitee</title>
-    <url>/zhoukaiqi/2022/04/03/</url>
-    <content><![CDATA[<p><strong>1</strong> <strong>安装</strong> <a href="http://nodejs.cn/download/">node.js</a></p>
-<p><strong>2</strong> <strong>安装</strong> <strong>hexo</strong></p>
-<p><strong>2.1</strong> <strong>切换软件源</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install -g cnpm --registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210405141211.png"></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cnpm -v</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210405141241.png"></p>
-<p><strong>2.2</strong> <strong>安装hexo</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cnpm install -g hexo-cli</span><br></pre></td></tr></table></figure>
-
-<p><strong>2.3</strong> <strong>初始化</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo init</span><br></pre></td></tr></table></figure>
-
-<p><strong>windows下没有sudo，需要以管理员身份运行</strong></p>
-<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210405141257.png"></p>
-<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210405141302.png"></p>
-<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210405141308.png"></p>
-<p><strong>2.4</strong> <strong>启动hexo</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210405141315.png"></p>
-<span id="more"></span>
-
-<p><strong>3 切换主题Kaze</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/theme-kaze/hexo-theme-kaze.git</span><br></pre></td></tr></table></figure>
-
-<p><strong>修改_config.yml的theme:hexo-theme-Kaze</strong></p>
-<p><strong>4 托管Gitee</strong></p>
-<p><strong>5 参考资料</strong></p>
-<blockquote>
-<p>Hexo+Kaze+Gitee Pages 搭建静态博客网站 <a href="https://blog.csdn.net/u013129932/article/details/111143797">https://blog.csdn.net/u013129932/article/details/111143797</a></p>
-<p>添加码云上的SSH公钥 <a href="https://blog.csdn.net/hjtcn/article/details/78995073?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-9&amp;spm=1001.2101.3001.4242">https://blog.csdn.net/hjtcn/article/details/78995073?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-9&amp;spm=1001.2101.3001.4242</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>网站搭建</category>
-      </categories>
-      <tags>
-        <tag>beign</tag>
-      </tags>
   </entry>
   <entry>
     <title>gdb调试</title>
-    <url>/zhoukaiqi/2021/04/05/</url>
+    <url>/zhoukaiqi/how-to-use-gdb/</url>
     <content><![CDATA[<p>1、解决gdb attch报错: Operation not permitted</p>
 <blockquote>
-<p>Attaching to process 6122 Could not attach to process.  If your uid matches the uid of the target process, check the setting of &#x2F;proc&#x2F;sys&#x2F;kernel&#x2F;yama&#x2F;ptrace_scope, or try again as the root user.  For more details, see &#x2F;etc&#x2F;sysctl.d&#x2F;10-ptrace.conf ptrace: Operation not permitted. &#x2F;mnt&#x2F;hgfs&#x2F;mint&#x2F;gdb_demo&#x2F;6122: No such file or directory.</p>
+<p>Attaching to process 6122 Could not attach to process.  If your uid matches the uid of the target process, check the setting of /proc/sys/kernel/yama/ptrace_scope, or try again as the root user.  For more details, see /etc/sysctl.d/10-ptrace.conf ptrace: Operation not permitted. /mnt/hgfs/mint/gdb_demo/6122: No such file or directory.</p>
 </blockquote>
-<p>原因是Ubuntu 16.04 的&#x2F;etc&#x2F;sysctl.d&#x2F;10-ptrace.conf文件中最后一行默认kernel.yama.ptrace_scope &#x3D; 1 这个值不允许用户使用普通账户使用attach ID连接程序进行调试，需要使用超级用户权限才能连接。可以把kernel.yama.ptrace_scope的值改为 0，即 sudo vim &#x2F;etc&#x2F;sysctl.d&#x2F;10-ptrace.conf 将最后一行改为  kernel.yama.ptrace_scope &#x3D; 0，保存退出。 重启系统后，普通用户就可以使用attach ID连接程序调试了。</p>
+<p>原因是Ubuntu 16.04 的/etc/sysctl.d/10-ptrace.conf文件中最后一行默认kernel.yama.ptrace_scope = 1 这个值不允许用户使用普通账户使用attach ID连接程序进行调试，需要使用超级用户权限才能连接。可以把kernel.yama.ptrace_scope的值改为 0，即 sudo vim /etc/sysctl.d/10-ptrace.conf 将最后一行改为  kernel.yama.ptrace_scope = 0，保存退出。 重启系统后，普通用户就可以使用attach ID连接程序调试了。</p>
 <p>2、gdb调试不出现源码</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gcc demo.c -Wl,--strip-debug -o demo</span><br></pre></td></tr></table></figure>
-
 <p>3、入参与出参</p>
 <table>
 <thead>
@@ -117,7 +104,8 @@
 <th>出参</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>x86</td>
 <td>ebp+8,，ebp+12，ebp+16，ebp+20</td>
 <td>eax</td>
@@ -132,145 +120,13 @@
 <td>x0， x1， x2</td>
 <td>x0</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <p>4、条件断点—查看出参</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gdb attach `pidof demo1`</span><br><span class="line">handle SIG35 SIG36 SIGUSR2 nostop noprint</span><br><span class="line"><span class="built_in">set</span> heigh 0</span><br><span class="line">def ops</span><br><span class="line">bt</span><br><span class="line">i r</span><br><span class="line">x/s <span class="variable">$rdi</span></span><br><span class="line">p <span class="variable">$rsi</span></span><br><span class="line"><span class="built_in">set</span> <span class="variable">$a</span>=<span class="variable">$rdx</span></span><br><span class="line">fin</span><br><span class="line">x/5wx <span class="variable">$a</span></span><br><span class="line">x/s <span class="variable">$a</span></span><br><span class="line">p *(unsigned int*)(<span class="variable">$a</span>+16)</span><br><span class="line">det</span><br><span class="line">q</span><br><span class="line">end</span><br><span class="line">b addStudent</span><br><span class="line"><span class="built_in">command</span></span><br><span class="line">ops</span><br><span class="line">end</span><br><span class="line">c</span><br></pre></td></tr></table></figure>
-
 ]]></content>
       <categories>
         <category>gdb</category>
       </categories>
-  </entry>
-  <entry>
-    <title>learn-java</title>
-    <url>/zhoukaiqi/2021/04/05/</url>
-    <content><![CDATA[<p><strong>jdk、jre与jvm的概念和区别：从上到下依次属于包含关系</strong></p>
-<table>
-<thead>
-<tr>
-<th>英文名</th>
-<th>中文名</th>
-<th>简称</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Java Development Kit</td>
-<td>Java开发工具包</td>
-<td>jdk</td>
-</tr>
-<tr>
-<td>Java Runtime Environment</td>
-<td>Java运行环境</td>
-<td>jre</td>
-</tr>
-<tr>
-<td>Java Virtual Machine</td>
-<td>Java虚拟机</td>
-<td>jvm</td>
-</tr>
-</tbody></table>
-<p><strong>第三章-Java的基本程序设计结构</strong></p>
-<p>基本数据类型</p>
-<table>
-<thead>
-<tr>
-<th>基本数据类型</th>
-<th></th>
-<th></th>
-<th>取值范围</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>bye</td>
-<td>1字节</td>
-<td>-2^7^ ~ 2^7^ - 1</td>
-<td></td>
-</tr>
-<tr>
-<td>short</td>
-<td>2字节</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>int</td>
-<td>4字节</td>
-<td></td>
-<td>正好超过20亿</td>
-</tr>
-<tr>
-<td>long</td>
-<td>8字节</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>float</td>
-<td>4字节</td>
-<td></td>
-<td>有效位数为6~7位</td>
-</tr>
-<tr>
-<td>double</td>
-<td>8字节</td>
-<td></td>
-<td>有效位数为15位</td>
-</tr>
-<tr>
-<td>char</td>
-<td>1字节</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>boolean</td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-<p>注：Java没有任何无符号形式的byte、short、int、long</p>
-<p>常量</p>
-<p>常量用 <em><strong>final</strong></em> 修饰，习惯上全大写，一旦被赋值之后就不能再修改。</p>
-<p>类常量 static final XXX_XXX，同一个类的其他方法也可以使用这个常量。</p>
-<p>字符串</p>
-<p>提取字符串：substring(a, b)    表示[a, b)</p>
-<p>拼接字符串：join(“a”, “b”, “c”)</p>
-<p>初始化顺序</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">LifeCycle</span> &#123;</span><br><span class="line">    <span class="comment">// 静态属性</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">String</span> <span class="variable">staticName</span> <span class="operator">=</span> getStaticName();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 静态方法块</span></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        System.out.println(staticName);</span><br><span class="line">        System.out.println(<span class="string">&quot;静态方法块初始化&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 普通属性</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> getName();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 普通方法块</span></span><br><span class="line">    &#123;</span><br><span class="line">        System.out.println(name);</span><br><span class="line">        System.out.println(<span class="string">&quot;普通方法块初始化&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 构造函数</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">LifeCycle</span><span class="params">()</span></span><br><span class="line">    &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;构造函数初始化&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">getName</span><span class="params">()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> <span class="string">&quot;普通属性初始化&quot;</span>;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">getStaticName</span><span class="params">()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">statiName</span> <span class="operator">=</span> <span class="string">&quot;静态属性初始化&quot;</span>;</span><br><span class="line">        <span class="keyword">return</span> statiName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">LifeCycle</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210407231039.png"> </p>
-<p><strong>Java语法：《Java核心技术卷1》、《Java编程思想》</strong></p>
-<p><strong>JVM：《深入理解Java虚拟机》</strong></p>
-<p><strong>并发：《Java高并发程序设计》、《Java并发编程实战》</strong></p>
-<p><strong>缓存：《Redis设计与实现》、《Redis深度历险：核心原理与应用实践》</strong></p>
-<p><strong>数据库：《MySQL必知必会》、《MySQL技术内幕：InnoDB 存储引擎》、《高性能MySQL》</strong></p>
-<p><strong>数据结构和算法：《大话数据结构》、《剑指offer》</strong></p>
-<p><strong>计算机网络：《<strong><strong>图解TCP&#x2F;IP</strong></strong>》、《计算机网络：自顶向下方法》</strong></p>
-<p><strong>操作系统：《现代操作系统》</strong></p>
-<p><strong>Linux：《鸟哥linux私房菜》、《Linux内核设计与实现》</strong></p>
-<p><strong>Spring：《Spring实战》、《Spring技术内幕》、《Spring Boot编程思想》</strong></p>
-<p>cd themes</p>
-<p>git clone <a href="https://github.com/theme-kaze/hexo-theme-kaze.git">https://github.com/theme-kaze/hexo-theme-kaze.git</a></p>
-<p>在source下新建_data文件下_</p>
-<p>cp _config.yml source&#x2F;_data&#x2F;kaze_config.yml</p>
-<p>language修改成zh-CN</p>
-<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210420004941.png"></p>
-<p>url修改成对应的网站</p>
-<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210420005105.png"></p>
-<p>这些还需要尝试</p>
-<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210420005219.png"></p>
-<p>theme修改成hexo-theme-Kaze</p>
-<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210420005307.png"></p>
-<p>网站部署到gitee</p>
-<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210420005423.png"></p>
-<p>版本切换来适应配置文件</p>
-<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210420010844.png"></p>
-<p>回退hexo版本</p>
-<p>cnpm install -g <a href="mailto:&#104;&#x65;&#120;&#x6f;&#64;&#52;&#x2e;&#x32;&#x2e;&#49;">&#104;&#x65;&#120;&#x6f;&#64;&#52;&#x2e;&#x32;&#x2e;&#49;</a></p>
-]]></content>
-      <tags>
-        <tag>java</tag>
-      </tags>
   </entry>
 </search>

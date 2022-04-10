@@ -162,7 +162,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhoukaiqi.gitee.io/2022/04/04/">
+    <link itemprop="mainEntityOfPage" href="https://zhoukaiqi.gitee.io/arm-virtual-machine/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/zhoukaiqi/images/header.png">
@@ -176,7 +176,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/zhoukaiqi/2022/04/04/" class="post-title-link" itemprop="url">常见汇编指令</a>
+            <a href="/zhoukaiqi/arm-virtual-machine/" class="post-title-link" itemprop="url">x86_64搭建arm环境</a>
         </h2>
 
         <div class="post-meta">
@@ -186,146 +186,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-04-04 11:28:18" itemprop="dateCreated datePublished" datetime="2022-04-04T11:28:18+08:00">2022-04-04</time>
-            </span>
-
-          
-            <span id="/zhoukaiqi/2022/04/04/" class="post-meta-item leancloud_visitors" data-flag-title="常见汇编指令" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/zhoukaiqi/2022/04/04/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/zhoukaiqi/2022/04/04/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2.1k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><font size=3> 以demo.c为例，取消栈保护编译选项。 </font> </p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">FuncC</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">0x900C</span>;</span><br><span class="line">    <span class="type">void</span> *b = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">long</span>));</span><br><span class="line">    <span class="type">char</span> str[<span class="number">20</span>] = <span class="string">&quot;Hello World!&quot;</span>;</span><br><span class="line">    <span class="type">int</span> arr[<span class="number">10</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="built_in">memset</span>(arr, <span class="string">&#x27;c&#x27;</span>, <span class="keyword">sizeof</span>(<span class="type">char</span>) * <span class="number">120</span>);</span><br><span class="line">    <span class="built_in">free</span>(b);</span><br><span class="line">    b = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -fno-stack-protector -g demo.c -o demo</span><br></pre></td></tr></table></figure>
-
-<p>x86_64下的汇编指令</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">(gdb) disassemble FuncC</span><br><span class="line">Dump of assembler code <span class="keyword">for</span> <span class="keyword">function</span> FuncC:</span><br><span class="line">   0x000055555555471a &lt;+0&gt;:     push   %rbp</span><br><span class="line">   0x000055555555471b &lt;+1&gt;:     mov    %rsp,%rbp</span><br><span class="line">   0x000055555555471e &lt;+4&gt;:     sub    <span class="variable">$0x60</span>,%rsp</span><br><span class="line">   0x0000555555554722 &lt;+8&gt;:     movl   <span class="variable">$0x900c</span>,-0x4(%rbp)</span><br><span class="line">   0x0000555555554729 &lt;+15&gt;:    mov    <span class="variable">$0x8</span>,%edi</span><br><span class="line">   0x000055555555472e &lt;+20&gt;:    callq  0x5555555545f0 &lt;malloc@plt&gt;</span><br><span class="line">   0x0000555555554733 &lt;+25&gt;:    mov    %rax,-0x10(%rbp)</span><br><span class="line">   0x0000555555554737 &lt;+29&gt;:    movabs <span class="variable">$0x6f57206f6c6c6548</span>,%rax</span><br><span class="line">   0x0000555555554741 &lt;+39&gt;:    mov    <span class="variable">$0x21646c72</span>,%edx</span><br><span class="line">   0x0000555555554746 &lt;+44&gt;:    mov    %rax,-0x30(%rbp)</span><br><span class="line">   0x000055555555474a &lt;+48&gt;:    mov    %rdx,-0x28(%rbp)</span><br><span class="line">   0x000055555555474e &lt;+52&gt;:    movl   <span class="variable">$0x0</span>,-0x20(%rbp)</span><br><span class="line">   0x0000555555554755 &lt;+59&gt;:    movq   <span class="variable">$0x0</span>,-0x60(%rbp)</span><br><span class="line">   0x000055555555475d &lt;+67&gt;:    movq   <span class="variable">$0x0</span>,-0x58(%rbp)</span><br><span class="line">   0x0000555555554765 &lt;+75&gt;:    movq   <span class="variable">$0x0</span>,-0x50(%rbp)</span><br><span class="line">   0x000055555555476d &lt;+83&gt;:    movq   <span class="variable">$0x0</span>,-0x48(%rbp)</span><br><span class="line">   0x0000555555554775 &lt;+91&gt;:    movq   <span class="variable">$0x0</span>,-0x40(%rbp)</span><br><span class="line">   0x000055555555477d &lt;+99&gt;:    lea    -0x60(%rbp),%rax</span><br><span class="line">   0x0000555555554781 &lt;+103&gt;:   mov    <span class="variable">$0x78</span>,%edx</span><br><span class="line">   0x0000555555554786 &lt;+108&gt;:   mov    <span class="variable">$0x63</span>,%esi</span><br><span class="line">   0x000055555555478b &lt;+113&gt;:   mov    %rax,%rdi</span><br><span class="line">   0x000055555555478e &lt;+116&gt;:   callq  0x5555555545e0 &lt;memset@plt&gt;</span><br><span class="line">   0x0000555555554793 &lt;+121&gt;:   mov    -0x10(%rbp),%rax</span><br><span class="line">   0x0000555555554797 &lt;+125&gt;:   mov    %rax,%rdi</span><br><span class="line">   0x000055555555479a &lt;+128&gt;:   callq  0x5555555545c0 &lt;free@plt&gt;</span><br><span class="line">   0x000055555555479f &lt;+133&gt;:   movq   <span class="variable">$0x0</span>,-0x10(%rbp)</span><br><span class="line">   0x00005555555547a7 &lt;+141&gt;:   mov    <span class="variable">$0x3</span>,%eax</span><br><span class="line">   0x00005555555547ac &lt;+146&gt;:   leaveq</span><br><span class="line">   0x00005555555547ad &lt;+147&gt;:   retq</span><br></pre></td></tr></table></figure>
-
-<p>push开栈，开栈大小&#x3D;96字节，rsp是栈顶，rbp是栈底</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">0x000055555555471a &lt;+0&gt;:     push   %rbp</span><br><span class="line">0x000055555555471b &lt;+1&gt;:     mov    %rsp,%rbp</span><br><span class="line">0x000055555555471e &lt;+4&gt;:     sub    <span class="variable">$0x60</span>,%rsp</span><br><span class="line">(gdb) i r <span class="variable">$rbp</span> <span class="variable">$rsp</span></span><br><span class="line">rbp            0x7fffffffe390   0x7fffffffe390</span><br><span class="line">rsp            0x7fffffffe330   0x7fffffffe330</span><br></pre></td></tr></table></figure>
-
-<p>x86指令</p>
-<table>
-<thead>
-<tr>
-<th><strong>指令</strong></th>
-<th></th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>lea</td>
-<td>leaq a(b, c, d), %rax</td>
-<td>先计算地址a + b + c * d，然后把最终地址载到寄存器rax中</td>
-</tr>
-<tr>
-<td>shr</td>
-<td>$0x4, %rdi</td>
-<td>rdi &gt;&gt; 4</td>
-</tr>
-</tbody></table>
-<p>arm指令</p>
-<table>
-<thead>
-<tr>
-<th>指令</th>
-<th></th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>mov</td>
-<td>mov x1, x0</td>
-<td>将寄存器x0的值复制到寄存器x1中</td>
-</tr>
-</tbody></table>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhoukaiqi.gitee.io/2022/04/03/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/zhoukaiqi/images/header.png">
-      <meta itemprop="name" content="Kaiqi Zhou">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="数风流人物，还看今朝">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/zhoukaiqi/2022/04/03/" class="post-title-link" itemprop="url">windows自建博客：Hexo+Kaze+Gitee</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2022-04-03 23:15:26 / 修改时间：23:23:29" itemprop="dateCreated datePublished" datetime="2022-04-03T23:15:26+08:00">2022-04-03</time>
+              <time title="创建时间：2022-04-11 00:29:02" itemprop="dateCreated datePublished" datetime="2022-04-11T00:29:02+08:00">2022-04-11</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -333,12 +194,12 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/zhoukaiqi/categories/%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">网站搭建</span></a>
+                  <a href="/zhoukaiqi/categories/arm-virtual-machine/" itemprop="url" rel="index"><span itemprop="name">arm-virtual-machine</span></a>
                 </span>
             </span>
 
           
-            <span id="/zhoukaiqi/2022/04/03/" class="post-meta-item leancloud_visitors" data-flag-title="windows自建博客：Hexo+Kaze+Gitee" title="阅读次数">
+            <span id="/zhoukaiqi/arm-virtual-machine/" class="post-meta-item leancloud_visitors" data-flag-title="x86_64搭建arm环境" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -353,8 +214,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/zhoukaiqi/2022/04/03/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/zhoukaiqi/2022/04/03/" itemprop="commentCount"></span>
+    <a title="valine" href="/zhoukaiqi/arm-virtual-machine/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/zhoukaiqi/arm-virtual-machine/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -364,7 +225,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>534</span>
+              <span>1.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -383,32 +244,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p><strong>1</strong> <strong>安装</strong> <a target="_blank" rel="noopener" href="http://nodejs.cn/download/">node.js</a></p>
-<p><strong>2</strong> <strong>安装</strong> <strong>hexo</strong></p>
-<p><strong>2.1</strong> <strong>切换软件源</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g cnpm --registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210405141211.png"></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cnpm -v</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210405141241.png"></p>
-<p><strong>2.2</strong> <strong>安装hexo</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cnpm install -g hexo-cli</span><br></pre></td></tr></table></figure>
-
-<p><strong>2.3</strong> <strong>初始化</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init</span><br></pre></td></tr></table></figure>
-
-<p><strong>windows下没有sudo，需要以管理员身份运行</strong></p>
-<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210405141257.png"></p>
-<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210405141302.png"></p>
-<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210405141308.png"></p>
-<p><strong>2.4</strong> <strong>启动hexo</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210405141315.png"></p>
+          <h6 id="1-安装arm交叉编译工具链">1.安装arm交叉编译工具链</h6>
+<p>安装交叉编译工具链 <code>gcc-aarch64-linux-gnu</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install gcc-aarch64-linux-gnu</span><br></pre></td></tr></table></figure>
+<p>建立软链接，否则后面执行的时候会报动态库找不到的错误</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">ln</span> -s /usr/aarch64-linux-gnu/lib/libc.so.6 /lib/libc.so.6</span><br><span class="line">sudo <span class="built_in">ln</span> -s /usr/aarch64-linux-gnu/lib/ld-linux-aarch64.so.1 /lib/ld-linux-aarch64.so.1</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/zhoukaiqi/2022/04/03/#more" rel="contents">
+              <a class="btn" href="/zhoukaiqi/arm-virtual-machine/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -432,7 +275,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhoukaiqi.gitee.io/2021/04/05/">
+    <link itemprop="mainEntityOfPage" href="https://zhoukaiqi.gitee.io/assembly-x86_64/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/zhoukaiqi/images/header.png">
@@ -446,7 +289,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/zhoukaiqi/2021/04/05/" class="post-title-link" itemprop="url">learn-java</a>
+            <a href="/zhoukaiqi/assembly-x86_64/" class="post-title-link" itemprop="url">x86_84常见汇编指令</a>
         </h2>
 
         <div class="post-meta">
@@ -456,18 +299,11 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-04-05 23:54:58" itemprop="dateCreated datePublished" datetime="2021-04-05T23:54:58+08:00">2021-04-05</time>
+              <time title="创建时间：2022-04-04 11:28:18" itemprop="dateCreated datePublished" datetime="2022-04-04T11:28:18+08:00">2022-04-04</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-03 23:24:28" itemprop="dateModified" datetime="2022-04-03T23:24:28+08:00">2022-04-03</time>
-              </span>
 
           
-            <span id="/zhoukaiqi/2021/04/05/" class="post-meta-item leancloud_visitors" data-flag-title="learn-java" title="阅读次数">
+            <span id="/zhoukaiqi/assembly-x86_64/" class="post-meta-item leancloud_visitors" data-flag-title="x86_84常见汇编指令" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -482,8 +318,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/zhoukaiqi/2021/04/05/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/zhoukaiqi/2021/04/05/" itemprop="commentCount"></span>
+    <a title="valine" href="/zhoukaiqi/assembly-x86_64/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/zhoukaiqi/assembly-x86_64/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -493,7 +329,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.7k</span>
+              <span>2.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -512,131 +348,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p><strong>jdk、jre与jvm的概念和区别：从上到下依次属于包含关系</strong></p>
-<table>
-<thead>
-<tr>
-<th>英文名</th>
-<th>中文名</th>
-<th>简称</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Java Development Kit</td>
-<td>Java开发工具包</td>
-<td>jdk</td>
-</tr>
-<tr>
-<td>Java Runtime Environment</td>
-<td>Java运行环境</td>
-<td>jre</td>
-</tr>
-<tr>
-<td>Java Virtual Machine</td>
-<td>Java虚拟机</td>
-<td>jvm</td>
-</tr>
-</tbody></table>
-<p><strong>第三章-Java的基本程序设计结构</strong></p>
-<p>基本数据类型</p>
-<table>
-<thead>
-<tr>
-<th>基本数据类型</th>
-<th></th>
-<th></th>
-<th>取值范围</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>bye</td>
-<td>1字节</td>
-<td>-2^7^ ~ 2^7^ - 1</td>
-<td></td>
-</tr>
-<tr>
-<td>short</td>
-<td>2字节</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>int</td>
-<td>4字节</td>
-<td></td>
-<td>正好超过20亿</td>
-</tr>
-<tr>
-<td>long</td>
-<td>8字节</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>float</td>
-<td>4字节</td>
-<td></td>
-<td>有效位数为6~7位</td>
-</tr>
-<tr>
-<td>double</td>
-<td>8字节</td>
-<td></td>
-<td>有效位数为15位</td>
-</tr>
-<tr>
-<td>char</td>
-<td>1字节</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>boolean</td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-<p>注：Java没有任何无符号形式的byte、short、int、long</p>
-<p>常量</p>
-<p>常量用 <em><strong>final</strong></em> 修饰，习惯上全大写，一旦被赋值之后就不能再修改。</p>
-<p>类常量 static final XXX_XXX，同一个类的其他方法也可以使用这个常量。</p>
-<p>字符串</p>
-<p>提取字符串：substring(a, b)    表示[a, b)</p>
-<p>拼接字符串：join(“a”, “b”, “c”)</p>
-<p>初始化顺序</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">LifeCycle</span> &#123;</span><br><span class="line">    <span class="comment">// 静态属性</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">String</span> <span class="variable">staticName</span> <span class="operator">=</span> getStaticName();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 静态方法块</span></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        System.out.println(staticName);</span><br><span class="line">        System.out.println(<span class="string">&quot;静态方法块初始化&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 普通属性</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> getName();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 普通方法块</span></span><br><span class="line">    &#123;</span><br><span class="line">        System.out.println(name);</span><br><span class="line">        System.out.println(<span class="string">&quot;普通方法块初始化&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 构造函数</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">LifeCycle</span><span class="params">()</span></span><br><span class="line">    &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;构造函数初始化&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">getName</span><span class="params">()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> <span class="string">&quot;普通属性初始化&quot;</span>;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">getStaticName</span><span class="params">()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">statiName</span> <span class="operator">=</span> <span class="string">&quot;静态属性初始化&quot;</span>;</span><br><span class="line">        <span class="keyword">return</span> statiName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">LifeCycle</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210407231039.png"> </p>
-<p><strong>Java语法：《Java核心技术卷1》、《Java编程思想》</strong></p>
-<p><strong>JVM：《深入理解Java虚拟机》</strong></p>
-<p><strong>并发：《Java高并发程序设计》、《Java并发编程实战》</strong></p>
-<p><strong>缓存：《Redis设计与实现》、《Redis深度历险：核心原理与应用实践》</strong></p>
-<p><strong>数据库：《MySQL必知必会》、《MySQL技术内幕：InnoDB 存储引擎》、《高性能MySQL》</strong></p>
-<p><strong>数据结构和算法：《大话数据结构》、《剑指offer》</strong></p>
-<p><strong>计算机网络：《<strong><strong>图解TCP&#x2F;IP</strong></strong>》、《计算机网络：自顶向下方法》</strong></p>
-<p><strong>操作系统：《现代操作系统》</strong></p>
-<p><strong>Linux：《鸟哥linux私房菜》、《Linux内核设计与实现》</strong></p>
-<p><strong>Spring：《Spring实战》、《Spring技术内幕》、《Spring Boot编程思想》</strong></p>
-<p>cd themes</p>
-<p>git clone <a target="_blank" rel="noopener" href="https://github.com/theme-kaze/hexo-theme-kaze.git">https://github.com/theme-kaze/hexo-theme-kaze.git</a></p>
-<p>在source下新建_data文件下_</p>
-<p>cp _config.yml source&#x2F;_data&#x2F;kaze_config.yml</p>
-<p>language修改成zh-CN</p>
-<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210420004941.png"></p>
-<p>url修改成对应的网站</p>
-<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210420005105.png"></p>
-<p>这些还需要尝试</p>
-<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210420005219.png"></p>
-<p>theme修改成hexo-theme-Kaze</p>
-<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210420005307.png"></p>
-<p>网站部署到gitee</p>
-<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210420005423.png"></p>
-<p>版本切换来适应配置文件</p>
-<p><img src="https://gitee.com/zhoukaiqi/blogpic/raw/master/20210420010844.png"></p>
-<p>回退hexo版本</p>
-<p>cnpm install -g <a href="mailto:&#104;&#x65;&#120;&#x6f;&#64;&#52;&#x2e;&#x32;&#x2e;&#49;">&#104;&#x65;&#120;&#x6f;&#64;&#52;&#x2e;&#x32;&#x2e;&#49;</a></p>
-
+          <p>以demo.c为例，取消栈保护编译选项。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">FuncC</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">0x900C</span>;</span><br><span class="line">    <span class="type">void</span> *b = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">long</span>));</span><br><span class="line">    <span class="type">char</span> str[<span class="number">20</span>] = <span class="string">&quot;Hello World!&quot;</span>;</span><br><span class="line">    <span class="type">int</span> arr[<span class="number">10</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="built_in">memset</span>(arr, <span class="string">&#x27;c&#x27;</span>, <span class="keyword">sizeof</span>(<span class="type">char</span>) * <span class="number">120</span>);</span><br><span class="line">    <span class="built_in">free</span>(b);</span><br><span class="line">    b = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -fno-stack-protector -g demo.c -o demo</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/zhoukaiqi/assembly-x86_64/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -655,7 +377,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhoukaiqi.gitee.io/2021/04/05/">
+    <link itemprop="mainEntityOfPage" href="https://zhoukaiqi.gitee.io/how-to-use-gdb/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/zhoukaiqi/images/header.png">
@@ -669,7 +391,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/zhoukaiqi/2021/04/05/" class="post-title-link" itemprop="url">gdb调试</a>
+            <a href="/zhoukaiqi/how-to-use-gdb/" class="post-title-link" itemprop="url">gdb调试</a>
         </h2>
 
         <div class="post-meta">
@@ -699,7 +421,7 @@
             </span>
 
           
-            <span id="/zhoukaiqi/2021/04/05/" class="post-meta-item leancloud_visitors" data-flag-title="gdb调试" title="阅读次数">
+            <span id="/zhoukaiqi/how-to-use-gdb/" class="post-meta-item leancloud_visitors" data-flag-title="gdb调试" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -714,8 +436,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/zhoukaiqi/2021/04/05/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/zhoukaiqi/2021/04/05/" itemprop="commentCount"></span>
+    <a title="valine" href="/zhoukaiqi/how-to-use-gdb/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/zhoukaiqi/how-to-use-gdb/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -725,7 +447,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1k</span>
+              <span>939</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -746,12 +468,11 @@
       
           <p>1、解决gdb attch报错: Operation not permitted</p>
 <blockquote>
-<p>Attaching to process 6122 Could not attach to process.  If your uid matches the uid of the target process, check the setting of &#x2F;proc&#x2F;sys&#x2F;kernel&#x2F;yama&#x2F;ptrace_scope, or try again as the root user.  For more details, see &#x2F;etc&#x2F;sysctl.d&#x2F;10-ptrace.conf ptrace: Operation not permitted. &#x2F;mnt&#x2F;hgfs&#x2F;mint&#x2F;gdb_demo&#x2F;6122: No such file or directory.</p>
+<p>Attaching to process 6122 Could not attach to process.  If your uid matches the uid of the target process, check the setting of /proc/sys/kernel/yama/ptrace_scope, or try again as the root user.  For more details, see /etc/sysctl.d/10-ptrace.conf ptrace: Operation not permitted. /mnt/hgfs/mint/gdb_demo/6122: No such file or directory.</p>
 </blockquote>
-<p>原因是Ubuntu 16.04 的&#x2F;etc&#x2F;sysctl.d&#x2F;10-ptrace.conf文件中最后一行默认kernel.yama.ptrace_scope &#x3D; 1 这个值不允许用户使用普通账户使用attach ID连接程序进行调试，需要使用超级用户权限才能连接。可以把kernel.yama.ptrace_scope的值改为 0，即 sudo vim &#x2F;etc&#x2F;sysctl.d&#x2F;10-ptrace.conf 将最后一行改为  kernel.yama.ptrace_scope &#x3D; 0，保存退出。 重启系统后，普通用户就可以使用attach ID连接程序调试了。</p>
+<p>原因是Ubuntu 16.04 的/etc/sysctl.d/10-ptrace.conf文件中最后一行默认kernel.yama.ptrace_scope = 1 这个值不允许用户使用普通账户使用attach ID连接程序进行调试，需要使用超级用户权限才能连接。可以把kernel.yama.ptrace_scope的值改为 0，即 sudo vim /etc/sysctl.d/10-ptrace.conf 将最后一行改为  kernel.yama.ptrace_scope = 0，保存退出。 重启系统后，普通用户就可以使用attach ID连接程序调试了。</p>
 <p>2、gdb调试不出现源码</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc demo.c -Wl,--strip-debug -o demo</span><br></pre></td></tr></table></figure>
-
 <p>3、入参与出参</p>
 <table>
 <thead>
@@ -761,7 +482,8 @@
 <th>出参</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>x86</td>
 <td>ebp+8,，ebp+12，ebp+16，ebp+20</td>
 <td>eax</td>
@@ -776,10 +498,10 @@
 <td>x0， x1， x2</td>
 <td>x0</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <p>4、条件断点—查看出参</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">gdb attach `pidof demo1`</span><br><span class="line">handle SIG35 SIG36 SIGUSR2 nostop noprint</span><br><span class="line"><span class="built_in">set</span> heigh 0</span><br><span class="line">def ops</span><br><span class="line">bt</span><br><span class="line">i r</span><br><span class="line">x/s <span class="variable">$rdi</span></span><br><span class="line">p <span class="variable">$rsi</span></span><br><span class="line"><span class="built_in">set</span> <span class="variable">$a</span>=<span class="variable">$rdx</span></span><br><span class="line">fin</span><br><span class="line">x/5wx <span class="variable">$a</span></span><br><span class="line">x/s <span class="variable">$a</span></span><br><span class="line">p *(unsigned int*)(<span class="variable">$a</span>+16)</span><br><span class="line">det</span><br><span class="line">q</span><br><span class="line">end</span><br><span class="line">b addStudent</span><br><span class="line"><span class="built_in">command</span></span><br><span class="line">ops</span><br><span class="line">end</span><br><span class="line">c</span><br></pre></td></tr></table></figure>
-
 
       
     </div>
@@ -863,17 +585,13 @@
       <div class="site-state-item site-state-posts">
           <a href="/zhoukaiqi/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
         <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">分类</span>
-      </div>
-      <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">2</span>
-        <span class="site-state-item-name">标签</span>
       </div>
   </nav>
 </div>
@@ -920,7 +638,7 @@
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">5 分钟</span>
+    <span title="站点阅读时长">4 分钟</span>
 </div><div>
     <!--添加总阅读次数-->
     <div>
