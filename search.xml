@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>x86_64搭建arm环境</title>
+    <url>/zhoukaiqi/arm-virtual-machine/</url>
+    <content><![CDATA[<h6 id="1-安装arm交叉编译工具链">1.安装arm交叉编译工具链</h6>
+<p>安装交叉编译工具链 <code>gcc-aarch64-linux-gnu</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install gcc-aarch64-linux-gnu</span><br></pre></td></tr></table></figure>
+<p>建立软链接，否则后面执行的时候会报动态库找不到的错误</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo <span class="built_in">ln</span> -s /usr/aarch64-linux-gnu/lib/libc.so.6 /lib/libc.so.6</span><br><span class="line">sudo <span class="built_in">ln</span> -s /usr/aarch64-linux-gnu/lib/ld-linux-aarch64.so.1 /lib/ld-linux-aarch64.so.1</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<h6 id="2-安装arm模拟器qemu">2.安装arm模拟器qemu</h6>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install qemu</span><br></pre></td></tr></table></figure>
+<p>编译<code>a.out</code>并执行</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">zkq@zkq-vm:~$ aarch64-linux-gnu-gcc main.c</span><br><span class="line">zkq@zkq-vm:~$ file a.out</span><br><span class="line">a.out: ELF 64-bit LSB shared object, ARM aarch64, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, <span class="keyword">for</span> GNU/Linux 3.7.0, BuildID[sha1]=6ef0ca0c6462e038e589b6e1d52220a680007588, not stripped</span><br><span class="line">zkq@zkq-vm:~$ qemu-aarch64 a.out</span><br><span class="line">hello world</span><br></pre></td></tr></table></figure>
+<h6 id="3-通过gdb调试arm程序">3.通过gdb调试arm程序</h6>
+<p>gdb调试arm程序的原理：qemu端作为gdb server启动可执行程序，另一端作为gdb client连接gdb server，进行本地远程调试。</p>
+<p>首先安装多平台的gdb工具</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install gdb-multiarch</span><br></pre></td></tr></table></figure>
+<p>重新编译示例代码<code>main.c</code>，注意，这次加上了参数<code>--static</code>。加上这个参数后，生成的可执行文件为静态链接的。<strong>如果不加这个参数，gdb调试的时候单步执行功能不正常，符号表也找不到。</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">aarch64-linux-gnu-gcc --static -g main.c</span><br></pre></td></tr></table></figure>
+<p>通过下面的命令启动可执行程序<code>a.out</code>, 选项<code>-g</code>指明了gdb的监听端口，这里选择的是1234。该指令运行后，当前窗口会被阻塞住。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">qemu-aarch64 -g 1234 a.out</span><br></pre></td></tr></table></figure>
+<p>新开一个命令行窗口，启动gdb client，进入gdb交互界面</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gdb-multiarch a.out</span><br></pre></td></tr></table></figure>
+<p>在gdb交互界面输入以下内容就可以连接到server端</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">target remote localhost:1234</span><br></pre></td></tr></table></figure>
+<p>接下来，就可以正常使用gdb的相关功能调试程序了</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">(gdb) b main</span><br><span class="line">Breakpoint 1 at 0x102e8: file main.c, line 5.</span><br><span class="line">(gdb) c</span><br><span class="line">Continuing.</span><br><span class="line"></span><br><span class="line">Breakpoint 1, main () at main.c:5</span><br><span class="line">5	    <span class="built_in">printf</span>(<span class="string">&quot;hello world\n&quot;</span>);</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>assembly</category>
+      </categories>
+  </entry>
+  <entry>
     <title>x86_84常见汇编指令</title>
     <url>/zhoukaiqi/assembly-x86_64/</url>
     <content><![CDATA[<p>x86_84常见汇编指令</p>
@@ -84,53 +115,24 @@
       </categories>
   </entry>
   <entry>
-    <title>x86_64搭建arm环境</title>
-    <url>/zhoukaiqi/arm-virtual-machine/</url>
-    <content><![CDATA[<h6 id="1-安装arm交叉编译工具链">1.安装arm交叉编译工具链</h6>
-<p>安装交叉编译工具链 <code>gcc-aarch64-linux-gnu</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install gcc-aarch64-linux-gnu</span><br></pre></td></tr></table></figure>
-<p>建立软链接，否则后面执行的时候会报动态库找不到的错误</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo <span class="built_in">ln</span> -s /usr/aarch64-linux-gnu/lib/libc.so.6 /lib/libc.so.6</span><br><span class="line">sudo <span class="built_in">ln</span> -s /usr/aarch64-linux-gnu/lib/ld-linux-aarch64.so.1 /lib/ld-linux-aarch64.so.1</span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-<h6 id="2-安装arm模拟器qemu">2.安装arm模拟器qemu</h6>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install qemu</span><br></pre></td></tr></table></figure>
-<p>编译<code>a.out</code>并执行</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">zkq@zkq-vm:~$ aarch64-linux-gnu-gcc main.c</span><br><span class="line">zkq@zkq-vm:~$ file a.out</span><br><span class="line">a.out: ELF 64-bit LSB shared object, ARM aarch64, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, <span class="keyword">for</span> GNU/Linux 3.7.0, BuildID[sha1]=6ef0ca0c6462e038e589b6e1d52220a680007588, not stripped</span><br><span class="line">zkq@zkq-vm:~$ qemu-aarch64 a.out</span><br><span class="line">hello world</span><br></pre></td></tr></table></figure>
-<h6 id="3-通过gdb调试arm程序">3.通过gdb调试arm程序</h6>
-<p>gdb调试arm程序的原理：qemu端作为gdb server启动可执行程序，另一端作为gdb client连接gdb server，进行本地远程调试。</p>
-<p>首先安装多平台的gdb工具</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install gdb-multiarch</span><br></pre></td></tr></table></figure>
-<p>重新编译示例代码<code>main.c</code>，注意，这次加上了参数<code>--static</code>。加上这个参数后，生成的可执行文件为静态链接的。<strong>如果不加这个参数，gdb调试的时候单步执行功能不正常，符号表也找不到。</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">aarch64-linux-gnu-gcc --static -g main.c</span><br></pre></td></tr></table></figure>
-<p>通过下面的命令启动可执行程序<code>a.out</code>, 选项<code>-g</code>指明了gdb的监听端口，这里选择的是1234。该指令运行后，当前窗口会被阻塞住。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">qemu-aarch64 -g 1234 a.out</span><br></pre></td></tr></table></figure>
-<p>新开一个命令行窗口，启动gdb client，进入gdb交互界面</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gdb-multiarch a.out</span><br></pre></td></tr></table></figure>
-<p>在gdb交互界面输入以下内容就可以连接到server端</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">target remote localhost:1234</span><br></pre></td></tr></table></figure>
-<p>接下来，就可以正常使用gdb的相关功能调试程序了</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">(gdb) b main</span><br><span class="line">Breakpoint 1 at 0x102e8: file main.c, line 5.</span><br><span class="line">(gdb) c</span><br><span class="line">Continuing.</span><br><span class="line"></span><br><span class="line">Breakpoint 1, main () at main.c:5</span><br><span class="line">5	    <span class="built_in">printf</span>(<span class="string">&quot;hello world\n&quot;</span>);</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>assembly</category>
-      </categories>
-  </entry>
-  <entry>
     <title>gdb调试</title>
     <url>/zhoukaiqi/how-to-use-gdb/</url>
-    <content><![CDATA[<p>1、解决gdb attch报错: Operation not permitted</p>
-<blockquote>
-<p>Attaching to process 6122 Could not attach to process.  If your uid matches the uid of the target process, check the setting of /proc/sys/kernel/yama/ptrace_scope, or try again as the root user.  For more details, see /etc/sysctl.d/10-ptrace.conf ptrace: Operation not permitted. /mnt/hgfs/mint/gdb_demo/6122: No such file or directory.</p>
-</blockquote>
+    <content><![CDATA[<p>本文介绍了gdb的常见用法。</p>
+<span id="more"></span>
+<h6 id="1、解决gdb-attch报错-Operation-not-permitted">1、解决gdb attch报错: Operation not permitted</h6>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Attaching to process 6122 Could not attach to process.  </span><br><span class="line">If your uid matches the uid of the target process, </span><br><span class="line">check the setting of /proc/sys/kernel/yama/ptrace_scope, or try again as the root user.  </span><br><span class="line">For more details, see /etc/sysctl.d/10-ptrace.conf ptrace: Operation not permitted. </span><br></pre></td></tr></table></figure>
 <p>原因是Ubuntu 16.04 的/etc/sysctl.d/10-ptrace.conf文件中最后一行默认kernel.yama.ptrace_scope = 1 这个值不允许用户使用普通账户使用attach ID连接程序进行调试，需要使用超级用户权限才能连接。可以把kernel.yama.ptrace_scope的值改为 0，即 sudo vim /etc/sysctl.d/10-ptrace.conf 将最后一行改为  kernel.yama.ptrace_scope = 0，保存退出。 重启系统后，普通用户就可以使用attach ID连接程序调试了。</p>
-<p>2、gdb调试不出现源码</p>
+<p>如果是容器环境，使用<code>--privileged</code>参数登录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> --privileged -tiu root [容器值] bash</span><br></pre></td></tr></table></figure>
+<h6 id="2、gdb调试不出现源码">2、gdb调试不出现源码</h6>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gcc demo.c -Wl,--strip-debug -o demo</span><br></pre></td></tr></table></figure>
-<p>3、入参与出参</p>
+<h6 id="3、入参与返回值">3、入参与返回值</h6>
 <table>
 <thead>
 <tr>
 <th>CPU</th>
 <th>入参</th>
-<th>出参</th>
+<th>返回值</th>
 </tr>
 </thead>
 <tbody>
@@ -151,8 +153,19 @@
 </tr>
 </tbody>
 </table>
-<p>4、条件断点—查看出参</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gdb attach `pidof demo1`</span><br><span class="line">handle SIG35 SIG36 SIGUSR2 nostop noprint</span><br><span class="line"><span class="built_in">set</span> heigh 0</span><br><span class="line">def ops</span><br><span class="line">bt</span><br><span class="line">i r</span><br><span class="line">x/s <span class="variable">$rdi</span></span><br><span class="line">p <span class="variable">$rsi</span></span><br><span class="line"><span class="built_in">set</span> <span class="variable">$a</span>=<span class="variable">$rdx</span></span><br><span class="line">fin</span><br><span class="line">x/5wx <span class="variable">$a</span></span><br><span class="line">x/s <span class="variable">$a</span></span><br><span class="line">p *(unsigned int*)(<span class="variable">$a</span>+16)</span><br><span class="line">det</span><br><span class="line">q</span><br><span class="line">end</span><br><span class="line">b addStudent</span><br><span class="line"><span class="built_in">command</span></span><br><span class="line">ops</span><br><span class="line">end</span><br><span class="line">c</span><br></pre></td></tr></table></figure>
+<h6 id="4、常见参数含义">4、常见参数含义</h6>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">handle SIG35 SIG36 SIGUSR2 nostop noprint    // 屏蔽某些信号</span><br><span class="line"><span class="built_in">set</span> height 0                                 // 不限制行数</span><br><span class="line">i thread                                     // 查看所有线程信息</span><br><span class="line">thread apply all bt                          // 查看所有线程栈信息</span><br><span class="line"><span class="built_in">printf</span> <span class="string">&quot;Handle[%u], PtNo[%u]\n&quot;</span>, <span class="variable">$rdi</span>, <span class="variable">$rsi</span>  // 打印信息</span><br><span class="line"><span class="built_in">set</span> <span class="built_in">print</span> thread-events off                  // 不显示线程启动和退出信息</span><br></pre></td></tr></table></figure>
+<h6 id="5、条件断点">5、条件断点</h6>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">x86 32位:  b func <span class="keyword">if</span> *(unsigned int*)(<span class="variable">$ebp</span>+8) == 226 &amp;&amp; *(unsigned int*)(<span class="variable">$ebp</span>+16) == 206</span><br><span class="line">x86 64位:  b func <span class="keyword">if</span> <span class="variable">$rdi</span> == 226 &amp;&amp; <span class="variable">$rdx</span> == 206</span><br><span class="line">arm 64位:  b func <span class="keyword">if</span> <span class="variable">$x0</span> == 226 &amp;&amp; <span class="variable">$x2</span> == 206</span><br><span class="line">线程断点:  b func thread threadNum <span class="keyword">if</span> <span class="variable">$rdi</span> == 226</span><br><span class="line">字符断点:  b func <span class="keyword">if</span> *(unsigned char*)(<span class="variable">$ebp</span>+8)==<span class="string">&#x27;A&#x27;</span></span><br></pre></td></tr></table></figure>
+<h6 id="6、查看入参和返回值">6、查看入参和返回值</h6>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 查看入参和返回值</span><br><span class="line">gdb attach 10889   ----------//进程的pid由ps -ef | grep xxx查询到</span><br><span class="line">handle SIG35 SIG36 SIGUSR2 nostop noprint</span><br><span class="line"><span class="built_in">set</span> height 0</span><br><span class="line">def oops</span><br><span class="line">bt        ----------// 显示调用栈</span><br><span class="line">i r       ----------// 显示寄存器信息，主要看入参，x86 32位进程看入参要替换成x/8wx <span class="variable">$ebp</span>+8</span><br><span class="line">fin       ----------// 表示执行完当前打断点的函数func</span><br><span class="line">i r       ----------// 在fin之后表示显示返回值，x86，x86_64，arm的返回值依次对应eax,rax,x0</span><br><span class="line">det</span><br><span class="line">q</span><br><span class="line">end</span><br><span class="line">b func    ----------// func即打断点的函数</span><br><span class="line"><span class="built_in">command</span></span><br><span class="line">oops</span><br><span class="line">end</span><br><span class="line">c</span><br></pre></td></tr></table></figure>
+<h6 id="7、查看出参">7、查看出参</h6>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gdb attach `pidof demo`</span><br><span class="line">handle SIG35 SIG36 SIGUSR2 nostop noprint</span><br><span class="line"><span class="built_in">set</span> heigh 0</span><br><span class="line">define ops</span><br><span class="line">bt</span><br><span class="line">i r</span><br><span class="line">x/s <span class="variable">$rdi</span></span><br><span class="line">p <span class="variable">$rsi</span></span><br><span class="line"><span class="built_in">set</span> <span class="variable">$a</span>=<span class="variable">$rdx</span></span><br><span class="line">fin</span><br><span class="line">x/5wx <span class="variable">$a</span></span><br><span class="line">x/s <span class="variable">$a</span></span><br><span class="line">p *(unsigned int*)(<span class="variable">$a</span>+16)</span><br><span class="line">det</span><br><span class="line">q</span><br><span class="line">end</span><br><span class="line">b func</span><br><span class="line"><span class="built_in">command</span></span><br><span class="line">ops</span><br><span class="line">end</span><br><span class="line">c</span><br></pre></td></tr></table></figure>
+<h6 id="8、在函数func2执行之后再执行函数func1">8、在函数<code>func2</code>执行之后再执行函数<code>func1</code></h6>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gdb attach `pidof xxx.bin`</span><br><span class="line">handle SIG35 SIG36 SIGUSR2 nostop noprint</span><br><span class="line"><span class="built_in">set</span> height 0</span><br><span class="line">b func1</span><br><span class="line"><span class="built_in">command</span></span><br><span class="line">bt</span><br><span class="line">det</span><br><span class="line">q</span><br><span class="line">end</span><br><span class="line"><span class="built_in">disable</span> 1</span><br><span class="line">b func2</span><br><span class="line"><span class="built_in">command</span></span><br><span class="line"><span class="built_in">enable</span> 1</span><br><span class="line">bt</span><br><span class="line">c</span><br><span class="line">end</span><br><span class="line">c</span><br></pre></td></tr></table></figure>
+<h6 id="9、扫描core-dumped文件">9、扫描core dumped文件</h6>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">define mem_scan</span><br><span class="line">    <span class="built_in">set</span> logging file xxx.txt</span><br><span class="line">    <span class="built_in">set</span> logging on</span><br><span class="line">    <span class="built_in">set</span> logging overwrite on</span><br><span class="line">    <span class="built_in">set</span> height 0</span><br><span class="line">    <span class="built_in">set</span> <span class="built_in">print</span> pretty on</span><br><span class="line">    <span class="built_in">set</span> <span class="variable">$g_index</span> = 0</span><br><span class="line">    <span class="keyword">while</span> (xxx)</span><br><span class="line">        <span class="built_in">printf</span> <span class="string">&quot;************xxx!**********\n&quot;</span></span><br><span class="line">        <span class="built_in">set</span> <span class="variable">$g_index</span> = <span class="variable">$g_index</span> + 1</span><br><span class="line">        <span class="built_in">printf</span> <span class="string">&quot;************xxx!**********\n&quot;</span></span><br><span class="line">    end</span><br><span class="line">    <span class="built_in">set</span> logging off</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">mem_scan</span><br></pre></td></tr></table></figure>
+<p>参考：<a href="https://wizardforcel.gitbooks.io/100-gdb-tips/content/info-function.html">https://wizardforcel.gitbooks.io/100-gdb-tips/content/info-function.html</a></p>
 ]]></content>
       <categories>
         <category>gdb</category>
