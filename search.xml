@@ -13,7 +13,7 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install qemu</span><br></pre></td></tr></table></figure>
 <p>编译<code>a.out</code>并执行</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">zkq@zkq-vm:~$ aarch64-linux-gnu-gcc main.c</span><br><span class="line">zkq@zkq-vm:~$ file a.out</span><br><span class="line">a.out: ELF 64-bit LSB shared object, ARM aarch64, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, <span class="keyword">for</span> GNU/Linux 3.7.0, BuildID[sha1]=6ef0ca0c6462e038e589b6e1d52220a680007588, not stripped</span><br><span class="line">zkq@zkq-vm:~$ qemu-aarch64 a.out</span><br><span class="line">hello world</span><br></pre></td></tr></table></figure>
-<h6 id="3-通过gdb调试arm程序">3. 通过gdb调试arm程序</h6>
+<h6 id="3-通过gdb调试arm程序">3.通过gdb调试arm程序</h6>
 <p>gdb调试arm程序的原理：qemu端作为gdb server启动可执行程序，另一端作为gdb client连接gdb server，进行本地远程调试。</p>
 <p>首先安装多平台的gdb工具</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install gdb-multiarch</span><br></pre></td></tr></table></figure>
