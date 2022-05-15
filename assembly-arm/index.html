@@ -20,16 +20,17 @@
     var CONFIG = {"hostname":"zhoukaiqi.gitee.io","root":"/zhoukaiqi/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="本文介绍了arm常见汇编指令    指令  含义     mov mov x1, x0 将寄存器x0的值复制到寄存器x1中">
+  <meta name="description" content="本文介绍了arm常见汇编指令    指令  含义     mov mov x1, x0 将寄存器x0的值复制给寄存器x1   stp x29, x30, [sp, #-112] sp &#x3D; sp - 112，将x29, x30依次存入sp的位置; x29充当FP寄存器，用于保存上一个sp; x30充当LR寄存器，用来保存函数返回后的下一条执行地址   ldp ldp     x29, x30, [s">
 <meta property="og:type" content="article">
-<meta property="og:title" content="armx常见汇编指令">
+<meta property="og:title" content="arm常见汇编指令">
 <meta property="og:url" content="https://zhoukaiqi.gitee.io/assembly-arm/index.html">
 <meta property="og:site_name" content="数风流人物，还看今朝">
-<meta property="og:description" content="本文介绍了arm常见汇编指令    指令  含义     mov mov x1, x0 将寄存器x0的值复制到寄存器x1中">
+<meta property="og:description" content="本文介绍了arm常见汇编指令    指令  含义     mov mov x1, x0 将寄存器x0的值复制给寄存器x1   stp x29, x30, [sp, #-112] sp &#x3D; sp - 112，将x29, x30依次存入sp的位置; x29充当FP寄存器，用于保存上一个sp; x30充当LR寄存器，用来保存函数返回后的下一条执行地址   ldp ldp     x29, x30, [s">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-04-17T15:32:58.000Z">
 <meta property="article:modified_time" content="2022-04-17T15:32:58.000Z">
 <meta property="article:author" content="Kaiqi Zhou">
+<meta property="article:tag" content="assembly">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://zhoukaiqi.gitee.io/assembly-arm/">
@@ -45,7 +46,7 @@
   };
 </script>
 
-  <title>armx常见汇编指令 | 数风流人物，还看今朝</title>
+  <title>arm常见汇编指令 | 数风流人物，还看今朝</title>
   
 
 
@@ -180,7 +181,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          armx常见汇编指令
+          arm常见汇编指令
         </h1>
 
         <div class="post-meta">
@@ -192,9 +193,18 @@
 
               <time title="创建时间：2022-04-17 23:32:58" itemprop="dateCreated datePublished" datetime="2022-04-17T23:32:58+08:00">2022-04-17</time>
             </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/zhoukaiqi/categories/assembly/" itemprop="url" rel="index"><span itemprop="name">assembly</span></a>
+                </span>
+            </span>
 
           
-            <span id="/zhoukaiqi/assembly-arm/" class="post-meta-item leancloud_visitors" data-flag-title="armx常见汇编指令" title="阅读次数">
+            <span id="/zhoukaiqi/assembly-arm/" class="post-meta-item leancloud_visitors" data-flag-title="arm常见汇编指令" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -220,14 +230,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>68</span>
+              <span>7.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>7 分钟</span>
             </span>
 
         </div>
@@ -252,32 +262,79 @@
 <tr>
 <td>mov</td>
 <td>mov x1, x0</td>
-<td>将寄存器x0的值复制到寄存器x1中</td>
+<td>将寄存器x0的值复制给寄存器x1</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td></td>
+<td>stp</td>
+<td>x29, x30, [sp, #-112]</td>
+<td>sp = sp - 112，将x29, x30依次存入sp的位置; <br>x29充当FP寄存器，用于保存上一个sp; <br>x30充当LR寄存器，用来保存函数返回后的下一条执行地址</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td></td>
+<td>ldp</td>
+<td>ldp     x29, x30, [sp], #112</td>
+<td>sp取值赋给x29, sp + 8取值赋给x30, sp = sp + 112</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td></td>
+<td>str</td>
+<td>str     w0, [x29, #40]</td>
+<td>w0寄存器存入x29+40的内存地址</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td></td>
+<td>stur</td>
+<td>stur    wzr, [x29, #93]</td>
+<td>xzr/wzr分别代表8字节/4字节的0, 0x00000000写入x29+93的内存地址; <br/>sturh(2字节)，sturb(1字节)</td>
+</tr>
+<tr>
+<td>add</td>
+<td>add     x0, x29, #0x28</td>
+<td>x29与0x28相加后赋值给x0</td>
+</tr>
+<tr>
+<td>ldr</td>
+<td>ldr     x2, [x1]</td>
+<td>将x1作为地址，取该内存地址的值存入x2寄存器</td>
+</tr>
+<tr>
+<td>eor</td>
+<td>eor     x1, x2, x1</td>
+<td>异或指令, x1 = x2 ^ x1</td>
 </tr>
 </tbody>
 </table>
+<p>保存入参的寄存器：<code>x0 - x7</code> 依次对应第1到第8个参数</p>
+<p>保存返回值的寄存器： <code>x0</code></p>
 <span id="more"></span>
 <p>以demo.c为例，分析arm下的汇编指令。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">FuncC</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">0x900C</span>;</span><br><span class="line">    <span class="type">void</span> *b = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">long</span>));</span><br><span class="line">    <span class="type">char</span> str[<span class="number">20</span>] = <span class="string">&quot;Hello World!&quot;</span>;</span><br><span class="line">    <span class="type">int</span> arr[<span class="number">10</span>] = &#123;<span class="number">1</span>&#125;;</span><br><span class="line">    <span class="built_in">memset</span>(arr, <span class="string">&#x27;c&#x27;</span>, <span class="keyword">sizeof</span>(<span class="type">char</span>) * <span class="number">40</span>);</span><br><span class="line">    <span class="built_in">free</span>(b);</span><br><span class="line">    b = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="1-完整指令">1. 完整指令</h6>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">(gdb) disassemble FuncC</span><br><span class="line">Dump of assembler code <span class="keyword">for</span> <span class="keyword">function</span> FuncC:</span><br><span class="line">   0x0000aaaaaaaaa8d4 &lt;+0&gt;:     stp     x29, x30, [sp, <span class="comment">#-112]!</span></span><br><span class="line">   0x0000aaaaaaaaa8d8 &lt;+4&gt;:     mov     x29, sp</span><br><span class="line">   0x0000aaaaaaaaa8dc &lt;+8&gt;:     adrp    x0, 0xaaaaaaaba000</span><br><span class="line">   0x0000aaaaaaaaa8e0 &lt;+12&gt;:    ldr     x0, [x0, <span class="comment">#4064]</span></span><br><span class="line">   0x0000aaaaaaaaa8e4 &lt;+16&gt;:    ldr     x1, [x0]</span><br><span class="line">   0x0000aaaaaaaaa8e8 &lt;+20&gt;:    str     x1, [x29, <span class="comment">#104]</span></span><br><span class="line">   0x0000aaaaaaaaa8ec &lt;+24&gt;:    mov     x1, <span class="comment">#0x0                        // #0</span></span><br><span class="line">   0x0000aaaaaaaaa8f0 &lt;+28&gt;:    mov     w0, <span class="comment">#0x900c                     // #36876</span></span><br><span class="line">   0x0000aaaaaaaaa8f4 &lt;+32&gt;:    str     w0, [x29, <span class="comment">#28]</span></span><br><span class="line">   0x0000aaaaaaaaa8f8 &lt;+36&gt;:    mov     x0, <span class="comment">#0x8                        // #8</span></span><br><span class="line">   0x0000aaaaaaaaa8fc &lt;+40&gt;:    bl      0xaaaaaaaaa750 &lt;malloc@plt&gt;</span><br><span class="line">   0x0000aaaaaaaaa900 &lt;+44&gt;:    str     x0, [x29, <span class="comment">#32]</span></span><br><span class="line">   0x0000aaaaaaaaa904 &lt;+48&gt;:    adrp    x0, 0xaaaaaaaaa000</span><br><span class="line">   0x0000aaaaaaaaa908 &lt;+52&gt;:    add     x1, x0, <span class="comment">#0xa98</span></span><br><span class="line">   0x0000aaaaaaaaa90c &lt;+56&gt;:    add     x0, x29, <span class="comment">#0x50</span></span><br><span class="line">   0x0000aaaaaaaaa910 &lt;+60&gt;:    ldr     x2, [x1]</span><br><span class="line">   0x0000aaaaaaaaa914 &lt;+64&gt;:    str     x2, [x0]</span><br><span class="line">   0x0000aaaaaaaaa918 &lt;+68&gt;:    ldur    x1, [x1, <span class="comment">#5]</span></span><br><span class="line">   0x0000aaaaaaaaa91c &lt;+72&gt;:    stur    x1, [x0, <span class="comment">#5]</span></span><br><span class="line">   0x0000aaaaaaaaa920 &lt;+76&gt;:    stur    wzr, [x29, <span class="comment">#93]</span></span><br><span class="line">   0x0000aaaaaaaaa924 &lt;+80&gt;:    sturh   wzr, [x29, <span class="comment">#97]</span></span><br><span class="line">   0x0000aaaaaaaaa928 &lt;+84&gt;:    strb    wzr, [x29, <span class="comment">#99]</span></span><br><span class="line">   0x0000aaaaaaaaa92c &lt;+88&gt;:    stp     xzr, xzr, [x29, <span class="comment">#40]</span></span><br><span class="line">   0x0000aaaaaaaaa930 &lt;+92&gt;:    stp     xzr, xzr, [x29, <span class="comment">#56]</span></span><br><span class="line">   0x0000aaaaaaaaa934 &lt;+96&gt;:    str     xzr, [x29, <span class="comment">#72]</span></span><br><span class="line">   0x0000aaaaaaaaa938 &lt;+100&gt;:   mov     w0, <span class="comment">#0x1                        // #1</span></span><br><span class="line">   0x0000aaaaaaaaa93c &lt;+104&gt;:   str     w0, [x29, <span class="comment">#40]</span></span><br><span class="line">   0x0000aaaaaaaaa940 &lt;+108&gt;:   add     x0, x29, <span class="comment">#0x28</span></span><br><span class="line">   0x0000aaaaaaaaa944 &lt;+112&gt;:   mov     x2, <span class="comment">#0x28                       // #40</span></span><br><span class="line">   0x0000aaaaaaaaa948 &lt;+116&gt;:   mov     w1, <span class="comment">#0x63                       // #99</span></span><br><span class="line">   0x0000aaaaaaaaa94c &lt;+120&gt;:   bl      0xaaaaaaaaa770 &lt;memset@plt&gt;</span><br><span class="line">   0x0000aaaaaaaaa950 &lt;+124&gt;:   ldr     x0, [x29, <span class="comment">#32]</span></span><br><span class="line">   0x0000aaaaaaaaa954 &lt;+128&gt;:   bl      0xaaaaaaaaa7b0 &lt;free@plt&gt;</span><br><span class="line">   0x0000aaaaaaaaa958 &lt;+132&gt;:   str     xzr, [x29, <span class="comment">#32]</span></span><br><span class="line">   0x0000aaaaaaaaa95c &lt;+136&gt;:   mov     w0, <span class="comment">#0x0                        // #0</span></span><br><span class="line">   0x0000aaaaaaaaa960 &lt;+140&gt;:   adrp    x1, 0xaaaaaaaba000</span><br><span class="line">   0x0000aaaaaaaaa964 &lt;+144&gt;:   ldr     x1, [x1, <span class="comment">#4064]</span></span><br><span class="line">   0x0000aaaaaaaaa968 &lt;+148&gt;:   ldr     x2, [x29, <span class="comment">#104]</span></span><br><span class="line">   0x0000aaaaaaaaa96c &lt;+152&gt;:   ldr     x1, [x1]</span><br><span class="line">   0x0000aaaaaaaaa970 &lt;+156&gt;:   eor     x1, x2, x1</span><br><span class="line">   0x0000aaaaaaaaa974 &lt;+160&gt;:   cmp     x1, <span class="comment">#0x0</span></span><br><span class="line">   0x0000aaaaaaaaa978 &lt;+164&gt;:   b.eq    0xaaaaaaaaa980 &lt;FuncC+172&gt;  // b.none</span><br><span class="line">   0x0000aaaaaaaaa97c &lt;+168&gt;:   bl      0xaaaaaaaaa780 &lt;__stack_chk_fail@plt&gt;</span><br><span class="line">   0x0000aaaaaaaaa980 &lt;+172&gt;:   ldp     x29, x30, [sp], <span class="comment">#112</span></span><br><span class="line">   0x0000aaaaaaaaa984 &lt;+176&gt;:   ret</span><br></pre></td></tr></table></figure>
+<h6 id="2-开栈">2. 开栈</h6>
+<p>sp从0xfffffffff9f0偏移-112字节到0xfffffffff980，先存入x29，再存入x30，同时将sp赋值给x29。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">(gdb) i r x29 x30 sp</span><br><span class="line">x29            0xfffffffff9f0   281474976709104</span><br><span class="line">x30            0xaaaaaaaaa998   187649984473496</span><br><span class="line">sp             0xfffffffff9f0   0xfffffffff9f0</span><br><span class="line">0x0000aaaaaaaaa8d4 &lt;+0&gt;:     stp     x29, x30, [sp, <span class="comment">#-112]!</span></span><br><span class="line">0x0000aaaaaaaaa8d8 &lt;+4&gt;:     mov     x29, sp</span><br><span class="line">(gdb) i r x29 x30 sp</span><br><span class="line">x29            0xfffffffff980   281474976708992</span><br><span class="line">x30            0xaaaaaaaaa998   187649984473496</span><br><span class="line">sp             0xfffffffff980   0xfffffffff980</span><br><span class="line">(gdb) x/8wx <span class="variable">$sp</span></span><br><span class="line">0xfffffffff980: 0xfffff9f0      0x0000ffff      0xaaaaa998      0x0000aaaa</span><br><span class="line">0xfffffffff990: 0x00000000      0x00000000      0x00000000      0x00000000</span><br></pre></td></tr></table></figure>
+<h6 id="3-入栈时存栈保护canary">3. 入栈时存栈保护canary</h6>
+<p>adrp指令这里不展开。以下指令主要是将栈保护的<code>canary</code>存入栈中，后续出栈前校验。（编译选项：<code>-fstack-protector</code>）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">0x0000aaaaaaaaa8dc &lt;+8&gt;:     adrp    x0, 0xaaaaaaaba000</span><br><span class="line">0x0000aaaaaaaaa8e0 &lt;+12&gt;:    ldr     x0, [x0, <span class="comment">#4064]</span></span><br><span class="line">0x0000aaaaaaaaa8e4 &lt;+16&gt;:    ldr     x1, [x0]</span><br><span class="line">0x0000aaaaaaaaa8e8 &lt;+20&gt;:    str     x1, [x29, <span class="comment">#104]</span></span><br><span class="line">0x0000aaaaaaaaa8ec &lt;+24&gt;:    mov     x1, <span class="comment">#0x0                        // #0</span></span><br><span class="line">(gdb) x/gx <span class="variable">$x0</span></span><br><span class="line">0xfffff7ffd7a8 &lt;__stack_chk_guard&gt;:     0x9af4bd74875a3200</span><br><span class="line">(gdb) x/2wx <span class="variable">$sp</span> + 104</span><br><span class="line">0xfffffffff9e8: 0x875a3200      0x9af4bd74</span><br></pre></td></tr></table></figure>
+<h6 id="4-将0x900c存入x29-28的内存地址，对应代码第3行">4. 将0x900c存入x29+28的内存地址，对应代码第3行</h6>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">0x0000aaaaaaaaa8f0 &lt;+28&gt;:    mov     w0, <span class="comment">#0x900c                     // #36876</span></span><br><span class="line">0x0000aaaaaaaaa8f4 &lt;+32&gt;:    str     w0, [x29, <span class="comment">#28]</span></span><br><span class="line">(gdb) x/8wx <span class="variable">$sp</span></span><br><span class="line">0xfffffffff980: 0xfffff9f0      0x0000ffff      0xaaaaa998      0x0000aaaa</span><br><span class="line">0xfffffffff990: 0x00000000      0x00000000      0x00000000      0x0000900c</span><br></pre></td></tr></table></figure>
+<h6 id="5-申请8字节内存，内存的起始地址存入x29-32的内存地址，对应代码第4行">5. 申请8字节内存，内存的起始地址存入x29+32的内存地址，对应代码第4行</h6>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">0x0000aaaaaaaaa8f8 &lt;+36&gt;:    mov     x0, <span class="comment">#0x8                        // #8</span></span><br><span class="line">0x0000aaaaaaaaa8fc &lt;+40&gt;:    bl      0xaaaaaaaaa750 &lt;malloc@plt&gt;</span><br><span class="line">0x0000aaaaaaaaa900 &lt;+44&gt;:    str     x0, [x29, <span class="comment">#32]</span></span><br><span class="line">(gdb) i r x0</span><br><span class="line">x0             0xaaaaaaabc260   187649984545376</span><br><span class="line">(gdb) x/12wx <span class="variable">$sp</span></span><br><span class="line">0xfffffffff980: 0xfffff9f0      0x0000ffff      0xaaaaa998      0x0000aaaa</span><br><span class="line">0xfffffffff990: 0x00000000      0x00000000      0x00000000      0x0000900c</span><br><span class="line">0xfffffffff9a0: 0xaaabc260      0x0000aaaa      0x00000000      0x00000000</span><br></pre></td></tr></table></figure>
+<h6 id="6-对应代码第5行">6. 对应代码第5行</h6>
+<p>字符串长度是20字节</p>
+<p>前12字节：为了字节对齐，第一次拷贝8字节，偏移到第5字节再拷贝8字节   from <code>ldr     x2, [x1]</code> to <code>ldur    x1, [x1, #5]</code></p>
+<p>第13字节：字符串的结尾需要赋值&quot;\0&quot;  <code>stur    wzr, [x29, #93]</code></p>
+<p>后面7字节：用&quot;\0&quot;补齐</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">0x0000aaaaaaaaa904 &lt;+48&gt;:    adrp    x0, 0xaaaaaaaaa000</span><br><span class="line">0x0000aaaaaaaaa908 &lt;+52&gt;:    add     x1, x0, <span class="comment">#0xa98</span></span><br><span class="line">0x0000aaaaaaaaa90c &lt;+56&gt;:    add     x0, x29, <span class="comment">#0x50</span></span><br><span class="line">(gdb) i r <span class="variable">$x0</span></span><br><span class="line">x0             0xfffffffff9d0   281474976709072</span><br><span class="line">(gdb) x/4wx <span class="variable">$x1</span></span><br><span class="line">0xaaaaaaaaaa98: 0x6c6c6548      0x6f57206f      0x21646c72      0x00000000</span><br><span class="line">(gdb) x/s <span class="variable">$x1</span></span><br><span class="line">0xaaaaaaaaaa98: <span class="string">&quot;Hello World!&quot;</span></span><br><span class="line">0x0000aaaaaaaaa910 &lt;+60&gt;:    ldr     x2, [x1]</span><br><span class="line">0x0000aaaaaaaaa914 &lt;+64&gt;:    str     x2, [x0]</span><br><span class="line">(gdb) x/4wx <span class="variable">$sp</span> + 80</span><br><span class="line">0xfffffffff9d0: 0x6c6c6548      0x6f57206f      0x00000000      0x00000000</span><br><span class="line">0x0000aaaaaaaaa918 &lt;+68&gt;:    ldur    x1, [x1, <span class="comment">#5]</span></span><br><span class="line">0x0000aaaaaaaaa91c &lt;+72&gt;:    stur    x1, [x0, <span class="comment">#5]</span></span><br><span class="line">(gdb) x/5wx <span class="variable">$sp</span> + 80</span><br><span class="line">0xfffffffff9d0: 0x6c6c6548      0x6f57206f      0x21646c72      0x00000000</span><br><span class="line">0xfffffffff9e0: 0xf7fffac8</span><br><span class="line">0x0000aaaaaaaaa920 &lt;+76&gt;:    stur    wzr, [x29, <span class="comment">#93]</span></span><br><span class="line">0x0000aaaaaaaaa924 &lt;+80&gt;:    sturh   wzr, [x29, <span class="comment">#97]</span></span><br><span class="line">0x0000aaaaaaaaa928 &lt;+84&gt;:    strb    wzr, [x29, <span class="comment">#99]</span></span><br><span class="line">(gdb) x/5wx <span class="variable">$sp</span> + 80</span><br><span class="line">0xfffffffff9d0: 0x6c6c6548      0x6f57206f      0x21646c72      0x00000000</span><br><span class="line">0xfffffffff9e0: 0x00000000</span><br></pre></td></tr></table></figure>
+<h6 id="7-对应代码第6行">7. 对应代码第6行</h6>
+<p><code>stp     xzr, xzr, [x29, #40]</code> 连续拷贝16字节0到[x29, #40]，可以考虑用SSE指令加速。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">0x0000aaaaaaaaa92c &lt;+88&gt;:    stp     xzr, xzr, [x29, <span class="comment">#40]</span></span><br><span class="line">0x0000aaaaaaaaa930 &lt;+92&gt;:    stp     xzr, xzr, [x29, <span class="comment">#56]</span></span><br><span class="line">0x0000aaaaaaaaa934 &lt;+96&gt;:    str     xzr, [x29, <span class="comment">#72]</span></span><br><span class="line">0x0000aaaaaaaaa938 &lt;+100&gt;:   mov     w0, <span class="comment">#0x1                        // #1</span></span><br><span class="line">0x0000aaaaaaaaa93c &lt;+104&gt;:   str     w0, [x29, <span class="comment">#40]</span></span><br></pre></td></tr></table></figure>
+<h6 id="8-对应代码第7行">8. 对应代码第7行</h6>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">0x0000aaaaaaaaa940 &lt;+108&gt;:   add     x0, x29, <span class="comment">#0x28                        </span></span><br><span class="line">0x0000aaaaaaaaa944 &lt;+112&gt;:   mov     x2, <span class="comment">#0x28                       // #40</span></span><br><span class="line">0x0000aaaaaaaaa948 &lt;+116&gt;:   mov     w1, <span class="comment">#0x63                       // #99</span></span><br><span class="line">0x0000aaaaaaaaa94c &lt;+120&gt;:   bl      0xaaaaaaaaa770 &lt;memset@plt&gt;           </span><br></pre></td></tr></table></figure>
+<h6 id="9-对应代码第8和第9行">9. 对应代码第8和第9行</h6>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">0x0000aaaaaaaaa950 &lt;+124&gt;:   ldr     x0, [x29, <span class="comment">#32]           </span></span><br><span class="line">0x0000aaaaaaaaa954 &lt;+128&gt;:   bl      0xaaaaaaaaa7b0 &lt;free@plt&gt;</span><br><span class="line">0x0000aaaaaaaaa958 &lt;+132&gt;:   str     xzr, [x29, <span class="comment">#32]</span></span><br></pre></td></tr></table></figure>
+<h6 id="10-出栈前校验栈保护canary">10. 出栈前校验栈保护canary</h6>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">0x0000aaaaaaaaa960 &lt;+140&gt;:   adrp    x1, 0xaaaaaaaba000      </span><br><span class="line">0x0000aaaaaaaaa964 &lt;+144&gt;:   ldr     x1, [x1, <span class="comment">#4064]</span></span><br><span class="line">0x0000aaaaaaaaa968 &lt;+148&gt;:   ldr     x2, [x29, <span class="comment">#104]</span></span><br><span class="line">0x0000aaaaaaaaa96c &lt;+152&gt;:   ldr     x1, [x1]</span><br><span class="line">0x0000aaaaaaaaa970 &lt;+156&gt;:   eor     x1, x2, x1</span><br><span class="line">0x0000aaaaaaaaa974 &lt;+160&gt;:   cmp     x1, <span class="comment">#0x0</span></span><br><span class="line">0x0000aaaaaaaaa978 &lt;+164&gt;:   b.eq    0xaaaaaaaaa980 &lt;FuncC+172&gt;  // b.none</span><br><span class="line">0x0000aaaaaaaaa97c &lt;+168&gt;:   bl      0xaaaaaaaaa780 &lt;__stack_chk_fail@plt&gt;</span><br></pre></td></tr></table></figure>
+<h6 id="11-出栈">11. 出栈</h6>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(gdb) i r <span class="variable">$x29</span> <span class="variable">$x30</span> <span class="variable">$sp</span></span><br><span class="line">x29            0xfffffffff980   281474976708992</span><br><span class="line">x30            0xaaaaaaaaa958   187649984473432</span><br><span class="line">sp             0xfffffffff980   0xfffffffff980</span><br><span class="line">(gdb) x/4wx <span class="variable">$sp</span></span><br><span class="line">0xfffffffff980: 0xfffff9f0      0x0000ffff      0xaaaaa998      0x0000aaaa</span><br><span class="line">0x0000aaaaaaaaa980 &lt;+172&gt;:   ldp     x29, x30, [sp], <span class="comment">#112</span></span><br><span class="line">(gdb) i r <span class="variable">$x29</span> <span class="variable">$x30</span> <span class="variable">$sp</span></span><br><span class="line">x29            0xfffffffff9f0   281474976709104</span><br><span class="line">x30            0xaaaaaaaaa998   187649984473496</span><br><span class="line">sp             0xfffffffff9f0   0xfffffffff9f0</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -301,6 +358,10 @@
 
 
       <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/zhoukaiqi/tags/assembly/" rel="tag"><i class="fa fa-tag"></i> assembly</a>
+          </div>
 
         
 
@@ -371,6 +432,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-%E5%AE%8C%E6%95%B4%E6%8C%87%E4%BB%A4"><span class="nav-text">1. 完整指令</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-%E5%BC%80%E6%A0%88"><span class="nav-text">2. 开栈</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-%E5%85%A5%E6%A0%88%E6%97%B6%E5%AD%98%E6%A0%88%E4%BF%9D%E6%8A%A4canary"><span class="nav-text">3. 入栈时存栈保护canary</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#4-%E5%B0%860x900c%E5%AD%98%E5%85%A5x29-28%E7%9A%84%E5%86%85%E5%AD%98%E5%9C%B0%E5%9D%80%EF%BC%8C%E5%AF%B9%E5%BA%94%E4%BB%A3%E7%A0%81%E7%AC%AC3%E8%A1%8C"><span class="nav-text">4. 将0x900c存入x29+28的内存地址，对应代码第3行</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#5-%E7%94%B3%E8%AF%B78%E5%AD%97%E8%8A%82%E5%86%85%E5%AD%98%EF%BC%8C%E5%86%85%E5%AD%98%E7%9A%84%E8%B5%B7%E5%A7%8B%E5%9C%B0%E5%9D%80%E5%AD%98%E5%85%A5x29-32%E7%9A%84%E5%86%85%E5%AD%98%E5%9C%B0%E5%9D%80%EF%BC%8C%E5%AF%B9%E5%BA%94%E4%BB%A3%E7%A0%81%E7%AC%AC4%E8%A1%8C"><span class="nav-text">5. 申请8字节内存，内存的起始地址存入x29+32的内存地址，对应代码第4行</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#6-%E5%AF%B9%E5%BA%94%E4%BB%A3%E7%A0%81%E7%AC%AC5%E8%A1%8C"><span class="nav-text">6. 对应代码第5行</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#7-%E5%AF%B9%E5%BA%94%E4%BB%A3%E7%A0%81%E7%AC%AC6%E8%A1%8C"><span class="nav-text">7. 对应代码第6行</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#8-%E5%AF%B9%E5%BA%94%E4%BB%A3%E7%A0%81%E7%AC%AC7%E8%A1%8C"><span class="nav-text">8. 对应代码第7行</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#9-%E5%AF%B9%E5%BA%94%E4%BB%A3%E7%A0%81%E7%AC%AC8%E5%92%8C%E7%AC%AC9%E8%A1%8C"><span class="nav-text">9. 对应代码第8和第9行</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#10-%E5%87%BA%E6%A0%88%E5%89%8D%E6%A0%A1%E9%AA%8C%E6%A0%88%E4%BF%9D%E6%8A%A4canary"><span class="nav-text">10. 出栈前校验栈保护canary</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#11-%E5%87%BA%E6%A0%88"><span class="nav-text">11. 出栈</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -399,7 +461,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/zhoukaiqi/tags/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -441,13 +503,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">11k</span>
+    <span title="站点总字数">18k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">10 分钟</span>
+    <span title="站点阅读时长">16 分钟</span>
 </div><div>
     <!--添加总阅读次数-->
     <div>

@@ -176,7 +176,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/zhoukaiqi/assembly-arm/" class="post-title-link" itemprop="url">armx常见汇编指令</a>
+            <a href="/zhoukaiqi/assembly-arm/" class="post-title-link" itemprop="url">arm常见汇编指令</a>
         </h2>
 
         <div class="post-meta">
@@ -188,9 +188,18 @@
 
               <time title="创建时间：2022-04-17 23:32:58" itemprop="dateCreated datePublished" datetime="2022-04-17T23:32:58+08:00">2022-04-17</time>
             </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/zhoukaiqi/categories/assembly/" itemprop="url" rel="index"><span itemprop="name">assembly</span></a>
+                </span>
+            </span>
 
           
-            <span id="/zhoukaiqi/assembly-arm/" class="post-meta-item leancloud_visitors" data-flag-title="armx常见汇编指令" title="阅读次数">
+            <span id="/zhoukaiqi/assembly-arm/" class="post-meta-item leancloud_visitors" data-flag-title="arm常见汇编指令" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -216,14 +225,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>68</span>
+              <span>7.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>7 分钟</span>
             </span>
 
         </div>
@@ -248,30 +257,47 @@
 <tr>
 <td>mov</td>
 <td>mov x1, x0</td>
-<td>将寄存器x0的值复制到寄存器x1中</td>
+<td>将寄存器x0的值复制给寄存器x1</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td></td>
+<td>stp</td>
+<td>x29, x30, [sp, #-112]</td>
+<td>sp = sp - 112，将x29, x30依次存入sp的位置; <br>x29充当FP寄存器，用于保存上一个sp; <br>x30充当LR寄存器，用来保存函数返回后的下一条执行地址</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td></td>
+<td>ldp</td>
+<td>ldp     x29, x30, [sp], #112</td>
+<td>sp取值赋给x29, sp + 8取值赋给x30, sp = sp + 112</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td></td>
+<td>str</td>
+<td>str     w0, [x29, #40]</td>
+<td>w0寄存器存入x29+40的内存地址</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
-<td></td>
+<td>stur</td>
+<td>stur    wzr, [x29, #93]</td>
+<td>xzr/wzr分别代表8字节/4字节的0, 0x00000000写入x29+93的内存地址; <br/>sturh(2字节)，sturb(1字节)</td>
+</tr>
+<tr>
+<td>add</td>
+<td>add     x0, x29, #0x28</td>
+<td>x29与0x28相加后赋值给x0</td>
+</tr>
+<tr>
+<td>ldr</td>
+<td>ldr     x2, [x1]</td>
+<td>将x1作为地址，取该内存地址的值存入x2寄存器</td>
+</tr>
+<tr>
+<td>eor</td>
+<td>eor     x1, x2, x1</td>
+<td>异或指令, x1 = x2 ^ x1</td>
 </tr>
 </tbody>
 </table>
+<p>保存入参的寄存器：<code>x0 - x7</code> 依次对应第1到第8个参数</p>
+<p>保存返回值的寄存器： <code>x0</code></p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/zhoukaiqi/assembly-arm/#more" rel="contents">
@@ -766,7 +792,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/zhoukaiqi/tags/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -808,13 +834,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">11k</span>
+    <span title="站点总字数">18k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">10 分钟</span>
+    <span title="站点阅读时长">16 分钟</span>
 </div><div>
     <!--添加总阅读次数-->
     <div>
