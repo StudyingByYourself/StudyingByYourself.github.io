@@ -1,100 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>x86_84常见汇编指令</title>
-    <url>/zhoukaiqi/assembly-x86_64/</url>
-    <content><![CDATA[<p>本文介绍了x86_84常见汇编指令</p>
-<table>
-<thead>
-<tr>
-<th><strong>指令</strong></th>
-<th></th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>lea</td>
-<td>leaq a(b, c, d), %rax</td>
-<td>先计算地址a + b + c * d，然后把最终地址载到寄存器rax中</td>
-</tr>
-<tr>
-<td>shr</td>
-<td>$0x4, %rdi</td>
-<td>右移：rdi &gt;&gt; 4</td>
-</tr>
-<tr>
-<td>mov</td>
-<td>mov    %rax,-0x10(%rbp)</td>
-<td>将rax载入rbp-16的地址，变型：movb, movq, movl, movq</td>
-</tr>
-<tr>
-<td>movz</td>
-<td>movzwl %dx %eax</td>
-<td>将源操作数做零扩展后，再复制到目的操作数中</td>
-</tr>
-<tr>
-<td>movs</td>
-<td>movswl %dx %eax</td>
-<td>将源操作数做符号扩展后，再复制到目的操作数中</td>
-</tr>
-<tr>
-<td>movaps</td>
-<td>movaps %xmm0, -0x80(%rbp)</td>
-<td>SSE指令，一次移动16字节，<code>要求寄存器地址16字节对齐</code></td>
-</tr>
-<tr>
-<td>xor</td>
-<td>xor    %eax, %eax</td>
-<td>eax清零</td>
-</tr>
-<tr>
-<td>test</td>
-<td>test    %eax, %eax</td>
-<td>eax与0比较是否相等</td>
-</tr>
-</tbody>
-</table>
-<p>保存入参的寄存器：<code>rdi, rsi, rdx, rcx, r8, r9</code> 依次对应第一、二、三、四、五、六个参数</p>
-<p>保存返回值的寄存器： <code>rax</code></p>
-<span id="more"></span>
-<p>编译选项需添加<code>-fno-omit-frame-pointer</code>，否则rbp不作为栈帧寄存器使用，无法推栈。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gcc -Q --<span class="built_in">help</span>=optimizers -O2 | grep frame</span><br><span class="line">-fomit-frame-pointer                  [enabled]</span><br></pre></td></tr></table></figure>
-<p>以demo.c为例，分析x86_64下的汇编指令。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">FuncC</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">0x900C</span>;</span><br><span class="line">    <span class="type">void</span> *b = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">long</span>));</span><br><span class="line">    <span class="type">char</span> str[<span class="number">20</span>] = <span class="string">&quot;Hello World!&quot;</span>;</span><br><span class="line">    <span class="type">int</span> arr[<span class="number">10</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="built_in">memset</span>(arr, <span class="string">&#x27;c&#x27;</span>, <span class="keyword">sizeof</span>(<span class="type">char</span>) * <span class="number">100</span>);</span><br><span class="line">    <span class="built_in">free</span>(b);</span><br><span class="line">    b = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>取消栈保护编译选项</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gcc -fno-stack-protector -g demo.c -o demo</span><br></pre></td></tr></table></figure>
-<h6 id="1-完整指令">1. 完整指令</h6>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">(gdb) disassemble FuncC</span><br><span class="line">Dump of assembler code <span class="keyword">for</span> <span class="keyword">function</span> FuncC:</span><br><span class="line">   0x000055555555471a &lt;+0&gt;:     push   %rbp</span><br><span class="line">   0x000055555555471b &lt;+1&gt;:     mov    %rsp,%rbp</span><br><span class="line">   0x000055555555471e &lt;+4&gt;:     sub    <span class="variable">$0x60</span>,%rsp</span><br><span class="line">   0x0000555555554722 &lt;+8&gt;:     movl   <span class="variable">$0x900c</span>,-0x4(%rbp)</span><br><span class="line">   0x0000555555554729 &lt;+15&gt;:    mov    <span class="variable">$0x8</span>,%edi</span><br><span class="line">   0x000055555555472e &lt;+20&gt;:    callq  0x5555555545f0 &lt;malloc@plt&gt;</span><br><span class="line">   0x0000555555554733 &lt;+25&gt;:    mov    %rax,-0x10(%rbp)</span><br><span class="line">   0x0000555555554737 &lt;+29&gt;:    movabs <span class="variable">$0x6f57206f6c6c6548</span>,%rax</span><br><span class="line">   0x0000555555554741 &lt;+39&gt;:    mov    <span class="variable">$0x21646c72</span>,%edx</span><br><span class="line">   0x0000555555554746 &lt;+44&gt;:    mov    %rax,-0x30(%rbp)</span><br><span class="line">   0x000055555555474a &lt;+48&gt;:    mov    %rdx,-0x28(%rbp)</span><br><span class="line">   0x000055555555474e &lt;+52&gt;:    movl   <span class="variable">$0x0</span>,-0x20(%rbp)</span><br><span class="line">   0x0000555555554755 &lt;+59&gt;:    movq   <span class="variable">$0x0</span>,-0x60(%rbp)</span><br><span class="line">   0x000055555555475d &lt;+67&gt;:    movq   <span class="variable">$0x0</span>,-0x58(%rbp)</span><br><span class="line">   0x0000555555554765 &lt;+75&gt;:    movq   <span class="variable">$0x0</span>,-0x50(%rbp)</span><br><span class="line">   0x000055555555476d &lt;+83&gt;:    movq   <span class="variable">$0x0</span>,-0x48(%rbp)</span><br><span class="line">   0x0000555555554775 &lt;+91&gt;:    movq   <span class="variable">$0x0</span>,-0x40(%rbp)</span><br><span class="line">   0x000055555555477d &lt;+99&gt;:    lea    -0x60(%rbp),%rax</span><br><span class="line">   0x0000555555554781 &lt;+103&gt;:   mov    <span class="variable">$0x64</span>,%edx</span><br><span class="line">   0x0000555555554786 &lt;+108&gt;:   mov    <span class="variable">$0x63</span>,%esi</span><br><span class="line">   0x000055555555478b &lt;+113&gt;:   mov    %rax,%rdi</span><br><span class="line">   0x000055555555478e &lt;+116&gt;:   callq  0x5555555545e0 &lt;memset@plt&gt;</span><br><span class="line">   0x0000555555554793 &lt;+121&gt;:   mov    -0x10(%rbp),%rax</span><br><span class="line">   0x0000555555554797 &lt;+125&gt;:   mov    %rax,%rdi</span><br><span class="line">   0x000055555555479a &lt;+128&gt;:   callq  0x5555555545c0 &lt;free@plt&gt;</span><br><span class="line">   0x000055555555479f &lt;+133&gt;:   movq   <span class="variable">$0x0</span>,-0x10(%rbp)</span><br><span class="line">   0x00005555555547a7 &lt;+141&gt;:   mov    <span class="variable">$0x0</span>,%eax</span><br><span class="line">   0x00005555555547ac &lt;+146&gt;:   leaveq</span><br><span class="line">   0x00005555555547ad &lt;+147&gt;:   retq</span><br></pre></td></tr></table></figure>
-<h6 id="2-push开栈">2. push开栈</h6>
-<p>开栈大小 = 96字节，rsp是栈顶，rbp是栈底。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">0x000055555555471a &lt;+0&gt;:     push   %rbp</span><br><span class="line">0x000055555555471b &lt;+1&gt;:     mov    %rsp,%rbp</span><br><span class="line">0x000055555555471e &lt;+4&gt;:     sub    <span class="variable">$0x60</span>,%rsp</span><br><span class="line">(gdb) i r <span class="variable">$rsp</span> <span class="variable">$rbp</span></span><br><span class="line">rsp            0x7fffffffe330   0x7fffffffe330</span><br><span class="line">rbp            0x7fffffffe390   0x7fffffffe390</span><br></pre></td></tr></table></figure>
-<h6 id="3-将0x900c存入rbp-4的地址，对应代码第3行。">3. 将0x900c存入rbp - 4的地址，对应代码第3行。</h6>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">0x0000555555554722 &lt;+8&gt;:     movl   <span class="variable">$0x900c</span>,-0x4(%rbp)</span><br><span class="line">(gdb) x/26wx <span class="variable">$rsp</span></span><br><span class="line">0x7fffffffe330: 0xf7ffea98      0x00007fff      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe340: 0x00000000      0x00000000      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe350: 0xffffffff      0x00000000      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe360: 0xf7ffa268      0x00007fff      0xf7ffe710      0x00007fff</span><br><span class="line">0x7fffffffe370: 0x00000000      0x00000000      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe380: 0x00000000      0x00000000      0x00000000      0x0000900c</span><br><span class="line">0x7fffffffe390: 0xffffe3b0      0x00007fff</span><br></pre></td></tr></table></figure>
-<h6 id="4-将edi赋值成8，作为malloc的第一个入参。malloc的结果rax存入rbp-16的地址。对应代码第4行。">4. 将edi赋值成8，作为malloc的第一个入参。malloc的结果rax存入rbp-16的地址。对应代码第4行。</h6>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">0x0000555555554729 &lt;+15&gt;:    mov    <span class="variable">$0x8</span>,%edi</span><br><span class="line">0x000055555555472e &lt;+20&gt;:    callq  0x5555555545f0 &lt;malloc@plt&gt;</span><br><span class="line">0x0000555555554733 &lt;+25&gt;:    mov    %rax,-0x10(%rbp)</span><br><span class="line">(gdb) x/26wx <span class="variable">$rsp</span></span><br><span class="line">0x7fffffffe330: 0xf7ffea98      0x00007fff      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe340: 0x00000000      0x00000000      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe350: 0xffffffff      0x00000000      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe360: 0xf7ffa268      0x00007fff      0xf7ffe710      0x00007fff</span><br><span class="line">0x7fffffffe370: 0x00000000      0x00000000      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe380: 0x55756260      0x00005555      0x00000000      0x0000900c</span><br><span class="line">0x7fffffffe390: 0xffffe3b0      0x00007fff</span><br></pre></td></tr></table></figure>
-<h6 id="5-将0x6f57206f6c6c6548存入rax，将0x21646c72存入edx，rax存入rbp-48的地址，rdx存入rbp-40的地址，最后四字节补0，对应代码第5行。">5. 将0x6f57206f6c6c6548存入rax，将0x21646c72存入edx，rax存入rbp-48的地址，rdx存入rbp-40的地址，最后四字节补0，对应代码第5行。</h6>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">48  65  6c  6c  6f  20  57  6f  72  6c  64  21</span><br><span class="line"><span class="string">&#x27;H&#x27;</span> <span class="string">&#x27;e&#x27;</span> <span class="string">&#x27;l&#x27;</span> <span class="string">&#x27;l&#x27;</span> <span class="string">&#x27;o&#x27;</span> <span class="string">&#x27; &#x27;</span> <span class="string">&#x27;W&#x27;</span> <span class="string">&#x27;o&#x27;</span> <span class="string">&#x27;r&#x27;</span> <span class="string">&#x27;l&#x27;</span> <span class="string">&#x27;d&#x27;</span> <span class="string">&#x27;!&#x27;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">0x0000555555554737 &lt;+29&gt;:    movabs <span class="variable">$0x6f57206f6c6c6548</span>,%rax</span><br><span class="line">0x0000555555554741 &lt;+39&gt;:    mov    <span class="variable">$0x21646c72</span>,%edx</span><br><span class="line">0x0000555555554746 &lt;+44&gt;:    mov    %rax,-0x30(%rbp)</span><br><span class="line">0x000055555555474a &lt;+48&gt;:    mov    %rdx,-0x28(%rbp)</span><br><span class="line">0x000055555555474e &lt;+52&gt;:    movl   <span class="variable">$0x0</span>,-0x20(%rbp)</span><br><span class="line">(gdb) x/26wx <span class="variable">$rsp</span></span><br><span class="line">0x7fffffffe330: 0xf7ffea98      0x00007fff      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe340: 0x00000000      0x00000000      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe350: 0xffffffff      0x00000000      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe360: 0x6c6c6548      0x6f57206f      0x21646c72      0x00000000</span><br><span class="line">0x7fffffffe370: 0x00000000      0x00000000      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe380: 0x55756260      0x00005555      0x00000000      0x0000900c</span><br><span class="line">0x7fffffffe390: 0xffffe3b0      0x00007fff</span><br></pre></td></tr></table></figure>
-<h6 id="6-从rbp-96的地址开始，依次将连续的40字节设置成0，对应代码第6行。">6. 从rbp-96的地址开始，依次将连续的40字节设置成0，对应代码第6行。</h6>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">0x0000555555554755 &lt;+59&gt;:    movq   <span class="variable">$0x0</span>,-0x60(%rbp)</span><br><span class="line">0x000055555555475d &lt;+67&gt;:    movq   <span class="variable">$0x0</span>,-0x58(%rbp)</span><br><span class="line">0x0000555555554765 &lt;+75&gt;:    movq   <span class="variable">$0x0</span>,-0x50(%rbp)</span><br><span class="line">0x000055555555476d &lt;+83&gt;:    movq   <span class="variable">$0x0</span>,-0x48(%rbp)</span><br><span class="line">0x0000555555554775 &lt;+91&gt;:    movq   <span class="variable">$0x0</span>,-0x40(%rbp)</span><br><span class="line">0x7fffffffe330: 0x00000000      0x00000000      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe340: 0x00000000      0x00000000      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe350: 0x00000000      0x00000000      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe360: 0x6c6c6548      0x6f57206f      0x21646c72      0x00000000</span><br><span class="line">0x7fffffffe370: 0x00000000      0x00000000      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe380: 0x55756260      0x00005555      0x00000000      0x0000900c</span><br><span class="line">0x7fffffffe390: 0xffffe3b0      0x00007fff</span><br></pre></td></tr></table></figure>
-<h6 id="7-从rbp-96的地址开始，依次将连续的100字节设置成’c’，对应代码第7行。（这里构造了踩栈）">7. 从rbp-96的地址开始，依次将连续的100字节设置成’c’，对应代码第7行。（这里构造了踩栈）</h6>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">0x000055555555477d &lt;+99&gt;:    lea    -0x60(%rbp),%rax</span><br><span class="line">0x0000555555554781 &lt;+103&gt;:   mov    <span class="variable">$0x64</span>,%edx</span><br><span class="line">0x0000555555554786 &lt;+108&gt;:   mov    <span class="variable">$0x63</span>,%esi</span><br><span class="line">0x000055555555478b &lt;+113&gt;:   mov    %rax,%rdi</span><br><span class="line">0x000055555555478e &lt;+116&gt;:   callq  0x5555555545e0 &lt;memset@plt&gt;</span><br><span class="line">(gdb) x/26wx <span class="variable">$rsp</span></span><br><span class="line">0x7fffffffe330: 0x63636363      0x63636363      0x63636363      0x63636363</span><br><span class="line">0x7fffffffe340: 0x63636363      0x63636363      0x63636363      0x63636363</span><br><span class="line">0x7fffffffe350: 0x63636363      0x63636363      0x63636363      0x63636363</span><br><span class="line">0x7fffffffe360: 0x63636363      0x63636363      0x63636363      0x63636363</span><br><span class="line">0x7fffffffe370: 0x63636363      0x63636363      0x63636363      0x63636363</span><br><span class="line">0x7fffffffe380: 0x63636363      0x63636363      0x63636363      0x63636363</span><br><span class="line">0x7fffffffe390: 0x63636363      0x00007fff</span><br></pre></td></tr></table></figure>
-<h6 id="8-对应代码第8行，由于构造了踩栈，指针b被踩，free非法指针会异常。">8. 对应代码第8行，由于构造了踩栈，指针b被踩，free非法指针会异常。</h6>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">0x0000555555554793 &lt;+121&gt;:   mov    -0x10(%rbp),%rax</span><br><span class="line">0x0000555555554797 &lt;+125&gt;:   mov    %rax,%rdi</span><br><span class="line">0x000055555555479a &lt;+128&gt;:   callq  0x5555555545c0 &lt;free@plt&gt;</span><br><span class="line">(gdb) ni</span><br><span class="line"></span><br><span class="line">Program received signal SIGSEGV, Segmentation fault.</span><br><span class="line">__GI___libc_free (mem=0x6363636363636363) at malloc.c:3113</span><br><span class="line">3113    malloc.c: No such file or directory.</span><br><span class="line">(gdb) i r</span><br><span class="line">rax            0x0      0</span><br><span class="line">rbx            0x0      0</span><br><span class="line">rcx            0x555555756260   93824994337376</span><br><span class="line">rdx            0x64     100</span><br><span class="line">rsi            0x63     99</span><br><span class="line">rdi            0x6363636363636363       7161677110969590627</span><br><span class="line">rbp            0x7fffffffe390   0x7fffffffe390</span><br><span class="line">rsp            0x7fffffffe2c0   0x7fffffffe2c0</span><br><span class="line">r8             0x2      2</span><br><span class="line">r9             0x0      0</span><br><span class="line">r10            0x555555756010   93824994336784</span><br><span class="line">r11            0x0      0</span><br><span class="line">r12            0x6363636363636363       7161677110969590627</span><br><span class="line">r13            0x7fffffffe4d0   140737488348368</span><br><span class="line">r14            0x0      0</span><br><span class="line">r15            0x0      0</span><br><span class="line">rip            0x7ffff7a7994d   0x7ffff7a7994d &lt;__GI___libc_free+61&gt;</span><br><span class="line">eflags         0x10206  [ PF IF RF ]</span><br><span class="line">cs             0x33     51</span><br><span class="line">ss             0x2b     43</span><br><span class="line">ds             0x0      0</span><br><span class="line">es             0x0      0</span><br><span class="line">fs             0x0      0</span><br><span class="line">gs             0x0      0</span><br><span class="line">(gdb) bt</span><br><span class="line"><span class="comment">#0  __GI___libc_free (mem=0x6363636363636363) at malloc.c:3113</span></span><br><span class="line"><span class="comment">#1  0x000055555555479f in FuncC () at demo.c:12</span></span><br><span class="line"><span class="comment">#2  0x00005555555547c7 in FuncB () at demo.c:20</span></span><br></pre></td></tr></table></figure>
-<h6 id="9-对应代码第9行">9. 对应代码第9行</h6>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">0x000055555555479f &lt;+133&gt;:   movq   <span class="variable">$0x0</span>,-0x10(%rbp)</span><br><span class="line">0x00005555555547a7 &lt;+141&gt;:   mov    <span class="variable">$0x0</span>,%eax</span><br></pre></td></tr></table></figure>
-<h6 id="10-eax-rax作为函数的返回值，对应代码第10行">10. eax/rax作为函数的返回值，对应代码第10行</h6>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">0x00005555555547a7 &lt;+141&gt;:   mov    <span class="variable">$0x0</span>,%eax</span><br><span class="line">0x00005555555547ac &lt;+146&gt;:   leaveq</span><br><span class="line">0x00005555555547ad &lt;+147&gt;:   retq</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>assembly</category>
-      </categories>
-      <tags>
-        <tag>assembly</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>x86_64搭建arm环境</title>
     <url>/zhoukaiqi/arm-virtual-machine/</url>
     <content><![CDATA[<h6 id="1-安装arm交叉编译工具链">1.安装arm交叉编译工具链</h6>
@@ -202,7 +108,7 @@
 <span id="more"></span>
 <p>以demo.c为例，分析arm下的汇编指令。</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">FuncC</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">0x900C</span>;</span><br><span class="line">    <span class="type">void</span> *b = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">long</span>));</span><br><span class="line">    <span class="type">char</span> str[<span class="number">20</span>] = <span class="string">&quot;Hello World!&quot;</span>;</span><br><span class="line">    <span class="type">int</span> arr[<span class="number">10</span>] = &#123;<span class="number">1</span>&#125;;</span><br><span class="line">    <span class="built_in">memset</span>(arr, <span class="string">&#x27;c&#x27;</span>, <span class="keyword">sizeof</span>(<span class="type">char</span>) * <span class="number">40</span>);</span><br><span class="line">    <span class="built_in">free</span>(b);</span><br><span class="line">    b = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h6 id="1-完整指令-2">1. 完整指令</h6>
+<h6 id="1-完整指令">1. 完整指令</h6>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">(gdb) disassemble FuncC</span><br><span class="line">Dump of assembler code <span class="keyword">for</span> <span class="keyword">function</span> FuncC:</span><br><span class="line">   0x0000aaaaaaaaa8d4 &lt;+0&gt;:     stp     x29, x30, [sp, <span class="comment">#-112]!</span></span><br><span class="line">   0x0000aaaaaaaaa8d8 &lt;+4&gt;:     mov     x29, sp</span><br><span class="line">   0x0000aaaaaaaaa8dc &lt;+8&gt;:     adrp    x0, 0xaaaaaaaba000</span><br><span class="line">   0x0000aaaaaaaaa8e0 &lt;+12&gt;:    ldr     x0, [x0, <span class="comment">#4064]</span></span><br><span class="line">   0x0000aaaaaaaaa8e4 &lt;+16&gt;:    ldr     x1, [x0]</span><br><span class="line">   0x0000aaaaaaaaa8e8 &lt;+20&gt;:    str     x1, [x29, <span class="comment">#104]</span></span><br><span class="line">   0x0000aaaaaaaaa8ec &lt;+24&gt;:    mov     x1, <span class="comment">#0x0                        // #0</span></span><br><span class="line">   0x0000aaaaaaaaa8f0 &lt;+28&gt;:    mov     w0, <span class="comment">#0x900c                     // #36876</span></span><br><span class="line">   0x0000aaaaaaaaa8f4 &lt;+32&gt;:    str     w0, [x29, <span class="comment">#28]</span></span><br><span class="line">   0x0000aaaaaaaaa8f8 &lt;+36&gt;:    mov     x0, <span class="comment">#0x8                        // #8</span></span><br><span class="line">   0x0000aaaaaaaaa8fc &lt;+40&gt;:    bl      0xaaaaaaaaa750 &lt;malloc@plt&gt;</span><br><span class="line">   0x0000aaaaaaaaa900 &lt;+44&gt;:    str     x0, [x29, <span class="comment">#32]</span></span><br><span class="line">   0x0000aaaaaaaaa904 &lt;+48&gt;:    adrp    x0, 0xaaaaaaaaa000</span><br><span class="line">   0x0000aaaaaaaaa908 &lt;+52&gt;:    add     x1, x0, <span class="comment">#0xa98</span></span><br><span class="line">   0x0000aaaaaaaaa90c &lt;+56&gt;:    add     x0, x29, <span class="comment">#0x50</span></span><br><span class="line">   0x0000aaaaaaaaa910 &lt;+60&gt;:    ldr     x2, [x1]</span><br><span class="line">   0x0000aaaaaaaaa914 &lt;+64&gt;:    str     x2, [x0]</span><br><span class="line">   0x0000aaaaaaaaa918 &lt;+68&gt;:    ldur    x1, [x1, <span class="comment">#5]</span></span><br><span class="line">   0x0000aaaaaaaaa91c &lt;+72&gt;:    stur    x1, [x0, <span class="comment">#5]</span></span><br><span class="line">   0x0000aaaaaaaaa920 &lt;+76&gt;:    stur    wzr, [x29, <span class="comment">#93]</span></span><br><span class="line">   0x0000aaaaaaaaa924 &lt;+80&gt;:    sturh   wzr, [x29, <span class="comment">#97]</span></span><br><span class="line">   0x0000aaaaaaaaa928 &lt;+84&gt;:    strb    wzr, [x29, <span class="comment">#99]</span></span><br><span class="line">   0x0000aaaaaaaaa92c &lt;+88&gt;:    stp     xzr, xzr, [x29, <span class="comment">#40]</span></span><br><span class="line">   0x0000aaaaaaaaa930 &lt;+92&gt;:    stp     xzr, xzr, [x29, <span class="comment">#56]</span></span><br><span class="line">   0x0000aaaaaaaaa934 &lt;+96&gt;:    str     xzr, [x29, <span class="comment">#72]</span></span><br><span class="line">   0x0000aaaaaaaaa938 &lt;+100&gt;:   mov     w0, <span class="comment">#0x1                        // #1</span></span><br><span class="line">   0x0000aaaaaaaaa93c &lt;+104&gt;:   str     w0, [x29, <span class="comment">#40]</span></span><br><span class="line">   0x0000aaaaaaaaa940 &lt;+108&gt;:   add     x0, x29, <span class="comment">#0x28</span></span><br><span class="line">   0x0000aaaaaaaaa944 &lt;+112&gt;:   mov     x2, <span class="comment">#0x28                       // #40</span></span><br><span class="line">   0x0000aaaaaaaaa948 &lt;+116&gt;:   mov     w1, <span class="comment">#0x63                       // #99</span></span><br><span class="line">   0x0000aaaaaaaaa94c &lt;+120&gt;:   bl      0xaaaaaaaaa770 &lt;memset@plt&gt;</span><br><span class="line">   0x0000aaaaaaaaa950 &lt;+124&gt;:   ldr     x0, [x29, <span class="comment">#32]</span></span><br><span class="line">   0x0000aaaaaaaaa954 &lt;+128&gt;:   bl      0xaaaaaaaaa7b0 &lt;free@plt&gt;</span><br><span class="line">   0x0000aaaaaaaaa958 &lt;+132&gt;:   str     xzr, [x29, <span class="comment">#32]</span></span><br><span class="line">   0x0000aaaaaaaaa95c &lt;+136&gt;:   mov     w0, <span class="comment">#0x0                        // #0</span></span><br><span class="line">   0x0000aaaaaaaaa960 &lt;+140&gt;:   adrp    x1, 0xaaaaaaaba000</span><br><span class="line">   0x0000aaaaaaaaa964 &lt;+144&gt;:   ldr     x1, [x1, <span class="comment">#4064]</span></span><br><span class="line">   0x0000aaaaaaaaa968 &lt;+148&gt;:   ldr     x2, [x29, <span class="comment">#104]</span></span><br><span class="line">   0x0000aaaaaaaaa96c &lt;+152&gt;:   ldr     x1, [x1]</span><br><span class="line">   0x0000aaaaaaaaa970 &lt;+156&gt;:   eor     x1, x2, x1</span><br><span class="line">   0x0000aaaaaaaaa974 &lt;+160&gt;:   cmp     x1, <span class="comment">#0x0</span></span><br><span class="line">   0x0000aaaaaaaaa978 &lt;+164&gt;:   b.eq    0xaaaaaaaaa980 &lt;FuncC+172&gt;  // b.none</span><br><span class="line">   0x0000aaaaaaaaa97c &lt;+168&gt;:   bl      0xaaaaaaaaa780 &lt;__stack_chk_fail@plt&gt;</span><br><span class="line">   0x0000aaaaaaaaa980 &lt;+172&gt;:   ldp     x29, x30, [sp], <span class="comment">#112</span></span><br><span class="line">   0x0000aaaaaaaaa984 &lt;+176&gt;:   ret</span><br></pre></td></tr></table></figure>
 <h6 id="2-开栈">2. 开栈</h6>
 <p>sp从0xfffffffff9f0偏移-112字节到0xfffffffff980，先存入x29，再存入x30，同时将sp赋值给x29。</p>
@@ -231,6 +137,111 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">0x0000aaaaaaaaa960 &lt;+140&gt;:   adrp    x1, 0xaaaaaaaba000      </span><br><span class="line">0x0000aaaaaaaaa964 &lt;+144&gt;:   ldr     x1, [x1, <span class="comment">#4064]</span></span><br><span class="line">0x0000aaaaaaaaa968 &lt;+148&gt;:   ldr     x2, [x29, <span class="comment">#104]</span></span><br><span class="line">0x0000aaaaaaaaa96c &lt;+152&gt;:   ldr     x1, [x1]</span><br><span class="line">0x0000aaaaaaaaa970 &lt;+156&gt;:   eor     x1, x2, x1</span><br><span class="line">0x0000aaaaaaaaa974 &lt;+160&gt;:   cmp     x1, <span class="comment">#0x0</span></span><br><span class="line">0x0000aaaaaaaaa978 &lt;+164&gt;:   b.eq    0xaaaaaaaaa980 &lt;FuncC+172&gt;  // b.none</span><br><span class="line">0x0000aaaaaaaaa97c &lt;+168&gt;:   bl      0xaaaaaaaaa780 &lt;__stack_chk_fail@plt&gt;</span><br></pre></td></tr></table></figure>
 <h6 id="11-出栈">11. 出栈</h6>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">(gdb) i r <span class="variable">$x29</span> <span class="variable">$x30</span> <span class="variable">$sp</span></span><br><span class="line">x29            0xfffffffff980   281474976708992</span><br><span class="line">x30            0xaaaaaaaaa958   187649984473432</span><br><span class="line">sp             0xfffffffff980   0xfffffffff980</span><br><span class="line">(gdb) x/4wx <span class="variable">$sp</span></span><br><span class="line">0xfffffffff980: 0xfffff9f0      0x0000ffff      0xaaaaa998      0x0000aaaa</span><br><span class="line">0x0000aaaaaaaaa980 &lt;+172&gt;:   ldp     x29, x30, [sp], <span class="comment">#112</span></span><br><span class="line">(gdb) i r <span class="variable">$x29</span> <span class="variable">$x30</span> <span class="variable">$sp</span></span><br><span class="line">x29            0xfffffffff9f0   281474976709104</span><br><span class="line">x30            0xaaaaaaaaa998   187649984473496</span><br><span class="line">sp             0xfffffffff9f0   0xfffffffff9f0</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>assembly</category>
+      </categories>
+      <tags>
+        <tag>assembly</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>叶子函数踩坑记录</title>
+    <url>/zhoukaiqi/leaf-function/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>assembly</category>
+      </categories>
+      <tags>
+        <tag>assembly</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>x86_84常见汇编指令</title>
+    <url>/zhoukaiqi/assembly-x86_64/</url>
+    <content><![CDATA[<p>本文介绍了x86_84常见汇编指令</p>
+<table>
+<thead>
+<tr>
+<th><strong>指令</strong></th>
+<th></th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>lea</td>
+<td>leaq a(b, c, d), %rax</td>
+<td>先计算地址a + b + c * d，然后把最终地址载到寄存器rax中</td>
+</tr>
+<tr>
+<td>shr</td>
+<td>$0x4, %rdi</td>
+<td>右移：rdi &gt;&gt; 4</td>
+</tr>
+<tr>
+<td>mov</td>
+<td>mov    %rax,-0x10(%rbp)</td>
+<td>将rax载入rbp-16的地址，变型：movb, movq, movl, movq</td>
+</tr>
+<tr>
+<td>movz</td>
+<td>movzwl %dx %eax</td>
+<td>将源操作数做零扩展后，再复制到目的操作数中</td>
+</tr>
+<tr>
+<td>movs</td>
+<td>movswl %dx %eax</td>
+<td>将源操作数做符号扩展后，再复制到目的操作数中</td>
+</tr>
+<tr>
+<td>movaps</td>
+<td>movaps %xmm0, -0x80(%rbp)</td>
+<td>SSE指令，一次移动16字节，<code>要求寄存器地址16字节对齐</code></td>
+</tr>
+<tr>
+<td>xor</td>
+<td>xor    %eax, %eax</td>
+<td>eax清零</td>
+</tr>
+<tr>
+<td>test</td>
+<td>test    %eax, %eax</td>
+<td>eax与0比较是否相等</td>
+</tr>
+</tbody>
+</table>
+<p>保存入参的寄存器：<code>rdi, rsi, rdx, rcx, r8, r9</code> 依次对应第一、二、三、四、五、六个参数</p>
+<p>保存返回值的寄存器： <code>rax</code></p>
+<span id="more"></span>
+<p>编译选项需添加<code>-fno-omit-frame-pointer</code>，否则rbp不作为栈帧寄存器使用，无法推栈。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gcc -Q --<span class="built_in">help</span>=optimizers -O2 | grep frame</span><br><span class="line">-fomit-frame-pointer                  [enabled]</span><br></pre></td></tr></table></figure>
+<p>以demo.c为例，分析x86_64下的汇编指令。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">FuncC</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">0x900C</span>;</span><br><span class="line">    <span class="type">void</span> *b = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">long</span>));</span><br><span class="line">    <span class="type">char</span> str[<span class="number">20</span>] = <span class="string">&quot;Hello World!&quot;</span>;</span><br><span class="line">    <span class="type">int</span> arr[<span class="number">10</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="built_in">memset</span>(arr, <span class="string">&#x27;c&#x27;</span>, <span class="keyword">sizeof</span>(<span class="type">char</span>) * <span class="number">100</span>); <span class="comment">//这里构造了踩栈，后续展开</span></span><br><span class="line">    <span class="built_in">free</span>(b);</span><br><span class="line">    b = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>取消栈保护编译选项</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gcc -fno-stack-protector -g demo.c -o demo</span><br></pre></td></tr></table></figure>
+<h6 id="1-完整指令-2">1. 完整指令</h6>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">(gdb) disassemble FuncC</span><br><span class="line">Dump of assembler code <span class="keyword">for</span> <span class="keyword">function</span> FuncC:</span><br><span class="line">   0x000055555555471a &lt;+0&gt;:     push   %rbp</span><br><span class="line">   0x000055555555471b &lt;+1&gt;:     mov    %rsp,%rbp</span><br><span class="line">   0x000055555555471e &lt;+4&gt;:     sub    <span class="variable">$0x60</span>,%rsp</span><br><span class="line">   0x0000555555554722 &lt;+8&gt;:     movl   <span class="variable">$0x900c</span>,-0x4(%rbp)</span><br><span class="line">   0x0000555555554729 &lt;+15&gt;:    mov    <span class="variable">$0x8</span>,%edi</span><br><span class="line">   0x000055555555472e &lt;+20&gt;:    callq  0x5555555545f0 &lt;malloc@plt&gt;</span><br><span class="line">   0x0000555555554733 &lt;+25&gt;:    mov    %rax,-0x10(%rbp)</span><br><span class="line">   0x0000555555554737 &lt;+29&gt;:    movabs <span class="variable">$0x6f57206f6c6c6548</span>,%rax</span><br><span class="line">   0x0000555555554741 &lt;+39&gt;:    mov    <span class="variable">$0x21646c72</span>,%edx</span><br><span class="line">   0x0000555555554746 &lt;+44&gt;:    mov    %rax,-0x30(%rbp)</span><br><span class="line">   0x000055555555474a &lt;+48&gt;:    mov    %rdx,-0x28(%rbp)</span><br><span class="line">   0x000055555555474e &lt;+52&gt;:    movl   <span class="variable">$0x0</span>,-0x20(%rbp)</span><br><span class="line">   0x0000555555554755 &lt;+59&gt;:    movq   <span class="variable">$0x0</span>,-0x60(%rbp)</span><br><span class="line">   0x000055555555475d &lt;+67&gt;:    movq   <span class="variable">$0x0</span>,-0x58(%rbp)</span><br><span class="line">   0x0000555555554765 &lt;+75&gt;:    movq   <span class="variable">$0x0</span>,-0x50(%rbp)</span><br><span class="line">   0x000055555555476d &lt;+83&gt;:    movq   <span class="variable">$0x0</span>,-0x48(%rbp)</span><br><span class="line">   0x0000555555554775 &lt;+91&gt;:    movq   <span class="variable">$0x0</span>,-0x40(%rbp)</span><br><span class="line">   0x000055555555477d &lt;+99&gt;:    lea    -0x60(%rbp),%rax</span><br><span class="line">   0x0000555555554781 &lt;+103&gt;:   mov    <span class="variable">$0x64</span>,%edx</span><br><span class="line">   0x0000555555554786 &lt;+108&gt;:   mov    <span class="variable">$0x63</span>,%esi</span><br><span class="line">   0x000055555555478b &lt;+113&gt;:   mov    %rax,%rdi</span><br><span class="line">   0x000055555555478e &lt;+116&gt;:   callq  0x5555555545e0 &lt;memset@plt&gt;</span><br><span class="line">   0x0000555555554793 &lt;+121&gt;:   mov    -0x10(%rbp),%rax</span><br><span class="line">   0x0000555555554797 &lt;+125&gt;:   mov    %rax,%rdi</span><br><span class="line">   0x000055555555479a &lt;+128&gt;:   callq  0x5555555545c0 &lt;free@plt&gt;</span><br><span class="line">   0x000055555555479f &lt;+133&gt;:   movq   <span class="variable">$0x0</span>,-0x10(%rbp)</span><br><span class="line">   0x00005555555547a7 &lt;+141&gt;:   mov    <span class="variable">$0x0</span>,%eax</span><br><span class="line">   0x00005555555547ac &lt;+146&gt;:   leaveq</span><br><span class="line">   0x00005555555547ad &lt;+147&gt;:   retq</span><br></pre></td></tr></table></figure>
+<h6 id="2-push开栈">2. push开栈</h6>
+<p>开栈大小 = 96字节，rsp是栈顶，rbp是栈底。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">0x000055555555471a &lt;+0&gt;:     push   %rbp</span><br><span class="line">0x000055555555471b &lt;+1&gt;:     mov    %rsp,%rbp</span><br><span class="line">0x000055555555471e &lt;+4&gt;:     sub    <span class="variable">$0x60</span>,%rsp</span><br><span class="line">(gdb) i r <span class="variable">$rsp</span> <span class="variable">$rbp</span></span><br><span class="line">rsp            0x7fffffffe330   0x7fffffffe330</span><br><span class="line">rbp            0x7fffffffe390   0x7fffffffe390</span><br></pre></td></tr></table></figure>
+<h6 id="3-将0x900c存入rbp-4的地址，对应代码第3行。">3. 将0x900c存入rbp - 4的地址，对应代码第3行。</h6>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">0x0000555555554722 &lt;+8&gt;:     movl   <span class="variable">$0x900c</span>,-0x4(%rbp)</span><br><span class="line">(gdb) x/26wx <span class="variable">$rsp</span></span><br><span class="line">0x7fffffffe330: 0xf7ffea98      0x00007fff      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe340: 0x00000000      0x00000000      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe350: 0xffffffff      0x00000000      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe360: 0xf7ffa268      0x00007fff      0xf7ffe710      0x00007fff</span><br><span class="line">0x7fffffffe370: 0x00000000      0x00000000      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe380: 0x00000000      0x00000000      0x00000000      0x0000900c</span><br><span class="line">0x7fffffffe390: 0xffffe3b0      0x00007fff</span><br></pre></td></tr></table></figure>
+<h6 id="4-将edi赋值成8，作为malloc的第一个入参。malloc的结果rax存入rbp-16的地址。对应代码第4行。">4. 将edi赋值成8，作为malloc的第一个入参。malloc的结果rax存入rbp-16的地址。对应代码第4行。</h6>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">0x0000555555554729 &lt;+15&gt;:    mov    <span class="variable">$0x8</span>,%edi</span><br><span class="line">0x000055555555472e &lt;+20&gt;:    callq  0x5555555545f0 &lt;malloc@plt&gt;</span><br><span class="line">0x0000555555554733 &lt;+25&gt;:    mov    %rax,-0x10(%rbp)</span><br><span class="line">(gdb) x/26wx <span class="variable">$rsp</span></span><br><span class="line">0x7fffffffe330: 0xf7ffea98      0x00007fff      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe340: 0x00000000      0x00000000      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe350: 0xffffffff      0x00000000      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe360: 0xf7ffa268      0x00007fff      0xf7ffe710      0x00007fff</span><br><span class="line">0x7fffffffe370: 0x00000000      0x00000000      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe380: 0x55756260      0x00005555      0x00000000      0x0000900c</span><br><span class="line">0x7fffffffe390: 0xffffe3b0      0x00007fff</span><br></pre></td></tr></table></figure>
+<h6 id="5-将0x6f57206f6c6c6548存入rax，将0x21646c72存入edx，rax存入rbp-48的地址，rdx存入rbp-40的地址，最后四字节补0，对应代码第5行。">5. 将0x6f57206f6c6c6548存入rax，将0x21646c72存入edx，rax存入rbp-48的地址，rdx存入rbp-40的地址，最后四字节补0，对应代码第5行。</h6>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">48  65  6c  6c  6f  20  57  6f  72  6c  64  21</span><br><span class="line"><span class="string">&#x27;H&#x27;</span> <span class="string">&#x27;e&#x27;</span> <span class="string">&#x27;l&#x27;</span> <span class="string">&#x27;l&#x27;</span> <span class="string">&#x27;o&#x27;</span> <span class="string">&#x27; &#x27;</span> <span class="string">&#x27;W&#x27;</span> <span class="string">&#x27;o&#x27;</span> <span class="string">&#x27;r&#x27;</span> <span class="string">&#x27;l&#x27;</span> <span class="string">&#x27;d&#x27;</span> <span class="string">&#x27;!&#x27;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">0x0000555555554737 &lt;+29&gt;:    movabs <span class="variable">$0x6f57206f6c6c6548</span>,%rax</span><br><span class="line">0x0000555555554741 &lt;+39&gt;:    mov    <span class="variable">$0x21646c72</span>,%edx</span><br><span class="line">0x0000555555554746 &lt;+44&gt;:    mov    %rax,-0x30(%rbp)</span><br><span class="line">0x000055555555474a &lt;+48&gt;:    mov    %rdx,-0x28(%rbp)</span><br><span class="line">0x000055555555474e &lt;+52&gt;:    movl   <span class="variable">$0x0</span>,-0x20(%rbp)</span><br><span class="line">(gdb) x/26wx <span class="variable">$rsp</span></span><br><span class="line">0x7fffffffe330: 0xf7ffea98      0x00007fff      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe340: 0x00000000      0x00000000      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe350: 0xffffffff      0x00000000      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe360: 0x6c6c6548      0x6f57206f      0x21646c72      0x00000000</span><br><span class="line">0x7fffffffe370: 0x00000000      0x00000000      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe380: 0x55756260      0x00005555      0x00000000      0x0000900c</span><br><span class="line">0x7fffffffe390: 0xffffe3b0      0x00007fff</span><br></pre></td></tr></table></figure>
+<h6 id="6-从rbp-96的地址开始，依次将连续的40字节设置成0，对应代码第6行。">6. 从rbp-96的地址开始，依次将连续的40字节设置成0，对应代码第6行。</h6>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">0x0000555555554755 &lt;+59&gt;:    movq   <span class="variable">$0x0</span>,-0x60(%rbp)</span><br><span class="line">0x000055555555475d &lt;+67&gt;:    movq   <span class="variable">$0x0</span>,-0x58(%rbp)</span><br><span class="line">0x0000555555554765 &lt;+75&gt;:    movq   <span class="variable">$0x0</span>,-0x50(%rbp)</span><br><span class="line">0x000055555555476d &lt;+83&gt;:    movq   <span class="variable">$0x0</span>,-0x48(%rbp)</span><br><span class="line">0x0000555555554775 &lt;+91&gt;:    movq   <span class="variable">$0x0</span>,-0x40(%rbp)</span><br><span class="line">0x7fffffffe330: 0x00000000      0x00000000      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe340: 0x00000000      0x00000000      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe350: 0x00000000      0x00000000      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe360: 0x6c6c6548      0x6f57206f      0x21646c72      0x00000000</span><br><span class="line">0x7fffffffe370: 0x00000000      0x00000000      0x00000000      0x00000000</span><br><span class="line">0x7fffffffe380: 0x55756260      0x00005555      0x00000000      0x0000900c</span><br><span class="line">0x7fffffffe390: 0xffffe3b0      0x00007fff</span><br></pre></td></tr></table></figure>
+<h6 id="7-从rbp-96的地址开始，依次将连续的100字节设置成’c’，对应代码第7行。（这里构造了踩栈）">7. 从rbp-96的地址开始，依次将连续的100字节设置成’c’，对应代码第7行。（这里构造了踩栈）</h6>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">0x000055555555477d &lt;+99&gt;:    lea    -0x60(%rbp),%rax</span><br><span class="line">0x0000555555554781 &lt;+103&gt;:   mov    <span class="variable">$0x64</span>,%edx</span><br><span class="line">0x0000555555554786 &lt;+108&gt;:   mov    <span class="variable">$0x63</span>,%esi</span><br><span class="line">0x000055555555478b &lt;+113&gt;:   mov    %rax,%rdi</span><br><span class="line">0x000055555555478e &lt;+116&gt;:   callq  0x5555555545e0 &lt;memset@plt&gt;</span><br><span class="line">(gdb) x/26wx <span class="variable">$rsp</span></span><br><span class="line">0x7fffffffe330: 0x63636363      0x63636363      0x63636363      0x63636363</span><br><span class="line">0x7fffffffe340: 0x63636363      0x63636363      0x63636363      0x63636363</span><br><span class="line">0x7fffffffe350: 0x63636363      0x63636363      0x63636363      0x63636363</span><br><span class="line">0x7fffffffe360: 0x63636363      0x63636363      0x63636363      0x63636363</span><br><span class="line">0x7fffffffe370: 0x63636363      0x63636363      0x63636363      0x63636363</span><br><span class="line">0x7fffffffe380: 0x63636363      0x63636363      0x63636363      0x63636363</span><br><span class="line">0x7fffffffe390: 0x63636363      0x00007fff</span><br></pre></td></tr></table></figure>
+<h6 id="8-对应代码第8行，由于构造了踩栈，指针b被踩，free非法指针会异常。">8. 对应代码第8行，由于构造了踩栈，指针b被踩，free非法指针会异常。</h6>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">0x0000555555554793 &lt;+121&gt;:   mov    -0x10(%rbp),%rax</span><br><span class="line">0x0000555555554797 &lt;+125&gt;:   mov    %rax,%rdi</span><br><span class="line">0x000055555555479a &lt;+128&gt;:   callq  0x5555555545c0 &lt;free@plt&gt;</span><br><span class="line">(gdb) ni</span><br><span class="line"></span><br><span class="line">Program received signal SIGSEGV, Segmentation fault.</span><br><span class="line">__GI___libc_free (mem=0x6363636363636363) at malloc.c:3113</span><br><span class="line">3113    malloc.c: No such file or directory.</span><br><span class="line">(gdb) i r</span><br><span class="line">rax            0x0      0</span><br><span class="line">rbx            0x0      0</span><br><span class="line">rcx            0x555555756260   93824994337376</span><br><span class="line">rdx            0x64     100</span><br><span class="line">rsi            0x63     99</span><br><span class="line">rdi            0x6363636363636363       7161677110969590627</span><br><span class="line">rbp            0x7fffffffe390   0x7fffffffe390</span><br><span class="line">rsp            0x7fffffffe2c0   0x7fffffffe2c0</span><br><span class="line">r8             0x2      2</span><br><span class="line">r9             0x0      0</span><br><span class="line">r10            0x555555756010   93824994336784</span><br><span class="line">r11            0x0      0</span><br><span class="line">r12            0x6363636363636363       7161677110969590627</span><br><span class="line">r13            0x7fffffffe4d0   140737488348368</span><br><span class="line">r14            0x0      0</span><br><span class="line">r15            0x0      0</span><br><span class="line">rip            0x7ffff7a7994d   0x7ffff7a7994d &lt;__GI___libc_free+61&gt;</span><br><span class="line">eflags         0x10206  [ PF IF RF ]</span><br><span class="line">cs             0x33     51</span><br><span class="line">ss             0x2b     43</span><br><span class="line">ds             0x0      0</span><br><span class="line">es             0x0      0</span><br><span class="line">fs             0x0      0</span><br><span class="line">gs             0x0      0</span><br><span class="line">(gdb) bt</span><br><span class="line"><span class="comment">#0  __GI___libc_free (mem=0x6363636363636363) at malloc.c:3113</span></span><br><span class="line"><span class="comment">#1  0x000055555555479f in FuncC () at demo.c:12</span></span><br><span class="line"><span class="comment">#2  0x00005555555547c7 in FuncB () at demo.c:20</span></span><br></pre></td></tr></table></figure>
+<h6 id="9-对应代码第9行">9. 对应代码第9行</h6>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">0x000055555555479f &lt;+133&gt;:   movq   <span class="variable">$0x0</span>,-0x10(%rbp)</span><br><span class="line">0x00005555555547a7 &lt;+141&gt;:   mov    <span class="variable">$0x0</span>,%eax</span><br></pre></td></tr></table></figure>
+<h6 id="10-eax-rax作为函数的返回值，对应代码第10行">10. eax/rax作为函数的返回值，对应代码第10行</h6>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">0x00005555555547a7 &lt;+141&gt;:   mov    <span class="variable">$0x0</span>,%eax</span><br><span class="line">0x00005555555547ac &lt;+146&gt;:   leaveq</span><br><span class="line">0x00005555555547ad &lt;+147&gt;:   retq</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>assembly</category>
@@ -301,17 +312,6 @@
       </categories>
       <tags>
         <tag>gdb</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>叶子函数踩坑记录</title>
-    <url>/zhoukaiqi/leaf-function/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>assembly</category>
-      </categories>
-      <tags>
-        <tag>assembly</tag>
       </tags>
   </entry>
 </search>
