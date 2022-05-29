@@ -220,7 +220,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.2k</span>
+              <span>1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -242,7 +242,7 @@
         <p>本文介绍了常见工具的使用</p>
 <span id="more"></span>
 <h6 id="1-tcpdump">1. tcpdump</h6>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">// 指定网口</span><br><span class="line">tcpdump -x -n -v -s 0 -i eth2 -w demo.cap</span><br><span class="line">// 指定IP + 端口</span><br><span class="line">tcpdump -x -n -v -s 0 -i any host IP and port 21 -w demo.cap</span><br><span class="line">tcpdump -x -n -v -s 0 -i any src host srcIP and host dstIP and port 21 -w demo.cap</span><br><span class="line">// 环回网口</span><br><span class="line">tcpdump -x -n -v -s 0 -i lo -w demo.cap</span><br><span class="line">// 指定协议类型</span><br><span class="line">tcpdump -x -n -v -s 0 -i any ether proto 56320 -w demo.cap</span><br><span class="line">// 指定物理地址</span><br><span class="line">tcpdump -x -n -v -s 0 -i eth2 not tcp and not udp and ether host macaddr -w demo.cap</span><br><span class="line"></span><br><span class="line">tcpdump -x -n -v -s 0 -i any \(host 172.16.128.21 and host 172.16.128.22 and port 20015 and port 20015\) </span><br><span class="line">or \(host 172.16.136.22 and host 172.16.136.21 and port 20016 and port 20016\) </span><br><span class="line">or \(host 172.16.128.21 and host 172.16.136.21 and port 22535 and port 22536\) </span><br><span class="line">or \(host 172.16.136.22 and host 172.16.128.22 and port 22536 and port 22535\) -w src.cap</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// 指定网口</span><br><span class="line">tcpdump -x -n -v -s 0 -i eth2 -w demo.cap</span><br><span class="line">// 指定IP + 端口</span><br><span class="line">tcpdump -x -n -v -s 0 -i any host IP and port 21 -w demo.cap</span><br><span class="line">tcpdump -x -n -v -s 0 -i any src host srcIP and host dstIP and port 21 -w demo.cap</span><br><span class="line">// 环回网口</span><br><span class="line">tcpdump -x -n -v -s 0 -i lo -w demo.cap</span><br><span class="line">// 指定协议类型</span><br><span class="line">tcpdump -x -n -v -s 0 -i any ether proto 56320 -w demo.cap</span><br><span class="line">// 指定物理地址</span><br><span class="line">tcpdump -x -n -v -s 0 -i eth2 not tcp and not udp and ether host macaddr -w demo.cap</span><br><span class="line"></span><br><span class="line">tcpdump -x -n -v -s 0 -i any \(host IP and port 20015 \) or \(host IP \) -w demo.cap</span><br></pre></td></tr></table></figure>
 <table>
 <thead>
 <tr>
@@ -289,7 +289,7 @@
 <p>data[61:3]==0a:39:00</p>
 <p>data数据报文中，以第61字节开始，之后的3个字节的数据为 0a:39:00</p>
 <h6 id="2-strace">2. strace</h6>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">strace -ff -tt -T -o <span class="built_in">log</span> -p 17720</span><br><span class="line">strace -f -tt -T -o <span class="built_in">log</span> -p 35332</span><br><span class="line">strace -ft -o <span class="built_in">log</span> -p 35332</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">strace -ff -tt -T -o <span class="built_in">log</span> -p 17720</span><br><span class="line">strace -f -tt -T -o <span class="built_in">log</span> -p 35332</span><br><span class="line">strace -ft -o <span class="built_in">log</span> -p 35332</span><br><span class="line">// 跟踪单个线程</span><br><span class="line">strace -tt -T -o strace.log -p pid</span><br></pre></td></tr></table></figure>
 <table>
 <thead>
 <tr>
@@ -299,16 +299,20 @@
 </thead>
 <tbody>
 <tr>
-<td>-ff</td>
-<td>跟踪由fork调用所产生的子进程</td>
+<td>-f</td>
+<td>跟踪子线程</td>
 </tr>
 <tr>
-<td>-tt</td>
-<td>表示打印时间精确到毫秒级别</td>
+<td>-ff</td>
+<td>跟踪子线程，每个线程独立文件</td>
 </tr>
 <tr>
 <td>-t</td>
-<td>表示打印时间精确到秒级别</td>
+<td>表示时间精确到秒(每秒记录一次)</td>
+</tr>
+<tr>
+<td>-tt</td>
+<td>表示时间精确到微秒(每微秒记录一次)</td>
 </tr>
 <tr>
 <td>-T</td>
@@ -320,7 +324,7 @@
 </tr>
 <tr>
 <td>-p</td>
-<td>绑定正在运行的进程号</td>
+<td>pid</td>
 </tr>
 </tbody>
 </table>
@@ -357,7 +361,10 @@
     <a href="/zhoukaiqi/assembly-arm/" rel="prev" title="arm常见汇编指令">
       <i class="fa fa-chevron-left"></i> arm常见汇编指令
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/zhoukaiqi/stack-chk-fail/" rel="next" title="栈保护canary机制与__stack_chk_fail">
+      栈保护canary机制与__stack_chk_fail <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -433,7 +440,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/zhoukaiqi/archives/">
         
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -483,13 +490,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">20k</span>
+    <span title="站点总字数">24k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">18 分钟</span>
+    <span title="站点阅读时长">22 分钟</span>
 </div><div>
     <!--添加总阅读次数-->
     <div>
