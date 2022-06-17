@@ -20,15 +20,18 @@
     var CONFIG = {"hostname":"zhoukaiqi.gitee.io","root":"/zhoukaiqi/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="数风流人物，还看今朝">
-<meta property="og:url" content="https://zhoukaiqi.gitee.io/archives/2022/05/index.html">
+  <meta property="og:type" content="article">
+<meta property="og:title" content="调用者与被调用者的寄存器优化">
+<meta property="og:url" content="https://zhoukaiqi.gitee.io/leaf-function/index.html">
 <meta property="og:site_name" content="数风流人物，还看今朝">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-06-03T08:39:23.000Z">
+<meta property="article:modified_time" content="2022-06-03T08:39:23.000Z">
 <meta property="article:author" content="CodeKai">
+<meta property="article:tag" content="assembly">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://zhoukaiqi.gitee.io/archives/2022/05/">
+<link rel="canonical" href="https://zhoukaiqi.gitee.io/leaf-function/">
 
 
 <script id="page-configurations">
@@ -36,12 +39,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>归档 | 数风流人物，还看今朝</title>
+  <title>调用者与被调用者的寄存器优化 | 数风流人物，还看今朝</title>
   
 
 
@@ -156,76 +159,148 @@
         <div class="content-wrap">
           
 
-          <div class="content archive">
+          <div class="content post posts-expand">
             
 
+    
   
   
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhoukaiqi.gitee.io/leaf-function/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/zhoukaiqi/images/header.png">
+      <meta itemprop="name" content="CodeKai">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="数风流人物，还看今朝">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          调用者与被调用者的寄存器优化
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-06-03 16:39:23" itemprop="dateCreated datePublished" datetime="2022-06-03T16:39:23+08:00">2022-06-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/zhoukaiqi/categories/assembly/" itemprop="url" rel="index"><span itemprop="name">assembly</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/zhoukaiqi/leaf-function/" class="post-meta-item leancloud_visitors" data-flag-title="调用者与被调用者的寄存器优化" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
   
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <span class="collection-header">嗯..! 目前共计 8 篇日志。 继续努力。</span>
-      </div>
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/zhoukaiqi/leaf-function/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/zhoukaiqi/leaf-function/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>0</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2022</span>
+        
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-05-30T00:10:26+08:00"
-              content="2022-05-30">
-          05-30
-        </time>
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/zhoukaiqi/images/wechatpay.png" alt="CodeKai 微信支付">
+        <p>微信支付</p>
       </div>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/zhoukaiqi/stack-chk-fail/" itemprop="url">
-            <span itemprop="name">栈保护canary机制与__stack_chk_fail</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-05-28T02:00:35+08:00"
-              content="2022-05-28">
-          05-28
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/zhoukaiqi/common-tools/" itemprop="url">
-            <span itemprop="name">common-tools</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-
-    </div>
   </div>
-  
-  
-  
+</div>
 
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/zhoukaiqi/tags/assembly/" rel="tag"><i class="fa fa-tag"></i> assembly</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/zhoukaiqi/stack-chk-fail/" rel="prev" title="栈保护canary机制与__stack_chk_fail">
+      <i class="fa fa-chevron-left"></i> 栈保护canary机制与__stack_chk_fail
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/zhoukaiqi/movaps%E6%8C%87%E4%BB%A4%E5%BC%95%E8%B5%B7%E7%9A%84%E5%A4%8D%E4%BD%8D/" rel="next" title="movaps指令引起的复位">
+      movaps指令引起的复位 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
 
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {

@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-04-04T03:28:18.000Z">
 <meta property="article:modified_time" content="2022-04-04T03:28:18.000Z">
-<meta property="article:author" content="Kaiqi Zhou">
+<meta property="article:author" content="CodeKai">
 <meta property="article:tag" content="assembly">
 <meta name="twitter:card" content="summary">
 
@@ -172,7 +172,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/zhoukaiqi/images/header.png">
-      <meta itemprop="name" content="Kaiqi Zhou">
+      <meta itemprop="name" content="CodeKai">
       <meta itemprop="description" content="">
     </span>
 
@@ -230,7 +230,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>7.2k</span>
+              <span>7.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -311,6 +311,10 @@
 <span id="more"></span>
 <p>编译选项需添加<code>-fno-omit-frame-pointer</code>，否则rbp不作为栈帧寄存器使用，无法推栈。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gcc -Q --<span class="built_in">help</span>=optimizers -O2 | grep frame</span><br><span class="line">-fomit-frame-pointer                  [enabled]</span><br></pre></td></tr></table></figure>
+<p><font color="#FF0000"> <strong>push rbp的具体实现</strong> </font></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rsp = rsp - 8</span><br><span class="line">*(unsigned long*)rsp = rbp</span><br></pre></td></tr></table></figure>
+<p><font color="#FF0000"> <strong>callq addr的具体实现</strong> </font></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rsp = rsp - 8</span><br><span class="line">*(unsigned long*)rsp = rip + sizeof(inst)</span><br><span class="line">rip = addr</span><br></pre></td></tr></table></figure>
 <p>以demo.c为例，分析x86_64下的汇编指令。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">FuncC</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">0x900C</span>;</span><br><span class="line">    <span class="type">void</span> *b = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">long</span>));</span><br><span class="line">    <span class="type">char</span> str[<span class="number">20</span>] = <span class="string">&quot;Hello World!&quot;</span>;</span><br><span class="line">    <span class="type">int</span> arr[<span class="number">10</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="built_in">memset</span>(arr, <span class="string">&#x27;c&#x27;</span>, <span class="keyword">sizeof</span>(<span class="type">char</span>) * <span class="number">100</span>); <span class="comment">//这里构造了踩栈，后续展开</span></span><br><span class="line">    <span class="built_in">free</span>(b);</span><br><span class="line">    b = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>取消栈保护编译选项</p>
@@ -351,7 +355,7 @@
   <div id="qr" style="display: none;">
       
       <div style="display: inline-block;">
-        <img src="/zhoukaiqi/images/wechatpay.png" alt="Kaiqi Zhou 微信支付">
+        <img src="/zhoukaiqi/images/wechatpay.png" alt="CodeKai 微信支付">
         <p>微信支付</p>
       </div>
 
@@ -375,8 +379,8 @@
       <i class="fa fa-chevron-left"></i> gdb使用
     </a></div>
       <div class="post-nav-item">
-    <a href="/zhoukaiqi/arm-virtual-machine/" rel="next" title="x86_64搭建arm环境">
-      x86_64搭建arm环境 <i class="fa fa-chevron-right"></i>
+    <a href="/zhoukaiqi/arm-virtual-machine/" rel="next" title="x86_64模拟arm环境">
+      x86_64模拟arm环境 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -443,9 +447,9 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="Kaiqi Zhou"
+    <img class="site-author-image" itemprop="image" alt="CodeKai"
       src="/zhoukaiqi/images/header.png">
-  <p class="site-author-name" itemprop="name">Kaiqi Zhou</p>
+  <p class="site-author-name" itemprop="name">CodeKai</p>
   <div class="site-description" itemprop="description"></div>
 </div>
 <div class="site-state-wrap motion-element">
@@ -453,7 +457,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/zhoukaiqi/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -497,19 +501,19 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">Kaiqi Zhou</span>
+  <span class="author" itemprop="copyrightHolder">CodeKai</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">24k</span>
+    <span title="站点总字数">26k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">22 分钟</span>
+    <span title="站点阅读时长">24 分钟</span>
 </div><div>
     <!--添加总阅读次数-->
     <div>

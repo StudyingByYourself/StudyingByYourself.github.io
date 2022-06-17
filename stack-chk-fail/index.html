@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-05-29T16:10:26.000Z">
 <meta property="article:modified_time" content="2022-05-29T16:10:26.000Z">
-<meta property="article:author" content="Kaiqi Zhou">
+<meta property="article:author" content="CodeKai">
 <meta property="article:tag" content="assembly">
 <meta name="twitter:card" content="summary">
 
@@ -172,7 +172,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/zhoukaiqi/images/header.png">
-      <meta itemprop="name" content="Kaiqi Zhou">
+      <meta itemprop="name" content="CodeKai">
       <meta itemprop="description" content="">
     </span>
 
@@ -259,12 +259,12 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">(gdb) disassemble FuncDemo</span><br><span class="line">Dump of assembler code <span class="keyword">for</span> <span class="keyword">function</span> FuncDemo:</span><br><span class="line">   0x0000aaaaaaaaa884 &lt;+0&gt;:     stp     x29, x30, [sp, <span class="comment">#-112]!</span></span><br><span class="line">   0x0000aaaaaaaaa888 &lt;+4&gt;:     mov     x29, sp</span><br><span class="line">   0x0000aaaaaaaaa88c &lt;+8&gt;:     adrp    x0, 0xaaaaaaaba000</span><br><span class="line">   0x0000aaaaaaaaa890 &lt;+12&gt;:    ldr     x0, [x0, <span class="comment">#4064]</span></span><br><span class="line">   0x0000aaaaaaaaa894 &lt;+16&gt;:    ldr     x1, [x0]</span><br><span class="line">   0x0000aaaaaaaaa898 &lt;+20&gt;:    str     x1, [x29, <span class="comment">#104]</span></span><br><span class="line">   0x0000aaaaaaaaa89c &lt;+24&gt;:    mov     x1, <span class="comment">#0x0                        // #0</span></span><br><span class="line">   0x0000aaaaaaaaa8a0 &lt;+28&gt;:    mov     w0, <span class="comment">#0x900c                     // #36876</span></span><br><span class="line">   0x0000aaaaaaaaa8a4 &lt;+32&gt;:    str     w0, [x29, <span class="comment">#28]</span></span><br><span class="line">   0x0000aaaaaaaaa8a8 &lt;+36&gt;:    mov     x0, <span class="comment">#0x8                        // #8</span></span><br><span class="line">   0x0000aaaaaaaaa8ac &lt;+40&gt;:    bl      0xaaaaaaaaa710 &lt;malloc@plt&gt;</span><br><span class="line">   0x0000aaaaaaaaa8b0 &lt;+44&gt;:    str     x0, [x29, <span class="comment">#32]</span></span><br><span class="line">   0x0000aaaaaaaaa8b4 &lt;+48&gt;:    adrp    x0, 0xaaaaaaaaa000</span><br><span class="line">   0x0000aaaaaaaaa8b8 &lt;+52&gt;:    add     x1, x0, <span class="comment">#0x9f0</span></span><br><span class="line">   0x0000aaaaaaaaa8bc &lt;+56&gt;:    add     x0, x29, <span class="comment">#0x50</span></span><br><span class="line">   0x0000aaaaaaaaa8c0 &lt;+60&gt;:    ldr     x2, [x1]</span><br><span class="line">   0x0000aaaaaaaaa8c4 &lt;+64&gt;:    str     x2, [x0]</span><br><span class="line">   0x0000aaaaaaaaa8c8 &lt;+68&gt;:    ldur    x1, [x1, <span class="comment">#5]</span></span><br><span class="line">   0x0000aaaaaaaaa8cc &lt;+72&gt;:    stur    x1, [x0, <span class="comment">#5]</span></span><br><span class="line">   0x0000aaaaaaaaa8d0 &lt;+76&gt;:    stur    wzr, [x29, <span class="comment">#93]</span></span><br><span class="line">   0x0000aaaaaaaaa8d4 &lt;+80&gt;:    sturh   wzr, [x29, <span class="comment">#97]</span></span><br><span class="line">   0x0000aaaaaaaaa8d8 &lt;+84&gt;:    strb    wzr, [x29, <span class="comment">#99]</span></span><br><span class="line">   0x0000aaaaaaaaa8dc &lt;+88&gt;:    stp     xzr, xzr, [x29, <span class="comment">#40]</span></span><br><span class="line">   0x0000aaaaaaaaa8e0 &lt;+92&gt;:    stp     xzr, xzr, [x29, <span class="comment">#56]</span></span><br><span class="line">   0x0000aaaaaaaaa8e4 &lt;+96&gt;:    str     xzr, [x29, <span class="comment">#72]</span></span><br><span class="line">   0x0000aaaaaaaaa8e8 &lt;+100&gt;:   mov     w0, <span class="comment">#0x1                        // #1</span></span><br><span class="line">   0x0000aaaaaaaaa8ec &lt;+104&gt;:   str     w0, [x29, <span class="comment">#40]</span></span><br><span class="line">   0x0000aaaaaaaaa8f0 &lt;+108&gt;:   add     x0, x29, <span class="comment">#0x28</span></span><br><span class="line">   0x0000aaaaaaaaa8f4 &lt;+112&gt;:   mov     x2, <span class="comment">#0x64                       // #100</span></span><br><span class="line">   0x0000aaaaaaaaa8f8 &lt;+116&gt;:   mov     w1, <span class="comment">#0x63                       // #99</span></span><br><span class="line">   0x0000aaaaaaaaa8fc &lt;+120&gt;:   bl      0xaaaaaaaaa730 &lt;memset@plt&gt;</span><br><span class="line">   0x0000aaaaaaaaa900 &lt;+124&gt;:   ldr     x0, [x29, <span class="comment">#32]</span></span><br><span class="line">   0x0000aaaaaaaaa904 &lt;+128&gt;:   bl      0xaaaaaaaaa770 &lt;free@plt&gt;</span><br><span class="line">   0x0000aaaaaaaaa908 &lt;+132&gt;:   str     xzr, [x29, <span class="comment">#32]</span></span><br><span class="line">   0x0000aaaaaaaaa90c &lt;+136&gt;:   mov     w0, <span class="comment">#0x0                        // #0</span></span><br><span class="line">   0x0000aaaaaaaaa910 &lt;+140&gt;:   adrp    x1, 0xaaaaaaaba000</span><br><span class="line">   0x0000aaaaaaaaa914 &lt;+144&gt;:   ldr     x1, [x1, <span class="comment">#4064]</span></span><br><span class="line">   0x0000aaaaaaaaa918 &lt;+148&gt;:   ldr     x2, [x29, <span class="comment">#104]</span></span><br><span class="line">   0x0000aaaaaaaaa91c &lt;+152&gt;:   ldr     x1, [x1]</span><br><span class="line">   0x0000aaaaaaaaa920 &lt;+156&gt;:   eor     x1, x2, x1</span><br><span class="line">   0x0000aaaaaaaaa924 &lt;+160&gt;:   cmp     x1, <span class="comment">#0x0</span></span><br><span class="line">   0x0000aaaaaaaaa928 &lt;+164&gt;:   b.eq    0xaaaaaaaaa930 &lt;FuncDemo+172&gt;  // b.none</span><br><span class="line">   0x0000aaaaaaaaa92c &lt;+168&gt;:   bl      0xaaaaaaaaa740 &lt;__stack_chk_fail@plt&gt;</span><br><span class="line">   0x0000aaaaaaaaa930 &lt;+172&gt;:   ldp     x29, x30, [sp], <span class="comment">#112</span></span><br><span class="line">   0x0000aaaaaaaaa934 &lt;+176&gt;:   ret</span><br></pre></td></tr></table></figure>
 <h6 id="1-先通过反汇编找到canary在栈上的存放地址">1. 先通过反汇编找到canary在栈上的存放地址</h6>
 <p>canary的值是<code>0x4c597894f2014f00</code>，存入sp + 104的地址</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">(gdb) disassemble FuncDemo</span><br><span class="line">Dump of assembler code <span class="keyword">for</span> <span class="keyword">function</span> FuncDemo:</span><br><span class="line">   0x0000aaaaaaaaa884 &lt;+0&gt;:     stp     x29, x30, [sp, <span class="comment">#-112]!</span></span><br><span class="line">   0x0000aaaaaaaaa888 &lt;+4&gt;:     mov     x29, sp</span><br><span class="line">   0x0000aaaaaaaaa88c &lt;+8&gt;:     adrp    x0, 0xaaaaaaaba000</span><br><span class="line">   0x0000aaaaaaaaa890 &lt;+12&gt;:    ldr     x0, [x0, <span class="comment">#4064]</span></span><br><span class="line">   0x0000aaaaaaaaa894 &lt;+16&gt;:    ldr     x1, [x0]</span><br><span class="line">   0x0000aaaaaaaaa898 &lt;+20&gt;:    str     x1, [x29, <span class="comment">#104]</span></span><br><span class="line">=&gt; 0x0000aaaaaaaaa89c &lt;+24&gt;:    mov     x1, <span class="comment">#0x0                        // #0</span></span><br><span class="line">(gdb) i r x0 x1</span><br><span class="line">x0             0xfffff7ffd7a8   281474842482600</span><br><span class="line">x1             0x4c597894f2014f00       5501561000920436480</span><br><span class="line">(gdb) x/2wx <span class="variable">$x0</span></span><br><span class="line">0xfffff7ffd7a8 &lt;__stack_chk_guard&gt;:     0xf2014f00      0x4c597894</span><br><span class="line">(gdb) x/2wx <span class="variable">$sp</span> + 104</span><br><span class="line">0xfffffffffa38: 0xf2014f00      0x4c597894</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">(gdb) disassemble FuncDemo</span><br><span class="line">Dump of assembler code <span class="keyword">for</span> <span class="keyword">function</span> FuncDemo:</span><br><span class="line">   0x0000aaaaaaaaa884 &lt;+0&gt;:     stp     x29, x30, [sp, <span class="comment">#-112]!</span></span><br><span class="line">   0x0000aaaaaaaaa888 &lt;+4&gt;:     mov     x29, sp</span><br><span class="line">   0x0000aaaaaaaaa88c &lt;+8&gt;:     adrp    x0, 0xaaaaaaaba000</span><br><span class="line">   0x0000aaaaaaaaa890 &lt;+12&gt;:    ldr     x0, [x0, <span class="comment">#4064]</span></span><br><span class="line">   0x0000aaaaaaaaa894 &lt;+16&gt;:    ldr     x1, [x0]</span><br><span class="line">   0x0000aaaaaaaaa898 &lt;+20&gt;:    str     x1, [x29, <span class="comment">#104]</span></span><br><span class="line">(gdb) i r x0 x1</span><br><span class="line">x0             0xfffff7ffd7a8   281474842482600</span><br><span class="line">x1             0x4c597894f2014f00       5501561000920436480</span><br><span class="line">(gdb) x/2wx <span class="variable">$x0</span></span><br><span class="line">0xfffff7ffd7a8 &lt;__stack_chk_guard&gt;:     0xf2014f00      0x4c597894</span><br><span class="line">(gdb) x/2wx <span class="variable">$sp</span> + 104</span><br><span class="line">0xfffffffffa38: 0xf2014f00      0x4c597894</span><br></pre></td></tr></table></figure>
 <h6 id="2-执行完代码第7行">2. 执行完代码第7行</h6>
 <p>memset越界，将栈中保存的canary值踩成了’c’</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">   0x0000aaaaaaaaa8fc &lt;+120&gt;:   bl      0xaaaaaaaaa730 &lt;memset@plt&gt;</span><br><span class="line">=&gt; 0x0000aaaaaaaaa900 &lt;+124&gt;:   ldr     x0, [x29, <span class="comment">#32]</span></span><br><span class="line">(gdb) x/2wx <span class="variable">$sp</span> + 104</span><br><span class="line">0xfffffffffa38: 0x63636363      0x63636363</span><br></pre></td></tr></table></figure>
 <h6 id="3-继续执行">3. 继续执行</h6>
-<p>从栈中取出保存的canary值与原来的canary值比较，不相等则跳转到__stack_chk_fail</p>
+<p>从栈中取出保存的canary值与原来的canary值比较，不相等则说明有踩栈，跳转到__stack_chk_fail并抛出异常信号。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">   0x0000aaaaaaaaa910 &lt;+140&gt;:   adrp    x1, 0xaaaaaaaba000</span><br><span class="line">   0x0000aaaaaaaaa914 &lt;+144&gt;:   ldr     x1, [x1, <span class="comment">#4064]</span></span><br><span class="line">   0x0000aaaaaaaaa918 &lt;+148&gt;:   ldr     x2, [x29, <span class="comment">#104]</span></span><br><span class="line">   0x0000aaaaaaaaa91c &lt;+152&gt;:   ldr     x1, [x1]</span><br><span class="line">   0x0000aaaaaaaaa920 &lt;+156&gt;:   eor     x1, x2, x1</span><br><span class="line">   0x0000aaaaaaaaa924 &lt;+160&gt;:   cmp     x1, <span class="comment">#0x0</span></span><br><span class="line">   0x0000aaaaaaaaa928 &lt;+164&gt;:   b.eq    0xaaaaaaaaa930 &lt;FuncDemo+172&gt;  // b.none</span><br><span class="line">   0x0000aaaaaaaaa92c &lt;+168&gt;:   bl      0xaaaaaaaaa740 &lt;__stack_chk_fail@plt&gt;</span><br><span class="line">(gdb) c</span><br><span class="line">Continuing.</span><br><span class="line">Program received signal SIGABRT, Aborted.</span><br><span class="line">__GI_raise (sig=sig@entry=6) at ../sysdeps/unix/sysv/linux/raise.c:51</span><br><span class="line">51      ../sysdeps/unix/sysv/linux/raise.c: No such file or directory.</span><br><span class="line">(gdb) bt</span><br><span class="line"><span class="comment">#0  __GI_raise (sig=sig@entry=6) at ../sysdeps/unix/sysv/linux/raise.c:51</span></span><br><span class="line"><span class="comment">#1  0x0000fffff7eaa974 in __GI_abort () at abort.c:79</span></span><br><span class="line"><span class="comment">#2  0x0000fffff7ee372c in __libc_message (action=do_abort,</span></span><br><span class="line">    <span class="built_in">fmt</span>=<span class="built_in">fmt</span>@entry=0xfffff7fa3350 <span class="string">&quot;*** %s ***: %s terminated\n&quot;</span>)</span><br><span class="line">    at ../sysdeps/posix/libc_fatal.c:181</span><br><span class="line"><span class="comment">#3  0x0000fffff7f583c4 in __GI___fortify_fail_abort (</span></span><br><span class="line">    need_backtrace=need_backtrace@entry=<span class="literal">false</span>,</span><br><span class="line">    msg=msg@entry=0xfffff7fa3328 <span class="string">&quot;stack smashing detected&quot;</span>)</span><br><span class="line">    at fortify_fail.c:33</span><br><span class="line"><span class="comment">#4  0x0000fffff7f58378 in __stack_chk_fail () at stack_chk_fail.c:29</span></span><br><span class="line"><span class="comment">#5  0x0000aaaaaaaaa930 in FuncDemo () at demo.c:15</span></span><br><span class="line"><span class="comment">#6  0x0000aaaaaaaaa944 in main () at demo.c:19</span></span><br></pre></td></tr></table></figure>
 
     </div>
@@ -280,7 +280,7 @@
   <div id="qr" style="display: none;">
       
       <div style="display: inline-block;">
-        <img src="/zhoukaiqi/images/wechatpay.png" alt="Kaiqi Zhou 微信支付">
+        <img src="/zhoukaiqi/images/wechatpay.png" alt="CodeKai 微信支付">
         <p>微信支付</p>
       </div>
 
@@ -303,7 +303,10 @@
     <a href="/zhoukaiqi/common-tools/" rel="prev" title="common-tools">
       <i class="fa fa-chevron-left"></i> common-tools
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/zhoukaiqi/leaf-function/" rel="next" title="调用者与被调用者的寄存器优化">
+      调用者与被调用者的寄存器优化 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -369,9 +372,9 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="Kaiqi Zhou"
+    <img class="site-author-image" itemprop="image" alt="CodeKai"
       src="/zhoukaiqi/images/header.png">
-  <p class="site-author-name" itemprop="name">Kaiqi Zhou</p>
+  <p class="site-author-name" itemprop="name">CodeKai</p>
   <div class="site-description" itemprop="description"></div>
 </div>
 <div class="site-state-wrap motion-element">
@@ -379,7 +382,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/zhoukaiqi/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -423,19 +426,19 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">Kaiqi Zhou</span>
+  <span class="author" itemprop="copyrightHolder">CodeKai</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">24k</span>
+    <span title="站点总字数">26k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">22 分钟</span>
+    <span title="站点阅读时长">24 分钟</span>
 </div><div>
     <!--添加总阅读次数-->
     <div>

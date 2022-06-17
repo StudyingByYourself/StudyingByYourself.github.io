@@ -1,131 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>栈保护canary机制与__stack_chk_fail</title>
-    <url>/zhoukaiqi/stack-chk-fail/</url>
-    <content><![CDATA[<h5 id="栈保护canary机制">栈保护canary机制</h5>
-<p>canary机制原理：在函数被调用之后，立即在栈帧中插入一个随机数，函数执行完在返回之前，检查这个随机数是否改变来判断是否存在栈溢出。</p>
+    <title>x86_64模拟arm环境</title>
+    <url>/zhoukaiqi/arm-virtual-machine/</url>
+    <content><![CDATA[<h6 id="1-安装arm交叉编译工具链">1.安装arm交叉编译工具链</h6>
+<p>安装交叉编译工具链 <code>gcc-aarch64-linux-gnu</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install gcc-aarch64-linux-gnu</span><br></pre></td></tr></table></figure>
+<p>建立软链接，否则后面执行的时候会报动态库找不到的错误</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo <span class="built_in">ln</span> -s /usr/aarch64-linux-gnu/lib/libc.so.6 /lib/libc.so.6</span><br><span class="line">sudo <span class="built_in">ln</span> -s /usr/aarch64-linux-gnu/lib/ld-linux-aarch64.so.1 /lib/ld-linux-aarch64.so.1</span><br></pre></td></tr></table></figure>
 <span id="more"></span>
-<h5 id="构造-stack-chk-fail">构造__stack_chk_fail</h5>
-<p>以demo.c为例，编译命令<code>gcc demo.c -fstack-protector -fno-omit-frame-pointer -fPIC -g -o demo</code></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">FuncDemo</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">0x900C</span>;</span><br><span class="line">    <span class="type">void</span> *b = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">long</span>));</span><br><span class="line">    <span class="type">char</span> str[<span class="number">20</span>] = <span class="string">&quot;Hello World!&quot;</span>;</span><br><span class="line">    <span class="type">int</span> arr[<span class="number">10</span>] = &#123;<span class="number">1</span>&#125;;</span><br><span class="line">    <span class="built_in">memset</span>(arr, <span class="string">&#x27;c&#x27;</span>, <span class="keyword">sizeof</span>(<span class="type">char</span>) * <span class="number">100</span>); <span class="comment">// 踩栈</span></span><br><span class="line">    <span class="built_in">free</span>(b);</span><br><span class="line">    b = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    FuncDemo();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>完整汇编</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">(gdb) disassemble FuncDemo</span><br><span class="line">Dump of assembler code <span class="keyword">for</span> <span class="keyword">function</span> FuncDemo:</span><br><span class="line">   0x0000aaaaaaaaa884 &lt;+0&gt;:     stp     x29, x30, [sp, <span class="comment">#-112]!</span></span><br><span class="line">   0x0000aaaaaaaaa888 &lt;+4&gt;:     mov     x29, sp</span><br><span class="line">   0x0000aaaaaaaaa88c &lt;+8&gt;:     adrp    x0, 0xaaaaaaaba000</span><br><span class="line">   0x0000aaaaaaaaa890 &lt;+12&gt;:    ldr     x0, [x0, <span class="comment">#4064]</span></span><br><span class="line">   0x0000aaaaaaaaa894 &lt;+16&gt;:    ldr     x1, [x0]</span><br><span class="line">   0x0000aaaaaaaaa898 &lt;+20&gt;:    str     x1, [x29, <span class="comment">#104]</span></span><br><span class="line">   0x0000aaaaaaaaa89c &lt;+24&gt;:    mov     x1, <span class="comment">#0x0                        // #0</span></span><br><span class="line">   0x0000aaaaaaaaa8a0 &lt;+28&gt;:    mov     w0, <span class="comment">#0x900c                     // #36876</span></span><br><span class="line">   0x0000aaaaaaaaa8a4 &lt;+32&gt;:    str     w0, [x29, <span class="comment">#28]</span></span><br><span class="line">   0x0000aaaaaaaaa8a8 &lt;+36&gt;:    mov     x0, <span class="comment">#0x8                        // #8</span></span><br><span class="line">   0x0000aaaaaaaaa8ac &lt;+40&gt;:    bl      0xaaaaaaaaa710 &lt;malloc@plt&gt;</span><br><span class="line">   0x0000aaaaaaaaa8b0 &lt;+44&gt;:    str     x0, [x29, <span class="comment">#32]</span></span><br><span class="line">   0x0000aaaaaaaaa8b4 &lt;+48&gt;:    adrp    x0, 0xaaaaaaaaa000</span><br><span class="line">   0x0000aaaaaaaaa8b8 &lt;+52&gt;:    add     x1, x0, <span class="comment">#0x9f0</span></span><br><span class="line">   0x0000aaaaaaaaa8bc &lt;+56&gt;:    add     x0, x29, <span class="comment">#0x50</span></span><br><span class="line">   0x0000aaaaaaaaa8c0 &lt;+60&gt;:    ldr     x2, [x1]</span><br><span class="line">   0x0000aaaaaaaaa8c4 &lt;+64&gt;:    str     x2, [x0]</span><br><span class="line">   0x0000aaaaaaaaa8c8 &lt;+68&gt;:    ldur    x1, [x1, <span class="comment">#5]</span></span><br><span class="line">   0x0000aaaaaaaaa8cc &lt;+72&gt;:    stur    x1, [x0, <span class="comment">#5]</span></span><br><span class="line">   0x0000aaaaaaaaa8d0 &lt;+76&gt;:    stur    wzr, [x29, <span class="comment">#93]</span></span><br><span class="line">   0x0000aaaaaaaaa8d4 &lt;+80&gt;:    sturh   wzr, [x29, <span class="comment">#97]</span></span><br><span class="line">   0x0000aaaaaaaaa8d8 &lt;+84&gt;:    strb    wzr, [x29, <span class="comment">#99]</span></span><br><span class="line">   0x0000aaaaaaaaa8dc &lt;+88&gt;:    stp     xzr, xzr, [x29, <span class="comment">#40]</span></span><br><span class="line">   0x0000aaaaaaaaa8e0 &lt;+92&gt;:    stp     xzr, xzr, [x29, <span class="comment">#56]</span></span><br><span class="line">   0x0000aaaaaaaaa8e4 &lt;+96&gt;:    str     xzr, [x29, <span class="comment">#72]</span></span><br><span class="line">   0x0000aaaaaaaaa8e8 &lt;+100&gt;:   mov     w0, <span class="comment">#0x1                        // #1</span></span><br><span class="line">   0x0000aaaaaaaaa8ec &lt;+104&gt;:   str     w0, [x29, <span class="comment">#40]</span></span><br><span class="line">   0x0000aaaaaaaaa8f0 &lt;+108&gt;:   add     x0, x29, <span class="comment">#0x28</span></span><br><span class="line">   0x0000aaaaaaaaa8f4 &lt;+112&gt;:   mov     x2, <span class="comment">#0x64                       // #100</span></span><br><span class="line">   0x0000aaaaaaaaa8f8 &lt;+116&gt;:   mov     w1, <span class="comment">#0x63                       // #99</span></span><br><span class="line">   0x0000aaaaaaaaa8fc &lt;+120&gt;:   bl      0xaaaaaaaaa730 &lt;memset@plt&gt;</span><br><span class="line">   0x0000aaaaaaaaa900 &lt;+124&gt;:   ldr     x0, [x29, <span class="comment">#32]</span></span><br><span class="line">   0x0000aaaaaaaaa904 &lt;+128&gt;:   bl      0xaaaaaaaaa770 &lt;free@plt&gt;</span><br><span class="line">   0x0000aaaaaaaaa908 &lt;+132&gt;:   str     xzr, [x29, <span class="comment">#32]</span></span><br><span class="line">   0x0000aaaaaaaaa90c &lt;+136&gt;:   mov     w0, <span class="comment">#0x0                        // #0</span></span><br><span class="line">   0x0000aaaaaaaaa910 &lt;+140&gt;:   adrp    x1, 0xaaaaaaaba000</span><br><span class="line">   0x0000aaaaaaaaa914 &lt;+144&gt;:   ldr     x1, [x1, <span class="comment">#4064]</span></span><br><span class="line">   0x0000aaaaaaaaa918 &lt;+148&gt;:   ldr     x2, [x29, <span class="comment">#104]</span></span><br><span class="line">   0x0000aaaaaaaaa91c &lt;+152&gt;:   ldr     x1, [x1]</span><br><span class="line">   0x0000aaaaaaaaa920 &lt;+156&gt;:   eor     x1, x2, x1</span><br><span class="line">   0x0000aaaaaaaaa924 &lt;+160&gt;:   cmp     x1, <span class="comment">#0x0</span></span><br><span class="line">   0x0000aaaaaaaaa928 &lt;+164&gt;:   b.eq    0xaaaaaaaaa930 &lt;FuncDemo+172&gt;  // b.none</span><br><span class="line">   0x0000aaaaaaaaa92c &lt;+168&gt;:   bl      0xaaaaaaaaa740 &lt;__stack_chk_fail@plt&gt;</span><br><span class="line">   0x0000aaaaaaaaa930 &lt;+172&gt;:   ldp     x29, x30, [sp], <span class="comment">#112</span></span><br><span class="line">   0x0000aaaaaaaaa934 &lt;+176&gt;:   ret</span><br></pre></td></tr></table></figure>
-<h6 id="1-先通过反汇编找到canary在栈上的存放地址">1. 先通过反汇编找到canary在栈上的存放地址</h6>
-<p>canary的值是<code>0x4c597894f2014f00</code>，存入sp + 104的地址</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">(gdb) disassemble FuncDemo</span><br><span class="line">Dump of assembler code <span class="keyword">for</span> <span class="keyword">function</span> FuncDemo:</span><br><span class="line">   0x0000aaaaaaaaa884 &lt;+0&gt;:     stp     x29, x30, [sp, <span class="comment">#-112]!</span></span><br><span class="line">   0x0000aaaaaaaaa888 &lt;+4&gt;:     mov     x29, sp</span><br><span class="line">   0x0000aaaaaaaaa88c &lt;+8&gt;:     adrp    x0, 0xaaaaaaaba000</span><br><span class="line">   0x0000aaaaaaaaa890 &lt;+12&gt;:    ldr     x0, [x0, <span class="comment">#4064]</span></span><br><span class="line">   0x0000aaaaaaaaa894 &lt;+16&gt;:    ldr     x1, [x0]</span><br><span class="line">   0x0000aaaaaaaaa898 &lt;+20&gt;:    str     x1, [x29, <span class="comment">#104]</span></span><br><span class="line">=&gt; 0x0000aaaaaaaaa89c &lt;+24&gt;:    mov     x1, <span class="comment">#0x0                        // #0</span></span><br><span class="line">(gdb) i r x0 x1</span><br><span class="line">x0             0xfffff7ffd7a8   281474842482600</span><br><span class="line">x1             0x4c597894f2014f00       5501561000920436480</span><br><span class="line">(gdb) x/2wx <span class="variable">$x0</span></span><br><span class="line">0xfffff7ffd7a8 &lt;__stack_chk_guard&gt;:     0xf2014f00      0x4c597894</span><br><span class="line">(gdb) x/2wx <span class="variable">$sp</span> + 104</span><br><span class="line">0xfffffffffa38: 0xf2014f00      0x4c597894</span><br></pre></td></tr></table></figure>
-<h6 id="2-执行完代码第7行">2. 执行完代码第7行</h6>
-<p>memset越界，将栈中保存的canary值踩成了’c’</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">   0x0000aaaaaaaaa8fc &lt;+120&gt;:   bl      0xaaaaaaaaa730 &lt;memset@plt&gt;</span><br><span class="line">=&gt; 0x0000aaaaaaaaa900 &lt;+124&gt;:   ldr     x0, [x29, <span class="comment">#32]</span></span><br><span class="line">(gdb) x/2wx <span class="variable">$sp</span> + 104</span><br><span class="line">0xfffffffffa38: 0x63636363      0x63636363</span><br></pre></td></tr></table></figure>
-<h6 id="3-继续执行">3. 继续执行</h6>
-<p>从栈中取出保存的canary值与原来的canary值比较，不相等则跳转到__stack_chk_fail</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">   0x0000aaaaaaaaa910 &lt;+140&gt;:   adrp    x1, 0xaaaaaaaba000</span><br><span class="line">   0x0000aaaaaaaaa914 &lt;+144&gt;:   ldr     x1, [x1, <span class="comment">#4064]</span></span><br><span class="line">   0x0000aaaaaaaaa918 &lt;+148&gt;:   ldr     x2, [x29, <span class="comment">#104]</span></span><br><span class="line">   0x0000aaaaaaaaa91c &lt;+152&gt;:   ldr     x1, [x1]</span><br><span class="line">   0x0000aaaaaaaaa920 &lt;+156&gt;:   eor     x1, x2, x1</span><br><span class="line">   0x0000aaaaaaaaa924 &lt;+160&gt;:   cmp     x1, <span class="comment">#0x0</span></span><br><span class="line">   0x0000aaaaaaaaa928 &lt;+164&gt;:   b.eq    0xaaaaaaaaa930 &lt;FuncDemo+172&gt;  // b.none</span><br><span class="line">   0x0000aaaaaaaaa92c &lt;+168&gt;:   bl      0xaaaaaaaaa740 &lt;__stack_chk_fail@plt&gt;</span><br><span class="line">(gdb) c</span><br><span class="line">Continuing.</span><br><span class="line">Program received signal SIGABRT, Aborted.</span><br><span class="line">__GI_raise (sig=sig@entry=6) at ../sysdeps/unix/sysv/linux/raise.c:51</span><br><span class="line">51      ../sysdeps/unix/sysv/linux/raise.c: No such file or directory.</span><br><span class="line">(gdb) bt</span><br><span class="line"><span class="comment">#0  __GI_raise (sig=sig@entry=6) at ../sysdeps/unix/sysv/linux/raise.c:51</span></span><br><span class="line"><span class="comment">#1  0x0000fffff7eaa974 in __GI_abort () at abort.c:79</span></span><br><span class="line"><span class="comment">#2  0x0000fffff7ee372c in __libc_message (action=do_abort,</span></span><br><span class="line">    <span class="built_in">fmt</span>=<span class="built_in">fmt</span>@entry=0xfffff7fa3350 <span class="string">&quot;*** %s ***: %s terminated\n&quot;</span>)</span><br><span class="line">    at ../sysdeps/posix/libc_fatal.c:181</span><br><span class="line"><span class="comment">#3  0x0000fffff7f583c4 in __GI___fortify_fail_abort (</span></span><br><span class="line">    need_backtrace=need_backtrace@entry=<span class="literal">false</span>,</span><br><span class="line">    msg=msg@entry=0xfffff7fa3328 <span class="string">&quot;stack smashing detected&quot;</span>)</span><br><span class="line">    at fortify_fail.c:33</span><br><span class="line"><span class="comment">#4  0x0000fffff7f58378 in __stack_chk_fail () at stack_chk_fail.c:29</span></span><br><span class="line"><span class="comment">#5  0x0000aaaaaaaaa930 in FuncDemo () at demo.c:15</span></span><br><span class="line"><span class="comment">#6  0x0000aaaaaaaaa944 in main () at demo.c:19</span></span><br></pre></td></tr></table></figure>
+<h6 id="2-安装arm模拟器qemu">2.安装arm模拟器qemu</h6>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install qemu</span><br></pre></td></tr></table></figure>
+<p>编译<code>a.out</code>并执行</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">zkq@zkq-vm:~$ aarch64-linux-gnu-gcc main.c</span><br><span class="line">zkq@zkq-vm:~$ file a.out</span><br><span class="line">a.out: ELF 64-bit LSB shared object, ARM aarch64, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, <span class="keyword">for</span> GNU/Linux 3.7.0, BuildID[sha1]=6ef0ca0c6462e038e589b6e1d52220a680007588, not stripped</span><br><span class="line">zkq@zkq-vm:~$ qemu-aarch64 a.out</span><br><span class="line">hello world</span><br></pre></td></tr></table></figure>
+<h6 id="3-通过gdb调试arm程序">3.通过gdb调试arm程序</h6>
+<p>gdb调试arm程序的原理：qemu端作为gdb server启动可执行程序，另一端作为gdb client连接gdb server，进行本地远程调试。</p>
+<p>首先安装多平台的gdb工具</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install gdb-multiarch</span><br></pre></td></tr></table></figure>
+<p>重新编译示例代码<code>main.c</code>，注意，这次加上了参数<code>--static</code>。加上这个参数后，生成的可执行文件为静态链接的。<strong>如果不加这个参数，gdb调试的时候单步执行功能不正常，符号表也找不到。</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">aarch64-linux-gnu-gcc --static -g main.c</span><br></pre></td></tr></table></figure>
+<p>通过下面的命令启动可执行程序<code>a.out</code>, 选项<code>-g</code>指明了gdb的监听端口，这里选择的是1234。该指令运行后，当前窗口会被阻塞住。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">qemu-aarch64 -g 1234 a.out</span><br></pre></td></tr></table></figure>
+<p>新开一个命令行窗口，启动gdb client，进入gdb交互界面</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gdb-multiarch a.out</span><br></pre></td></tr></table></figure>
+<p>在gdb交互界面输入以下内容就可以连接到server端</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">target remote localhost:1234</span><br></pre></td></tr></table></figure>
+<p>接下来，就可以正常使用gdb的相关功能调试程序了</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">(gdb) b main</span><br><span class="line">Breakpoint 1 at 0x102e8: file main.c, line 5.</span><br><span class="line">(gdb) c</span><br><span class="line">Continuing.</span><br><span class="line"></span><br><span class="line">Breakpoint 1, main () at main.c:5</span><br><span class="line">5	    <span class="built_in">printf</span>(<span class="string">&quot;hello world\n&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>main.c中必须有main函数，否则执行<code>qemu-aarch64 -g 1234 a.out</code>会报<code>Invalid ELF image for this architecture</code></p>
 ]]></content>
       <categories>
         <category>assembly</category>
       </categories>
-      <tags>
-        <tag>assembly</tag>
-      </tags>
   </entry>
   <entry>
-    <title>common-tools</title>
-    <url>/zhoukaiqi/common-tools/</url>
-    <content><![CDATA[<p>本文介绍了常见工具的使用</p>
-<span id="more"></span>
-<h6 id="1-tcpdump">1. tcpdump</h6>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 指定网口</span><br><span class="line">tcpdump -x -n -v -s 0 -i eth2 -w demo.cap</span><br><span class="line">// 指定IP + 端口</span><br><span class="line">tcpdump -x -n -v -s 0 -i any host IP and port 21 -w demo.cap</span><br><span class="line">tcpdump -x -n -v -s 0 -i any src host srcIP and host dstIP and port 21 -w demo.cap</span><br><span class="line">// 环回网口</span><br><span class="line">tcpdump -x -n -v -s 0 -i lo -w demo.cap</span><br><span class="line">// 指定协议类型</span><br><span class="line">tcpdump -x -n -v -s 0 -i any ether proto 56320 -w demo.cap</span><br><span class="line">// 指定物理地址</span><br><span class="line">tcpdump -x -n -v -s 0 -i eth2 not tcp and not udp and ether host macaddr -w demo.cap</span><br><span class="line"></span><br><span class="line">tcpdump -x -n -v -s 0 -i any \(host IP and port 20015 \) or \(host IP \) -w demo.cap</span><br></pre></td></tr></table></figure>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>-n</td>
-<td>对地址以数字方式显式，否则显式为主机名，也就是说-n选项不做主机名解析</td>
-</tr>
-<tr>
-<td>-v</td>
-<td>当分析和打印的时候，产生详细的输出</td>
-</tr>
-<tr>
-<td>-s len</td>
-<td>设置tcpdump的数据包抓取长度为len，-s 0抓取完整的数据包</td>
-</tr>
-<tr>
-<td>-i interface</td>
-<td>指定tcpdump需要监听的网口，any表示监听所有网络接口</td>
-</tr>
-<tr>
-<td>-w</td>
-<td>将抓包数据输出到文件中而不是标准输出</td>
-</tr>
-<tr>
-<td>ether proto 56320</td>
-<td>指令协议类型</td>
-</tr>
-<tr>
-<td>ether host macaddr</td>
-<td>指定物理地址</td>
-</tr>
-<tr>
-<td>portrange port1-port2</td>
-<td>指定端口范围</td>
-</tr>
-</tbody>
-</table>
-<p>wireshark抓包过滤指定的字节数据     <a href="https://blog.csdn.net/andrewgithub/article/details/103444611">https://blog.csdn.net/andrewgithub/article/details/103444611</a></p>
-<p>data[61:3]==0a:39:00</p>
-<p>data数据报文中，以第61字节开始，之后的3个字节的数据为 0a:39:00</p>
-<h6 id="2-strace">2. strace</h6>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">strace -ff -tt -T -o <span class="built_in">log</span> -p 17720</span><br><span class="line">strace -f -tt -T -o <span class="built_in">log</span> -p 35332</span><br><span class="line">strace -ft -o <span class="built_in">log</span> -p 35332</span><br><span class="line">// 跟踪单个线程</span><br><span class="line">strace -tt -T -o strace.log -p pid</span><br></pre></td></tr></table></figure>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>-f</td>
-<td>跟踪子线程</td>
-</tr>
-<tr>
-<td>-ff</td>
-<td>跟踪子线程，每个线程独立文件</td>
-</tr>
-<tr>
-<td>-t</td>
-<td>表示时间精确到秒(每秒记录一次)</td>
-</tr>
-<tr>
-<td>-tt</td>
-<td>表示时间精确到微秒(每微秒记录一次)</td>
-</tr>
-<tr>
-<td>-T</td>
-<td>记录各个系统调用花费的时间，精确到微秒</td>
-</tr>
-<tr>
-<td>-o</td>
-<td>表示将追踪结果输出的一个文件</td>
-</tr>
-<tr>
-<td>-p</td>
-<td>pid</td>
-</tr>
-</tbody>
-</table>
-]]></content>
-  </entry>
-  <entry>
-    <title>arm常见汇编指令</title>
+    <title>arm64常见汇编指令</title>
     <url>/zhoukaiqi/assembly-arm/</url>
-    <content><![CDATA[<p>本文介绍了arm常见汇编指令</p>
+    <content><![CDATA[<p>本文介绍了arm64常见汇编指令</p>
 <table>
 <thead>
 <tr>
@@ -235,39 +146,6 @@
       </tags>
   </entry>
   <entry>
-    <title>x86_64搭建arm环境</title>
-    <url>/zhoukaiqi/arm-virtual-machine/</url>
-    <content><![CDATA[<h6 id="1-安装arm交叉编译工具链">1.安装arm交叉编译工具链</h6>
-<p>安装交叉编译工具链 <code>gcc-aarch64-linux-gnu</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install gcc-aarch64-linux-gnu</span><br></pre></td></tr></table></figure>
-<p>建立软链接，否则后面执行的时候会报动态库找不到的错误</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo <span class="built_in">ln</span> -s /usr/aarch64-linux-gnu/lib/libc.so.6 /lib/libc.so.6</span><br><span class="line">sudo <span class="built_in">ln</span> -s /usr/aarch64-linux-gnu/lib/ld-linux-aarch64.so.1 /lib/ld-linux-aarch64.so.1</span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-<h6 id="2-安装arm模拟器qemu">2.安装arm模拟器qemu</h6>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install qemu</span><br></pre></td></tr></table></figure>
-<p>编译<code>a.out</code>并执行</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">zkq@zkq-vm:~$ aarch64-linux-gnu-gcc main.c</span><br><span class="line">zkq@zkq-vm:~$ file a.out</span><br><span class="line">a.out: ELF 64-bit LSB shared object, ARM aarch64, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, <span class="keyword">for</span> GNU/Linux 3.7.0, BuildID[sha1]=6ef0ca0c6462e038e589b6e1d52220a680007588, not stripped</span><br><span class="line">zkq@zkq-vm:~$ qemu-aarch64 a.out</span><br><span class="line">hello world</span><br></pre></td></tr></table></figure>
-<h6 id="3-通过gdb调试arm程序">3.通过gdb调试arm程序</h6>
-<p>gdb调试arm程序的原理：qemu端作为gdb server启动可执行程序，另一端作为gdb client连接gdb server，进行本地远程调试。</p>
-<p>首先安装多平台的gdb工具</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install gdb-multiarch</span><br></pre></td></tr></table></figure>
-<p>重新编译示例代码<code>main.c</code>，注意，这次加上了参数<code>--static</code>。加上这个参数后，生成的可执行文件为静态链接的。<strong>如果不加这个参数，gdb调试的时候单步执行功能不正常，符号表也找不到。</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">aarch64-linux-gnu-gcc --static -g main.c</span><br></pre></td></tr></table></figure>
-<p>通过下面的命令启动可执行程序<code>a.out</code>, 选项<code>-g</code>指明了gdb的监听端口，这里选择的是1234。该指令运行后，当前窗口会被阻塞住。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">qemu-aarch64 -g 1234 a.out</span><br></pre></td></tr></table></figure>
-<p>新开一个命令行窗口，启动gdb client，进入gdb交互界面</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gdb-multiarch a.out</span><br></pre></td></tr></table></figure>
-<p>在gdb交互界面输入以下内容就可以连接到server端</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">target remote localhost:1234</span><br></pre></td></tr></table></figure>
-<p>接下来，就可以正常使用gdb的相关功能调试程序了</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">(gdb) b main</span><br><span class="line">Breakpoint 1 at 0x102e8: file main.c, line 5.</span><br><span class="line">(gdb) c</span><br><span class="line">Continuing.</span><br><span class="line"></span><br><span class="line">Breakpoint 1, main () at main.c:5</span><br><span class="line">5	    <span class="built_in">printf</span>(<span class="string">&quot;hello world\n&quot;</span>);</span><br></pre></td></tr></table></figure>
-<p>main.c中必须有main函数，否则执行<code>qemu-aarch64 -g 1234 a.out</code>会报<code>Invalid ELF image for this architecture</code></p>
-]]></content>
-      <categories>
-        <category>assembly</category>
-      </categories>
-  </entry>
-  <entry>
     <title>x86_84常见汇编指令</title>
     <url>/zhoukaiqi/assembly-x86_64/</url>
     <content><![CDATA[<p>本文介绍了x86_84常见汇编指令</p>
@@ -332,6 +210,10 @@
 <span id="more"></span>
 <p>编译选项需添加<code>-fno-omit-frame-pointer</code>，否则rbp不作为栈帧寄存器使用，无法推栈。</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gcc -Q --<span class="built_in">help</span>=optimizers -O2 | grep frame</span><br><span class="line">-fomit-frame-pointer                  [enabled]</span><br></pre></td></tr></table></figure>
+<p><font color="#FF0000"> <strong>push rbp的具体实现</strong> </font></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rsp = rsp - 8</span><br><span class="line">*(unsigned long*)rsp = rbp</span><br></pre></td></tr></table></figure>
+<p><font color="#FF0000"> <strong>callq addr的具体实现</strong> </font></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rsp = rsp - 8</span><br><span class="line">*(unsigned long*)rsp = rip + sizeof(inst)</span><br><span class="line">rip = addr</span><br></pre></td></tr></table></figure>
 <p>以demo.c为例，分析x86_64下的汇编指令。</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">FuncC</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">0x900C</span>;</span><br><span class="line">    <span class="type">void</span> *b = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">long</span>));</span><br><span class="line">    <span class="type">char</span> str[<span class="number">20</span>] = <span class="string">&quot;Hello World!&quot;</span>;</span><br><span class="line">    <span class="type">int</span> arr[<span class="number">10</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="built_in">memset</span>(arr, <span class="string">&#x27;c&#x27;</span>, <span class="keyword">sizeof</span>(<span class="type">char</span>) * <span class="number">100</span>); <span class="comment">//这里构造了踩栈，后续展开</span></span><br><span class="line">    <span class="built_in">free</span>(b);</span><br><span class="line">    b = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>取消栈保护编译选项</p>
@@ -367,18 +249,105 @@
       </tags>
   </entry>
   <entry>
+    <title>common-tools</title>
+    <url>/zhoukaiqi/common-tools/</url>
+    <content><![CDATA[<p>本文介绍了常见工具的使用</p>
+<span id="more"></span>
+<h6 id="1-tcpdump">1. tcpdump</h6>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 指定网口</span><br><span class="line">tcpdump -x -n -v -s 0 -i eth2 -w demo.cap</span><br><span class="line">// 指定IP + 端口</span><br><span class="line">tcpdump -x -n -v -s 0 -i any host IP and port 21 -w demo.cap</span><br><span class="line">tcpdump -x -n -v -s 0 -i any src host srcIP and host dstIP and port 21 -w demo.cap</span><br><span class="line">// 环回网口</span><br><span class="line">tcpdump -x -n -v -s 0 -i lo -w demo.cap</span><br><span class="line">// 指定协议类型</span><br><span class="line">tcpdump -x -n -v -s 0 -i any ether proto 56320 -w demo.cap</span><br><span class="line">// 指定物理地址</span><br><span class="line">tcpdump -x -n -v -s 0 -i eth2 not tcp and not udp and ether host macaddr -w demo.cap</span><br><span class="line"></span><br><span class="line">tcpdump -x -n -v -s 0 -i any \(host IP and port 20015 \) or \(host IP \) -w demo.cap</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-n</td>
+<td>对地址以数字方式显式，否则显式为主机名，也就是说-n选项不做主机名解析</td>
+</tr>
+<tr>
+<td>-v</td>
+<td>当分析和打印的时候，产生详细的输出</td>
+</tr>
+<tr>
+<td>-s len</td>
+<td>设置tcpdump的数据包抓取长度为len，-s 0抓取完整的数据包</td>
+</tr>
+<tr>
+<td>-i interface</td>
+<td>指定tcpdump需要监听的网口，any表示监听所有网络接口</td>
+</tr>
+<tr>
+<td>-w</td>
+<td>将抓包数据输出到文件中而不是标准输出</td>
+</tr>
+<tr>
+<td>ether proto 56320</td>
+<td>指令协议类型</td>
+</tr>
+<tr>
+<td>ether host macaddr</td>
+<td>指定物理地址</td>
+</tr>
+<tr>
+<td>portrange port1-port2</td>
+<td>指定端口范围</td>
+</tr>
+</tbody>
+</table>
+<p>wireshark抓包过滤指定的字节数据     <a href="https://blog.csdn.net/andrewgithub/article/details/103444611">https://blog.csdn.net/andrewgithub/article/details/103444611</a></p>
+<p>data[61:3]==0a:39:00</p>
+<p>data数据报文中，以第61字节开始，之后的3个字节的数据为 0a:39:00</p>
+<h6 id="2-strace">2. strace</h6>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">strace -ff -tt -T -o <span class="built_in">log</span> -p 17720</span><br><span class="line">strace -f -tt -T -o <span class="built_in">log</span> -p 35332</span><br><span class="line">strace -ft -o <span class="built_in">log</span> -p 35332</span><br><span class="line">// 跟踪单个线程</span><br><span class="line">strace -tt -T -o strace.log -p pid</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-f</td>
+<td>跟踪子线程</td>
+</tr>
+<tr>
+<td>-ff</td>
+<td>跟踪子线程，每个线程独立文件</td>
+</tr>
+<tr>
+<td>-t</td>
+<td>表示时间精确到秒(每秒记录一次)</td>
+</tr>
+<tr>
+<td>-tt</td>
+<td>表示时间精确到微秒(每微秒记录一次)</td>
+</tr>
+<tr>
+<td>-T</td>
+<td>记录各个系统调用花费的时间，精确到微秒</td>
+</tr>
+<tr>
+<td>-o</td>
+<td>表示将追踪结果输出的一个文件</td>
+</tr>
+<tr>
+<td>-p</td>
+<td>pid</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+  </entry>
+  <entry>
     <title>gdb使用</title>
     <url>/zhoukaiqi/how-to-use-gdb/</url>
     <content><![CDATA[<p>本文介绍了gdb的常见用法。</p>
 <span id="more"></span>
-<h6 id="1、解决gdb-attch报错-Operation-not-permitted">1、解决gdb attch报错: Operation not permitted</h6>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Attaching to process 6122 Could not attach to process.  </span><br><span class="line">If your uid matches the uid of the target process, </span><br><span class="line">check the setting of /proc/sys/kernel/yama/ptrace_scope, or try again as the root user.  </span><br><span class="line">For more details, see /etc/sysctl.d/10-ptrace.conf ptrace: Operation not permitted. </span><br></pre></td></tr></table></figure>
-<p>原因是Ubuntu 16.04 的/etc/sysctl.d/10-ptrace.conf文件中最后一行默认kernel.yama.ptrace_scope = 1 这个值不允许用户使用普通账户使用attach ID连接程序进行调试，需要使用超级用户权限才能连接。可以把kernel.yama.ptrace_scope的值改为 0，即 sudo vim /etc/sysctl.d/10-ptrace.conf 将最后一行改为  kernel.yama.ptrace_scope = 0，保存退出。 重启系统后，普通用户就可以使用attach ID连接程序调试了。</p>
-<p>如果是容器环境，使用<code>--privileged</code>参数登录</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> --privileged -tiu root [容器值] bash</span><br></pre></td></tr></table></figure>
-<h6 id="2、gdb调试不出现源码">2、gdb调试不出现源码</h6>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gcc demo.c -Wl,--strip-debug -o demo</span><br></pre></td></tr></table></figure>
-<h6 id="3、入参与返回值">3、入参与返回值</h6>
+<h6 id="1、入参与返回值">1、入参与返回值</h6>
 <table>
 <thead>
 <tr>
@@ -405,22 +374,21 @@
 </tr>
 </tbody>
 </table>
-<h6 id="4、常见参数含义">4、常见参数含义</h6>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">handle SIG35 SIG36 SIGUSR2 nostop noprint    // 屏蔽某些信号</span><br><span class="line"><span class="built_in">set</span> height 0                                 // 不限制行数</span><br><span class="line">i thread                                     // 查看所有线程信息</span><br><span class="line">thread apply all bt                          // 查看所有线程栈信息</span><br><span class="line"><span class="built_in">printf</span> <span class="string">&quot;Handle[%u], PtNo[%u]\n&quot;</span>, <span class="variable">$rdi</span>, <span class="variable">$rsi</span>  // 打印信息</span><br><span class="line"><span class="built_in">set</span> <span class="built_in">print</span> thread-events off                  // 不显示线程启动和退出信息</span><br></pre></td></tr></table></figure>
-<h6 id="5、条件断点">5、条件断点</h6>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">x86 32位:  b func <span class="keyword">if</span> *(unsigned int*)(<span class="variable">$ebp</span>+8) == 226 &amp;&amp; *(unsigned int*)(<span class="variable">$ebp</span>+16) == 206</span><br><span class="line">x86 64位:  b func <span class="keyword">if</span> <span class="variable">$rdi</span> == 226 &amp;&amp; <span class="variable">$rdx</span> == 206</span><br><span class="line">arm 64位:  b func <span class="keyword">if</span> <span class="variable">$x0</span> == 226 &amp;&amp; <span class="variable">$x2</span> == 206</span><br><span class="line">线程断点:  b func thread threadNum <span class="keyword">if</span> <span class="variable">$rdi</span> == 226</span><br><span class="line">字符断点:  b func <span class="keyword">if</span> *(unsigned char*)(<span class="variable">$ebp</span>+8)==<span class="string">&#x27;A&#x27;</span></span><br></pre></td></tr></table></figure>
-<h6 id="6、查看寄存器信息-确定CPU类型">6、查看寄存器信息(确定CPU类型)</h6>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gdb attach 10889</span><br><span class="line">handle SIG35 SIG36 SIGUSR2 nostop noprint</span><br><span class="line"><span class="built_in">set</span> height 0</span><br><span class="line">i r</span><br><span class="line">det</span><br><span class="line">q</span><br></pre></td></tr></table></figure>
-<h6 id="7、查看入参">7、查看入参</h6>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gdb attach 10889</span><br><span class="line">handle SIG35 SIG36 SIGUSR2 nostop noprint</span><br><span class="line"><span class="built_in">set</span> height 0</span><br><span class="line">b func</span><br><span class="line"><span class="built_in">command</span></span><br><span class="line">bt</span><br><span class="line">i r</span><br><span class="line">c</span><br><span class="line">end</span><br><span class="line">c</span><br></pre></td></tr></table></figure>
-<h6 id="8、查看入参和返回值">8、查看入参和返回值</h6>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gdb attach 10889   ----------//进程的pid由ps -ef | grep xxx查询到</span><br><span class="line">handle SIG35 SIG36 SIGUSR2 nostop noprint</span><br><span class="line"><span class="built_in">set</span> height 0</span><br><span class="line">define oops</span><br><span class="line">bt        ----------// 显示调用栈</span><br><span class="line">i r       ----------// 显示寄存器信息，主要看入参，x86 32位进程看入参要替换成x/8wx <span class="variable">$ebp</span>+8</span><br><span class="line">fin       ----------// 表示执行完当前打断点的函数func</span><br><span class="line">i r       ----------// 在fin之后表示显示返回值，x86，x86_64，arm的返回值依次对应eax,rax,x0</span><br><span class="line">det</span><br><span class="line">q</span><br><span class="line">end</span><br><span class="line">b func    ----------// func即打断点的函数</span><br><span class="line"><span class="built_in">command</span></span><br><span class="line">oops</span><br><span class="line">end</span><br><span class="line">c</span><br></pre></td></tr></table></figure>
-<h6 id="9、查看出参">9、查看出参</h6>
+<p>返回值需要在执行finish后查看</p>
+<h6 id="2、常见命令">2、常见命令</h6>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gdb -q bin                                   // 启动时不显示提示信息</span><br><span class="line">handle SIG35 SIG36 SIGUSR2 nostop noprint    // 屏蔽某些信号</span><br><span class="line"><span class="built_in">set</span> height 0                                 // 不限制输出行数</span><br><span class="line"><span class="built_in">set</span> <span class="built_in">print</span> pretty on                          // 美化结构体打印</span><br><span class="line">i thread                                     // 查看所有线程信息</span><br><span class="line">thread threadno                              // 切换到指定线程</span><br><span class="line">thread apply all bt                          // 查看所有线程栈信息</span><br><span class="line"><span class="built_in">printf</span> <span class="string">&quot;Handle[%u], PtNo[%u]\n&quot;</span>, <span class="variable">$rdi</span>, <span class="variable">$rsi</span>  // 打印信息</span><br><span class="line"><span class="built_in">set</span> <span class="built_in">print</span> thread-events off                  // 不显示线程启动和退出信息</span><br><span class="line">call getpid()                                // 获取拉起进程的pid</span><br><span class="line">shell <span class="built_in">date</span> +%H:%M:%S.%N                      // 加shell可以执行linux命令</span><br><span class="line">i r                                          // 查看寄存器信息</span><br><span class="line">generate-core-file                           // 生成core文件</span><br><span class="line">bt n(-n)                                     // 显示栈顶(栈底)的n层栈</span><br><span class="line">x addr                                       // 解析addr对应的函数</span><br><span class="line">x/s str                                      // 显示str对应的字符串</span><br><span class="line">x/nbx                                        // 显示n个单字节</span><br><span class="line">x/nhx                                        // 显示n个双字节</span><br><span class="line">x/nwx                                        // 显示n个4字节</span><br><span class="line">x/ngx                                        // 显示n个8字节</span><br><span class="line">frame n                                      // 切换到第n层栈帧</span><br></pre></td></tr></table></figure>
+<h6 id="3、条件断点">3、条件断点</h6>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">x86 32位:  b func <span class="keyword">if</span> *(unsigned int*)(<span class="variable">$ebp</span>+8) == 226 &amp;&amp; *(unsigned int*)(<span class="variable">$ebp</span>+16) == 206</span><br><span class="line">x86 64位:  b func <span class="keyword">if</span> <span class="variable">$rdi</span> == 226 &amp;&amp; <span class="variable">$rdx</span> == 206</span><br><span class="line">arm 64位:  b func <span class="keyword">if</span> <span class="variable">$x0</span> == 226 &amp;&amp; <span class="variable">$x2</span> == 206</span><br><span class="line">线程断点:  b func thread threadno <span class="keyword">if</span> condition</span><br><span class="line">字符断点:  b func <span class="keyword">if</span> *(unsigned char*)(<span class="variable">$ebp</span>+8)==<span class="string">&#x27;A&#x27;</span></span><br></pre></td></tr></table></figure>
+<h6 id="4、查看调用栈">4、查看调用栈</h6>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gdb attach 10889</span><br><span class="line">handle SIG35 SIG36 SIGUSR2 nostop noprint</span><br><span class="line"><span class="built_in">set</span> height 0</span><br><span class="line">b func</span><br><span class="line"><span class="built_in">command</span></span><br><span class="line">bt</span><br><span class="line">c</span><br><span class="line">end</span><br><span class="line">c</span><br></pre></td></tr></table></figure>
+<h6 id="5、查看入参和返回值">5、查看入参和返回值</h6>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gdb attach pid   ----------//进程的pid由ps -ef | grep xxx查询到</span><br><span class="line">handle SIG35 SIG36 SIGUSR2 nostop noprint</span><br><span class="line"><span class="built_in">set</span> height 0</span><br><span class="line">define oops</span><br><span class="line">bt        ----------// 显示调用栈</span><br><span class="line">i r       ----------// 显示寄存器信息，主要看入参，x86 32位进程看入参要替换成x/8wx <span class="variable">$ebp</span>+8</span><br><span class="line">fin       ----------// 表示执行完当前打断点的函数func</span><br><span class="line">i r       ----------// 在fin之后表示显示返回值，x86，x86_64，arm的返回值依次对应eax,rax,x0</span><br><span class="line">det</span><br><span class="line">q</span><br><span class="line">end</span><br><span class="line">b func    ----------// func即打断点的函数</span><br><span class="line"><span class="built_in">command</span></span><br><span class="line">oops</span><br><span class="line">end</span><br><span class="line">c</span><br></pre></td></tr></table></figure>
+<h6 id="6、查看出参">6、查看出参</h6>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gdb attach `pidof demo`</span><br><span class="line">handle SIG35 SIG36 SIGUSR2 nostop noprint</span><br><span class="line"><span class="built_in">set</span> heigh 0</span><br><span class="line">define ops</span><br><span class="line">bt</span><br><span class="line">i r</span><br><span class="line">x/s <span class="variable">$rdi</span></span><br><span class="line">p <span class="variable">$rsi</span></span><br><span class="line"><span class="built_in">set</span> <span class="variable">$a</span>=<span class="variable">$rdx</span></span><br><span class="line">fin</span><br><span class="line">x/5wx <span class="variable">$a</span></span><br><span class="line">x/s <span class="variable">$a</span></span><br><span class="line">p *(unsigned int*)(<span class="variable">$a</span>+16)</span><br><span class="line">det</span><br><span class="line">q</span><br><span class="line">end</span><br><span class="line">b func</span><br><span class="line"><span class="built_in">command</span></span><br><span class="line">ops</span><br><span class="line">end</span><br><span class="line">c</span><br></pre></td></tr></table></figure>
-<h6 id="10、在函数func2执行之后再执行函数func1">10、在函数<code>func2</code>执行之后再执行函数<code>func1</code></h6>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gdb attach `pidof xxx.bin`</span><br><span class="line">handle SIG35 SIG36 SIGUSR2 nostop noprint</span><br><span class="line"><span class="built_in">set</span> height 0</span><br><span class="line">b func1</span><br><span class="line"><span class="built_in">command</span></span><br><span class="line">bt</span><br><span class="line">det</span><br><span class="line">q</span><br><span class="line">end</span><br><span class="line"><span class="built_in">disable</span> 1</span><br><span class="line">b func2</span><br><span class="line"><span class="built_in">command</span></span><br><span class="line"><span class="built_in">enable</span> 1</span><br><span class="line">bt</span><br><span class="line">c</span><br><span class="line">end</span><br><span class="line">c</span><br></pre></td></tr></table></figure>
-<h6 id="11、扫描core文件">11、扫描core文件</h6>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">define mem_scan</span><br><span class="line">    <span class="built_in">set</span> logging file xxx.txt</span><br><span class="line">    <span class="built_in">set</span> logging on</span><br><span class="line">    <span class="built_in">set</span> logging overwrite on</span><br><span class="line">    <span class="built_in">set</span> height 0</span><br><span class="line">    <span class="built_in">set</span> <span class="built_in">print</span> pretty on</span><br><span class="line">    <span class="built_in">set</span> <span class="variable">$g_index</span> = 0</span><br><span class="line">    <span class="keyword">while</span> (xxx)</span><br><span class="line">        <span class="built_in">printf</span> <span class="string">&quot;************xxx!**********\n&quot;</span></span><br><span class="line">        <span class="built_in">set</span> <span class="variable">$g_index</span> = <span class="variable">$g_index</span> + 1</span><br><span class="line">        <span class="built_in">printf</span> <span class="string">&quot;************xxx!**********\n&quot;</span></span><br><span class="line">    end</span><br><span class="line">    <span class="built_in">set</span> logging off</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">mem_scan</span><br></pre></td></tr></table></figure>
+<h6 id="7、在函数func2执行之后再执行函数func1">7、在函数<code>func2</code>执行之后再执行函数<code>func1</code></h6>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gdb attach `pidof demo`</span><br><span class="line">handle SIG35 SIG36 SIGUSR2 nostop noprint</span><br><span class="line"><span class="built_in">set</span> height 0</span><br><span class="line">b func1</span><br><span class="line"><span class="built_in">command</span></span><br><span class="line">bt</span><br><span class="line">det</span><br><span class="line">q</span><br><span class="line">end</span><br><span class="line"><span class="built_in">disable</span> 1</span><br><span class="line">b func2</span><br><span class="line"><span class="built_in">command</span></span><br><span class="line"><span class="built_in">enable</span> 1</span><br><span class="line">bt</span><br><span class="line">c</span><br><span class="line">end</span><br><span class="line">c</span><br></pre></td></tr></table></figure>
+<h6 id="8、扫描core文件">8、扫描core文件</h6>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">define mem_scan</span><br><span class="line">    <span class="built_in">set</span> logging file xxx.txt</span><br><span class="line">    <span class="built_in">set</span> logging on</span><br><span class="line">    <span class="built_in">set</span> logging overwrite on</span><br><span class="line">    <span class="built_in">set</span> height 0</span><br><span class="line">    <span class="built_in">set</span> <span class="built_in">print</span> pretty on</span><br><span class="line">    <span class="built_in">set</span> <span class="variable">$g_index</span> = 0</span><br><span class="line">    <span class="keyword">while</span> (xxx)</span><br><span class="line">        <span class="built_in">printf</span> <span class="string">&quot;**************************\n&quot;</span></span><br><span class="line">        // 具体扫描实现</span><br><span class="line">        <span class="built_in">printf</span> <span class="string">&quot;**************************\n&quot;</span></span><br><span class="line">    end</span><br><span class="line">    <span class="built_in">set</span> logging off</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">mem_scan</span><br></pre></td></tr></table></figure>
 <p>参考：<a href="https://wizardforcel.gitbooks.io/100-gdb-tips/content/info-function.html">https://wizardforcel.gitbooks.io/100-gdb-tips/content/info-function.html</a></p>
 ]]></content>
       <categories>
@@ -428,6 +396,67 @@
       </categories>
       <tags>
         <tag>gdb</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>调用者与被调用者的寄存器优化</title>
+    <url>/zhoukaiqi/leaf-function/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>assembly</category>
+      </categories>
+      <tags>
+        <tag>assembly</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>movaps指令引起的复位</title>
+    <url>/zhoukaiqi/movaps%E6%8C%87%E4%BB%A4%E5%BC%95%E8%B5%B7%E7%9A%84%E5%A4%8D%E4%BD%8D/</url>
+    <content><![CDATA[<p>最近定位了一个bolt优化导致进程异常复位的问题。disassemble复位函数发现是运行到movaps指令时挂了。movaps是SSE指令，要求访问的地址是16字节对齐的。由于bolt优化多开了一层8字节的栈，后续的rbp非16字节对齐。当movaps访问非16字节对齐的rbp时，指令异常，进程复位。</p>
+<span id="more"></span>
+<p>这里忽略bolt优化，只用汇编模拟movaps指令异常。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">0</span>;</span><br><span class="line">    __asm__ __volatile__ (<span class="string">&quot;movaps 0x04(%rdx), %xmm0&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">(gdb) disassemble main</span><br><span class="line">Dump of assembler code <span class="keyword">for</span> function main:</span><br><span class="line">   <span class="number">0x0000000008001129</span> &lt;+<span class="number">0</span>&gt;:     endbr64</span><br><span class="line">   <span class="number">0x000000000800112d</span> &lt;+<span class="number">4</span>&gt;:     push   %rbp</span><br><span class="line">   <span class="number">0x000000000800112e</span> &lt;+<span class="number">5</span>&gt;:     mov    %rsp,%rbp</span><br><span class="line">   <span class="number">0x0000000008001131</span> &lt;+<span class="number">8</span>&gt;:     movl   $<span class="number">0x0</span>,<span class="number">-0x4</span>(%rbp)</span><br><span class="line">=&gt; <span class="number">0x0000000008001138</span> &lt;+<span class="number">15</span>&gt;:    movaps <span class="number">0x4</span>(%rdx),%xmm0</span><br><span class="line">   <span class="number">0x000000000800113c</span> &lt;+<span class="number">19</span>&gt;:    mov    $<span class="number">0x0</span>,%eax</span><br><span class="line">   <span class="number">0x0000000008001141</span> &lt;+<span class="number">24</span>&gt;:    pop    %rbp</span><br><span class="line">   <span class="number">0x0000000008001142</span> &lt;+<span class="number">25</span>&gt;:    retq</span><br><span class="line">End of assembler dump.</span><br><span class="line">(gdb) i r rdx</span><br><span class="line">rdx            <span class="number">0x7ffffffee168</span>      <span class="number">140737488281960</span></span><br></pre></td></tr></table></figure>
+<p>rdx寄存器是0x7ffffffee168， 0x7ffffffee168+0x4=0x7ffffffee16c不是16字节对齐，所以会出现段错误。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">(gdb) c</span><br><span class="line">Continuing.</span><br><span class="line"></span><br><span class="line">Program received signal SIGSEGV, Segmentation fault.</span><br><span class="line">main () at demo.c:<span class="number">4</span></span><br><span class="line"><span class="number">4</span>           __asm__ __volatile__ (<span class="string">&quot;movaps 0x04(%rdx), %xmm0&quot;</span>);</span><br><span class="line">(gdb) disassemble main</span><br><span class="line">Dump of assembler code <span class="keyword">for</span> function main:</span><br><span class="line">   <span class="number">0x0000000008001129</span> &lt;+<span class="number">0</span>&gt;:     endbr64</span><br><span class="line">   <span class="number">0x000000000800112d</span> &lt;+<span class="number">4</span>&gt;:     push   %rbp</span><br><span class="line">   <span class="number">0x000000000800112e</span> &lt;+<span class="number">5</span>&gt;:     mov    %rsp,%rbp</span><br><span class="line">   <span class="number">0x0000000008001131</span> &lt;+<span class="number">8</span>&gt;:     movl   $<span class="number">0x0</span>,<span class="number">-0x4</span>(%rbp)</span><br><span class="line">=&gt; <span class="number">0x0000000008001138</span> &lt;+<span class="number">15</span>&gt;:    movaps <span class="number">0x4</span>(%rdx),%xmm0</span><br><span class="line">   <span class="number">0x000000000800113c</span> &lt;+<span class="number">19</span>&gt;:    mov    $<span class="number">0x0</span>,%eax</span><br><span class="line">   <span class="number">0x0000000008001141</span> &lt;+<span class="number">24</span>&gt;:    pop    %rbp</span><br><span class="line">   <span class="number">0x0000000008001142</span> &lt;+<span class="number">25</span>&gt;:    retq</span><br><span class="line">End of assembler dump.</span><br></pre></td></tr></table></figure>
+<p>如果给rdx寄存器减去12字节，使得rdx+4是16字节对齐的，则能正常执行。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">(gdb) disassemble main</span><br><span class="line">Dump of assembler code <span class="keyword">for</span> function main:</span><br><span class="line">   <span class="number">0x0000000008001129</span> &lt;+<span class="number">0</span>&gt;:     endbr64</span><br><span class="line">   <span class="number">0x000000000800112d</span> &lt;+<span class="number">4</span>&gt;:     push   %rbp</span><br><span class="line">   <span class="number">0x000000000800112e</span> &lt;+<span class="number">5</span>&gt;:     mov    %rsp,%rbp</span><br><span class="line">   <span class="number">0x0000000008001131</span> &lt;+<span class="number">8</span>&gt;:     movl   $<span class="number">0x0</span>,<span class="number">-0x4</span>(%rbp)</span><br><span class="line">=&gt; <span class="number">0x0000000008001138</span> &lt;+<span class="number">15</span>&gt;:    movaps <span class="number">0x4</span>(%rdx),%xmm0</span><br><span class="line">   <span class="number">0x000000000800113c</span> &lt;+<span class="number">19</span>&gt;:    mov    $<span class="number">0x0</span>,%eax</span><br><span class="line">   <span class="number">0x0000000008001141</span> &lt;+<span class="number">24</span>&gt;:    pop    %rbp</span><br><span class="line">   <span class="number">0x0000000008001142</span> &lt;+<span class="number">25</span>&gt;:    retq</span><br><span class="line">End of assembler dump.</span><br><span class="line">(gdb) i r $rdx</span><br><span class="line">rdx            <span class="number">0x7ffffffee168</span>      <span class="number">140737488281960</span></span><br><span class="line">(gdb) <span class="built_in">set</span> $rdx = $rdx - <span class="number">12</span></span><br><span class="line">(gdb) i r $rdx</span><br><span class="line">rdx            <span class="number">0x7ffffffee15c</span>      <span class="number">140737488281948</span></span><br><span class="line">(gdb) c</span><br><span class="line">Continuing.</span><br><span class="line">[Inferior <span class="number">1</span> (process <span class="number">396</span>) exited normally]</span><br></pre></td></tr></table></figure>
+<p>补充：movups	<code>u表示不必16字节对齐，替换成a表示必需16字节对齐。</code></p>
+<p>参考：<a href="https://blog.csdn.net/u010659887/article/details/113802005">https://blog.csdn.net/u010659887/article/details/113802005</a></p>
+]]></content>
+      <categories>
+        <category>assembly</category>
+      </categories>
+      <tags>
+        <tag>assembly</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>栈保护canary机制与__stack_chk_fail</title>
+    <url>/zhoukaiqi/stack-chk-fail/</url>
+    <content><![CDATA[<h5 id="栈保护canary机制">栈保护canary机制</h5>
+<p>canary机制原理：在函数被调用之后，立即在栈帧中插入一个随机数，函数执行完在返回之前，检查这个随机数是否改变来判断是否存在栈溢出。</p>
+<span id="more"></span>
+<h5 id="构造-stack-chk-fail">构造__stack_chk_fail</h5>
+<p>以demo.c为例，编译命令<code>gcc demo.c -fstack-protector -fno-omit-frame-pointer -fPIC -g -o demo</code></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">FuncDemo</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">0x900C</span>;</span><br><span class="line">    <span class="type">void</span> *b = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">long</span>));</span><br><span class="line">    <span class="type">char</span> str[<span class="number">20</span>] = <span class="string">&quot;Hello World!&quot;</span>;</span><br><span class="line">    <span class="type">int</span> arr[<span class="number">10</span>] = &#123;<span class="number">1</span>&#125;;</span><br><span class="line">    <span class="built_in">memset</span>(arr, <span class="string">&#x27;c&#x27;</span>, <span class="keyword">sizeof</span>(<span class="type">char</span>) * <span class="number">100</span>); <span class="comment">// 踩栈</span></span><br><span class="line">    <span class="built_in">free</span>(b);</span><br><span class="line">    b = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    FuncDemo();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>完整汇编</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">(gdb) disassemble FuncDemo</span><br><span class="line">Dump of assembler code <span class="keyword">for</span> <span class="keyword">function</span> FuncDemo:</span><br><span class="line">   0x0000aaaaaaaaa884 &lt;+0&gt;:     stp     x29, x30, [sp, <span class="comment">#-112]!</span></span><br><span class="line">   0x0000aaaaaaaaa888 &lt;+4&gt;:     mov     x29, sp</span><br><span class="line">   0x0000aaaaaaaaa88c &lt;+8&gt;:     adrp    x0, 0xaaaaaaaba000</span><br><span class="line">   0x0000aaaaaaaaa890 &lt;+12&gt;:    ldr     x0, [x0, <span class="comment">#4064]</span></span><br><span class="line">   0x0000aaaaaaaaa894 &lt;+16&gt;:    ldr     x1, [x0]</span><br><span class="line">   0x0000aaaaaaaaa898 &lt;+20&gt;:    str     x1, [x29, <span class="comment">#104]</span></span><br><span class="line">   0x0000aaaaaaaaa89c &lt;+24&gt;:    mov     x1, <span class="comment">#0x0                        // #0</span></span><br><span class="line">   0x0000aaaaaaaaa8a0 &lt;+28&gt;:    mov     w0, <span class="comment">#0x900c                     // #36876</span></span><br><span class="line">   0x0000aaaaaaaaa8a4 &lt;+32&gt;:    str     w0, [x29, <span class="comment">#28]</span></span><br><span class="line">   0x0000aaaaaaaaa8a8 &lt;+36&gt;:    mov     x0, <span class="comment">#0x8                        // #8</span></span><br><span class="line">   0x0000aaaaaaaaa8ac &lt;+40&gt;:    bl      0xaaaaaaaaa710 &lt;malloc@plt&gt;</span><br><span class="line">   0x0000aaaaaaaaa8b0 &lt;+44&gt;:    str     x0, [x29, <span class="comment">#32]</span></span><br><span class="line">   0x0000aaaaaaaaa8b4 &lt;+48&gt;:    adrp    x0, 0xaaaaaaaaa000</span><br><span class="line">   0x0000aaaaaaaaa8b8 &lt;+52&gt;:    add     x1, x0, <span class="comment">#0x9f0</span></span><br><span class="line">   0x0000aaaaaaaaa8bc &lt;+56&gt;:    add     x0, x29, <span class="comment">#0x50</span></span><br><span class="line">   0x0000aaaaaaaaa8c0 &lt;+60&gt;:    ldr     x2, [x1]</span><br><span class="line">   0x0000aaaaaaaaa8c4 &lt;+64&gt;:    str     x2, [x0]</span><br><span class="line">   0x0000aaaaaaaaa8c8 &lt;+68&gt;:    ldur    x1, [x1, <span class="comment">#5]</span></span><br><span class="line">   0x0000aaaaaaaaa8cc &lt;+72&gt;:    stur    x1, [x0, <span class="comment">#5]</span></span><br><span class="line">   0x0000aaaaaaaaa8d0 &lt;+76&gt;:    stur    wzr, [x29, <span class="comment">#93]</span></span><br><span class="line">   0x0000aaaaaaaaa8d4 &lt;+80&gt;:    sturh   wzr, [x29, <span class="comment">#97]</span></span><br><span class="line">   0x0000aaaaaaaaa8d8 &lt;+84&gt;:    strb    wzr, [x29, <span class="comment">#99]</span></span><br><span class="line">   0x0000aaaaaaaaa8dc &lt;+88&gt;:    stp     xzr, xzr, [x29, <span class="comment">#40]</span></span><br><span class="line">   0x0000aaaaaaaaa8e0 &lt;+92&gt;:    stp     xzr, xzr, [x29, <span class="comment">#56]</span></span><br><span class="line">   0x0000aaaaaaaaa8e4 &lt;+96&gt;:    str     xzr, [x29, <span class="comment">#72]</span></span><br><span class="line">   0x0000aaaaaaaaa8e8 &lt;+100&gt;:   mov     w0, <span class="comment">#0x1                        // #1</span></span><br><span class="line">   0x0000aaaaaaaaa8ec &lt;+104&gt;:   str     w0, [x29, <span class="comment">#40]</span></span><br><span class="line">   0x0000aaaaaaaaa8f0 &lt;+108&gt;:   add     x0, x29, <span class="comment">#0x28</span></span><br><span class="line">   0x0000aaaaaaaaa8f4 &lt;+112&gt;:   mov     x2, <span class="comment">#0x64                       // #100</span></span><br><span class="line">   0x0000aaaaaaaaa8f8 &lt;+116&gt;:   mov     w1, <span class="comment">#0x63                       // #99</span></span><br><span class="line">   0x0000aaaaaaaaa8fc &lt;+120&gt;:   bl      0xaaaaaaaaa730 &lt;memset@plt&gt;</span><br><span class="line">   0x0000aaaaaaaaa900 &lt;+124&gt;:   ldr     x0, [x29, <span class="comment">#32]</span></span><br><span class="line">   0x0000aaaaaaaaa904 &lt;+128&gt;:   bl      0xaaaaaaaaa770 &lt;free@plt&gt;</span><br><span class="line">   0x0000aaaaaaaaa908 &lt;+132&gt;:   str     xzr, [x29, <span class="comment">#32]</span></span><br><span class="line">   0x0000aaaaaaaaa90c &lt;+136&gt;:   mov     w0, <span class="comment">#0x0                        // #0</span></span><br><span class="line">   0x0000aaaaaaaaa910 &lt;+140&gt;:   adrp    x1, 0xaaaaaaaba000</span><br><span class="line">   0x0000aaaaaaaaa914 &lt;+144&gt;:   ldr     x1, [x1, <span class="comment">#4064]</span></span><br><span class="line">   0x0000aaaaaaaaa918 &lt;+148&gt;:   ldr     x2, [x29, <span class="comment">#104]</span></span><br><span class="line">   0x0000aaaaaaaaa91c &lt;+152&gt;:   ldr     x1, [x1]</span><br><span class="line">   0x0000aaaaaaaaa920 &lt;+156&gt;:   eor     x1, x2, x1</span><br><span class="line">   0x0000aaaaaaaaa924 &lt;+160&gt;:   cmp     x1, <span class="comment">#0x0</span></span><br><span class="line">   0x0000aaaaaaaaa928 &lt;+164&gt;:   b.eq    0xaaaaaaaaa930 &lt;FuncDemo+172&gt;  // b.none</span><br><span class="line">   0x0000aaaaaaaaa92c &lt;+168&gt;:   bl      0xaaaaaaaaa740 &lt;__stack_chk_fail@plt&gt;</span><br><span class="line">   0x0000aaaaaaaaa930 &lt;+172&gt;:   ldp     x29, x30, [sp], <span class="comment">#112</span></span><br><span class="line">   0x0000aaaaaaaaa934 &lt;+176&gt;:   ret</span><br></pre></td></tr></table></figure>
+<h6 id="1-先通过反汇编找到canary在栈上的存放地址">1. 先通过反汇编找到canary在栈上的存放地址</h6>
+<p>canary的值是<code>0x4c597894f2014f00</code>，存入sp + 104的地址</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">(gdb) disassemble FuncDemo</span><br><span class="line">Dump of assembler code <span class="keyword">for</span> <span class="keyword">function</span> FuncDemo:</span><br><span class="line">   0x0000aaaaaaaaa884 &lt;+0&gt;:     stp     x29, x30, [sp, <span class="comment">#-112]!</span></span><br><span class="line">   0x0000aaaaaaaaa888 &lt;+4&gt;:     mov     x29, sp</span><br><span class="line">   0x0000aaaaaaaaa88c &lt;+8&gt;:     adrp    x0, 0xaaaaaaaba000</span><br><span class="line">   0x0000aaaaaaaaa890 &lt;+12&gt;:    ldr     x0, [x0, <span class="comment">#4064]</span></span><br><span class="line">   0x0000aaaaaaaaa894 &lt;+16&gt;:    ldr     x1, [x0]</span><br><span class="line">   0x0000aaaaaaaaa898 &lt;+20&gt;:    str     x1, [x29, <span class="comment">#104]</span></span><br><span class="line">(gdb) i r x0 x1</span><br><span class="line">x0             0xfffff7ffd7a8   281474842482600</span><br><span class="line">x1             0x4c597894f2014f00       5501561000920436480</span><br><span class="line">(gdb) x/2wx <span class="variable">$x0</span></span><br><span class="line">0xfffff7ffd7a8 &lt;__stack_chk_guard&gt;:     0xf2014f00      0x4c597894</span><br><span class="line">(gdb) x/2wx <span class="variable">$sp</span> + 104</span><br><span class="line">0xfffffffffa38: 0xf2014f00      0x4c597894</span><br></pre></td></tr></table></figure>
+<h6 id="2-执行完代码第7行">2. 执行完代码第7行</h6>
+<p>memset越界，将栈中保存的canary值踩成了’c’</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">   0x0000aaaaaaaaa8fc &lt;+120&gt;:   bl      0xaaaaaaaaa730 &lt;memset@plt&gt;</span><br><span class="line">=&gt; 0x0000aaaaaaaaa900 &lt;+124&gt;:   ldr     x0, [x29, <span class="comment">#32]</span></span><br><span class="line">(gdb) x/2wx <span class="variable">$sp</span> + 104</span><br><span class="line">0xfffffffffa38: 0x63636363      0x63636363</span><br></pre></td></tr></table></figure>
+<h6 id="3-继续执行">3. 继续执行</h6>
+<p>从栈中取出保存的canary值与原来的canary值比较，不相等则说明有踩栈，跳转到__stack_chk_fail并抛出异常信号。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">   0x0000aaaaaaaaa910 &lt;+140&gt;:   adrp    x1, 0xaaaaaaaba000</span><br><span class="line">   0x0000aaaaaaaaa914 &lt;+144&gt;:   ldr     x1, [x1, <span class="comment">#4064]</span></span><br><span class="line">   0x0000aaaaaaaaa918 &lt;+148&gt;:   ldr     x2, [x29, <span class="comment">#104]</span></span><br><span class="line">   0x0000aaaaaaaaa91c &lt;+152&gt;:   ldr     x1, [x1]</span><br><span class="line">   0x0000aaaaaaaaa920 &lt;+156&gt;:   eor     x1, x2, x1</span><br><span class="line">   0x0000aaaaaaaaa924 &lt;+160&gt;:   cmp     x1, <span class="comment">#0x0</span></span><br><span class="line">   0x0000aaaaaaaaa928 &lt;+164&gt;:   b.eq    0xaaaaaaaaa930 &lt;FuncDemo+172&gt;  // b.none</span><br><span class="line">   0x0000aaaaaaaaa92c &lt;+168&gt;:   bl      0xaaaaaaaaa740 &lt;__stack_chk_fail@plt&gt;</span><br><span class="line">(gdb) c</span><br><span class="line">Continuing.</span><br><span class="line">Program received signal SIGABRT, Aborted.</span><br><span class="line">__GI_raise (sig=sig@entry=6) at ../sysdeps/unix/sysv/linux/raise.c:51</span><br><span class="line">51      ../sysdeps/unix/sysv/linux/raise.c: No such file or directory.</span><br><span class="line">(gdb) bt</span><br><span class="line"><span class="comment">#0  __GI_raise (sig=sig@entry=6) at ../sysdeps/unix/sysv/linux/raise.c:51</span></span><br><span class="line"><span class="comment">#1  0x0000fffff7eaa974 in __GI_abort () at abort.c:79</span></span><br><span class="line"><span class="comment">#2  0x0000fffff7ee372c in __libc_message (action=do_abort,</span></span><br><span class="line">    <span class="built_in">fmt</span>=<span class="built_in">fmt</span>@entry=0xfffff7fa3350 <span class="string">&quot;*** %s ***: %s terminated\n&quot;</span>)</span><br><span class="line">    at ../sysdeps/posix/libc_fatal.c:181</span><br><span class="line"><span class="comment">#3  0x0000fffff7f583c4 in __GI___fortify_fail_abort (</span></span><br><span class="line">    need_backtrace=need_backtrace@entry=<span class="literal">false</span>,</span><br><span class="line">    msg=msg@entry=0xfffff7fa3328 <span class="string">&quot;stack smashing detected&quot;</span>)</span><br><span class="line">    at fortify_fail.c:33</span><br><span class="line"><span class="comment">#4  0x0000fffff7f58378 in __stack_chk_fail () at stack_chk_fail.c:29</span></span><br><span class="line"><span class="comment">#5  0x0000aaaaaaaaa930 in FuncDemo () at demo.c:15</span></span><br><span class="line"><span class="comment">#6  0x0000aaaaaaaaa944 in main () at demo.c:19</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>assembly</category>
+      </categories>
+      <tags>
+        <tag>assembly</tag>
       </tags>
   </entry>
 </search>
