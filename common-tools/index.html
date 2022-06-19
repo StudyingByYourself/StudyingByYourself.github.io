@@ -220,7 +220,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1k</span>
+              <span>1.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -289,7 +289,7 @@
 <p>data[61:3]==0a:39:00</p>
 <p>data数据报文中，以第61字节开始，之后的3个字节的数据为 0a:39:00</p>
 <h6 id="2-strace">2. strace</h6>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">strace -ff -tt -T -o <span class="built_in">log</span> -p 17720</span><br><span class="line">strace -f -tt -T -o <span class="built_in">log</span> -p 35332</span><br><span class="line">strace -ft -o <span class="built_in">log</span> -p 35332</span><br><span class="line">// 跟踪单个线程</span><br><span class="line">strace -tt -T -o strace.log -p pid</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">strace -ff -tt -T -o <span class="built_in">log</span> -p 17720</span><br><span class="line">strace -ft -o <span class="built_in">log</span> -p 35332</span><br><span class="line">// 跟踪单个线程</span><br><span class="line">strace -tt -T -o strace.log -p pid(线程的pid)</span><br><span class="line">// 跟踪整个进程</span><br><span class="line">strace -f -tt -T -o strace.log -p pid(进程的pid)</span><br></pre></td></tr></table></figure>
 <table>
 <thead>
 <tr>
@@ -490,13 +490,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">26k</span>
+    <span title="站点总字数">32k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">24 分钟</span>
+    <span title="站点阅读时长">29 分钟</span>
 </div><div>
     <!--添加总阅读次数-->
     <div>
