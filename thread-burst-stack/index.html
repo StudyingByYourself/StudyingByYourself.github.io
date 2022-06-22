@@ -20,20 +20,19 @@
     var CONFIG = {"hostname":"zhoukaiqi.gitee.io","root":"/zhoukaiqi/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="本文介绍了常见工具的使用">
+  <meta name="description" content="近期遇到了多次线程爆栈问题，即线程栈的设置太小，被调用函数开栈到了另一个段空间，另一个段不可读写引起了异常。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="common-tools">
-<meta property="og:url" content="https://zhoukaiqi.gitee.io/common-tools/index.html">
+<meta property="og:title" content="线程爆栈引起的复位">
+<meta property="og:url" content="https://zhoukaiqi.gitee.io/thread-burst-stack/index.html">
 <meta property="og:site_name" content="数风流人物，还看今朝">
-<meta property="og:description" content="本文介绍了常见工具的使用">
+<meta property="og:description" content="近期遇到了多次线程爆栈问题，即线程栈的设置太小，被调用函数开栈到了另一个段空间，另一个段不可读写引起了异常。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-05-27T18:00:35.000Z">
-<meta property="article:modified_time" content="2022-05-27T18:00:35.000Z">
+<meta property="article:published_time" content="2022-06-22T11:55:06.000Z">
+<meta property="article:modified_time" content="2022-06-22T11:55:06.000Z">
 <meta property="article:author" content="CodeKai">
-<meta property="article:tag" content="tools">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://zhoukaiqi.gitee.io/common-tools/">
+<link rel="canonical" href="https://zhoukaiqi.gitee.io/thread-burst-stack/">
 
 
 <script id="page-configurations">
@@ -46,7 +45,7 @@
   };
 </script>
 
-  <title>common-tools | 数风流人物，还看今朝</title>
+  <title>线程爆栈引起的复位 | 数风流人物，还看今朝</title>
   
 
 
@@ -168,7 +167,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhoukaiqi.gitee.io/common-tools/">
+    <link itemprop="mainEntityOfPage" href="https://zhoukaiqi.gitee.io/thread-burst-stack/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/zhoukaiqi/images/header.png">
@@ -181,7 +180,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          common-tools
+          线程爆栈引起的复位
         </h1>
 
         <div class="post-meta">
@@ -191,20 +190,11 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-05-28 02:00:35" itemprop="dateCreated datePublished" datetime="2022-05-28T02:00:35+08:00">2022-05-28</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/zhoukaiqi/categories/tools/" itemprop="url" rel="index"><span itemprop="name">tools</span></a>
-                </span>
+              <time title="创建时间：2022-06-22 19:55:06" itemprop="dateCreated datePublished" datetime="2022-06-22T19:55:06+08:00">2022-06-22</time>
             </span>
 
           
-            <span id="/zhoukaiqi/common-tools/" class="post-meta-item leancloud_visitors" data-flag-title="common-tools" title="阅读次数">
+            <span id="/zhoukaiqi/thread-burst-stack/" class="post-meta-item leancloud_visitors" data-flag-title="线程爆栈引起的复位" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -219,8 +209,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/zhoukaiqi/common-tools/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/zhoukaiqi/common-tools/" itemprop="commentCount"></span>
+    <a title="valine" href="/zhoukaiqi/thread-burst-stack/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/zhoukaiqi/thread-burst-stack/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -230,14 +220,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.1k</span>
+              <span>2.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -249,95 +239,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>本文介绍了常见工具的使用</p>
+        <p>近期遇到了多次线程爆栈问题，即线程栈的设置太小，被调用函数开栈到了另一个段空间，另一个段不可读写引起了异常。</p>
 <span id="more"></span>
-<h6 id="1-tcpdump">1. tcpdump</h6>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// 指定网口</span><br><span class="line">tcpdump -x -n -v -s 0 -i eth2 -w demo.cap</span><br><span class="line">// 指定IP + 端口</span><br><span class="line">tcpdump -x -n -v -s 0 -i any host IP and port 21 -w demo.cap</span><br><span class="line">tcpdump -x -n -v -s 0 -i any src host srcIP and host dstIP and port 21 -w demo.cap</span><br><span class="line">// 环回网口</span><br><span class="line">tcpdump -x -n -v -s 0 -i lo -w demo.cap</span><br><span class="line">// 指定协议类型</span><br><span class="line">tcpdump -x -n -v -s 0 -i any ether proto 56320 -w demo.cap</span><br><span class="line">// 指定物理地址</span><br><span class="line">tcpdump -x -n -v -s 0 -i eth2 not tcp and not udp and ether host macaddr -w demo.cap</span><br><span class="line"></span><br><span class="line">tcpdump -x -n -v -s 0 -i any \(host IP and port 20015 \) or \(host IP \) -w demo.cap</span><br></pre></td></tr></table></figure>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>-n</td>
-<td>对地址以数字方式显式，否则显式为主机名，也就是说-n选项不做主机名解析</td>
-</tr>
-<tr>
-<td>-v</td>
-<td>当分析和打印的时候，产生详细的输出</td>
-</tr>
-<tr>
-<td>-s len</td>
-<td>设置tcpdump的数据包抓取长度为len，-s 0抓取完整的数据包</td>
-</tr>
-<tr>
-<td>-i interface</td>
-<td>指定tcpdump需要监听的网口，any表示监听所有网络接口</td>
-</tr>
-<tr>
-<td>-w</td>
-<td>将抓包数据输出到文件中而不是标准输出</td>
-</tr>
-<tr>
-<td>ether proto 56320</td>
-<td>指令协议类型</td>
-</tr>
-<tr>
-<td>ether host macaddr</td>
-<td>指定物理地址</td>
-</tr>
-<tr>
-<td>portrange port1-port2</td>
-<td>指定端口范围</td>
-</tr>
-</tbody>
-</table>
-<p>wireshark抓包过滤指定的字节数据     <a target="_blank" rel="noopener" href="https://blog.csdn.net/andrewgithub/article/details/103444611">https://blog.csdn.net/andrewgithub/article/details/103444611</a></p>
-<p>data[61:3]==0a:39:00</p>
-<p>data数据报文中，以第61字节开始，之后的3个字节的数据为 0a:39:00</p>
-<h6 id="2-strace">2. strace</h6>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">strace -ff -tt -T -o <span class="built_in">log</span> -p 17720</span><br><span class="line">strace -ft -o <span class="built_in">log</span> -p 35332</span><br><span class="line">// 跟踪单个线程</span><br><span class="line">strace -tt -T -o strace.log -p pid(线程的pid)</span><br><span class="line">// 跟踪整个进程</span><br><span class="line">strace -f -tt -T -o strace.log -p pid(进程的pid)</span><br></pre></td></tr></table></figure>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>-f</td>
-<td>跟踪子线程</td>
-</tr>
-<tr>
-<td>-ff</td>
-<td>跟踪子线程，每个线程独立文件</td>
-</tr>
-<tr>
-<td>-t</td>
-<td>表示时间精确到秒(每秒记录一次)</td>
-</tr>
-<tr>
-<td>-tt</td>
-<td>表示时间精确到微秒(每微秒记录一次)</td>
-</tr>
-<tr>
-<td>-T</td>
-<td>记录各个系统调用花费的时间，精确到微秒</td>
-</tr>
-<tr>
-<td>-o</td>
-<td>表示将追踪结果输出的一个文件</td>
-</tr>
-<tr>
-<td>-p</td>
-<td>pid</td>
-</tr>
-</tbody>
-</table>
+<p>下面构造了一个线程爆栈。线程的栈大小是16k，线程内的函数定义了多个局部大数组，会超过16k。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> STACK_SIZE 16384</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">FuncB</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> arr[<span class="number">2000</span>] = &#123;<span class="number">2</span>&#125;;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">FuncA</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> arr[<span class="number">2000</span>] = &#123;<span class="number">1</span>&#125;;</span><br><span class="line">    FuncB();</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">ThreadWork</span><span class="params">(<span class="type">void</span> *arg)</span> </span><br><span class="line">&#123;</span><br><span class="line">    (<span class="type">void</span>)arg;</span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">        FuncA();</span><br><span class="line">        sleep(<span class="number">1</span>);</span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> </span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">pthread_t</span> tid;</span><br><span class="line">    <span class="type">pthread_attr_t</span> attr;</span><br><span class="line">    <span class="type">int</span> ret;</span><br><span class="line">    ret = pthread_attr_init(&amp;attr);</span><br><span class="line">    <span class="keyword">if</span> (ret != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;call pthread_attr_init failed\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    ret = pthread_attr_setstacksize(&amp;attr, STACK_SIZE);</span><br><span class="line">    <span class="keyword">if</span> (ret != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;call pthread_attr_setstacksize failed\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    ret = pthread_create(&amp;tid, &amp;attr, (<span class="type">void</span> *)ThreadWork, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="keyword">if</span> (ret != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;call pthread_create failed\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">        sleep(<span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译：<code>gcc pthread.c -lpthread -g -mmanual-endbr -o pthread</code></p>
+<p>异常复位的指令是<code>orq    $0x0,(%rsp)</code>，查询rbp、rsp的值分别是0x7fffff571f70和0x7fffff570f70</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">Thread <span class="number">2</span> <span class="string">&quot;pthread&quot;</span> received signal SIGSEGV, Segmentation fault.</span><br><span class="line">[Switching to Thread <span class="number">0x7fffff574700</span> (LWP <span class="number">221</span>)]</span><br><span class="line"><span class="number">0x00000000080011f4</span> in <span class="title function_">FuncB</span> <span class="params">()</span> at pthread.c:9</span><br><span class="line">9       &#123;</span><br><span class="line">(gdb) bt</span><br><span class="line">#<span class="number">0</span>  <span class="number">0x00000000080011f4</span> in <span class="title function_">FuncB</span> <span class="params">()</span> at pthread.c:9</span><br><span class="line">#1  0x0000000008001298 in <span class="title function_">FuncA</span> <span class="params">()</span> at pthread.c:17</span><br><span class="line">#2  0x00000000080012c5 in <span class="title function_">ThreadWork</span> <span class="params">(arg=<span class="number">0x0</span>)</span> at pthread.c:25</span><br><span class="line">#3  0x00007fffff795609 in <span class="title function_">start_thread</span> <span class="params">(arg=&lt;optimized out&gt;)</span> at pthread_create.c:477</span><br><span class="line">#4  0x00007fffff6af133 in <span class="title function_">clone</span> <span class="params">()</span> at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95</span><br><span class="line"><span class="params">(gdb)</span> x/10i FuncB</span><br><span class="line">   0x80011e9 &lt;FuncB&gt;:   push   %rbp</span><br><span class="line">   0x80011ea &lt;FuncB+1&gt;: mov    %rsp,%rbp</span><br><span class="line">   0x80011ed &lt;FuncB+4&gt;: sub    $0x1000,%rsp</span><br><span class="line">=&gt; <span class="number">0x80011f4</span> &lt;FuncB+<span class="number">11</span>&gt;:        orq    $<span class="number">0x0</span>,(%rsp)</span><br><span class="line">   <span class="number">0x80011f9</span> &lt;FuncB+<span class="number">16</span>&gt;:        sub    $<span class="number">0xf50</span>,%rsp</span><br><span class="line">   <span class="number">0x8001200</span> &lt;FuncB+<span class="number">23</span>&gt;:        mov    %fs:<span class="number">0x28</span>,%rax</span><br><span class="line">   <span class="number">0x8001209</span> &lt;FuncB+<span class="number">32</span>&gt;:        mov    %rax,<span class="number">-0x8</span>(%rbp)</span><br><span class="line">   <span class="number">0x800120d</span> &lt;FuncB+<span class="number">36</span>&gt;:        xor    %eax,%eax</span><br><span class="line">   <span class="number">0x800120f</span> &lt;FuncB+<span class="number">38</span>&gt;:        lea    <span class="number">-0x1f50</span>(%rbp),%rdx</span><br><span class="line">   <span class="number">0x8001216</span> &lt;FuncB+<span class="number">45</span>&gt;:        mov    $<span class="number">0x0</span>,%eax</span><br><span class="line">(gdb) i r rbp rsp</span><br><span class="line">rbp            <span class="number">0x7fffff571f70</span>      <span class="number">0x7fffff571f70</span></span><br><span class="line">rsp            <span class="number">0x7fffff570f70</span>      <span class="number">0x7fffff570f70</span></span><br></pre></td></tr></table></figure>
+<p>查看maps表，rbp所在的段可读可写，但rsp(即rbp-0x1000)所在的段不可读写，所以会异常。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(gdb) shell cat /proc/<span class="number">217</span>/maps | grep <span class="number">7f</span>ffff57</span><br><span class="line"><span class="number">7f</span>ffff570000<span class="number">-7f</span>ffff571000 ---p <span class="number">00000000</span> <span class="number">00</span>:<span class="number">00</span> <span class="number">0</span></span><br><span class="line"><span class="number">7f</span>ffff571000<span class="number">-7f</span>ffff575000 rw-p <span class="number">00000000</span> <span class="number">00</span>:<span class="number">00</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -361,10 +271,6 @@
 
 
       <footer class="post-footer">
-          
-          <div class="post-tags">
-              <a href="/zhoukaiqi/tags/tools/" rel="tag"><i class="fa fa-tag"></i> tools</a>
-          </div>
 
         
 
@@ -372,13 +278,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/zhoukaiqi/assembly-arm/" rel="prev" title="arm64常见汇编指令">
-      <i class="fa fa-chevron-left"></i> arm64常见汇编指令
+    <a href="/zhoukaiqi/movaps%E6%8C%87%E4%BB%A4%E5%BC%95%E8%B5%B7%E7%9A%84%E5%A4%8D%E4%BD%8D/" rel="prev" title="movaps指令引起的复位">
+      <i class="fa fa-chevron-left"></i> movaps指令引起的复位
     </a></div>
-      <div class="post-nav-item">
-    <a href="/zhoukaiqi/stack-chk-fail/" rel="next" title="栈保护canary机制与__stack_chk_fail">
-      栈保护canary机制与__stack_chk_fail <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -438,7 +341,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-tcpdump"><span class="nav-text">1. tcpdump</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-strace"><span class="nav-text">2. strace</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
