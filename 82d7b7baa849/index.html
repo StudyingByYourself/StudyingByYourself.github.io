@@ -23,7 +23,7 @@
   <meta name="description" content="最近定位了一个bolt优化导致进程异常复位的问题。disassemble复位函数发现是运行到movaps指令时挂了。movaps是SSE指令，要求访问的地址是16字节对齐的。由于bolt优化多开了一层8字节的栈，后续的rbp非16字节对齐。当movaps访问非16字节对齐的rbp时，指令异常，进程复位。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="movaps指令引起的复位">
-<meta property="og:url" content="https://zhoukaiqi.gitee.io/movaps%E6%8C%87%E4%BB%A4%E5%BC%95%E8%B5%B7%E7%9A%84%E5%A4%8D%E4%BD%8D/index.html">
+<meta property="og:url" content="https://zhoukaiqi.gitee.io/82d7b7baa849/index.html">
 <meta property="og:site_name" content="数风流人物，还看今朝">
 <meta property="og:description" content="最近定位了一个bolt优化导致进程异常复位的问题。disassemble复位函数发现是运行到movaps指令时挂了。movaps是SSE指令，要求访问的地址是16字节对齐的。由于bolt优化多开了一层8字节的栈，后续的rbp非16字节对齐。当movaps访问非16字节对齐的rbp时，指令异常，进程复位。">
 <meta property="og:locale" content="zh_CN">
@@ -33,7 +33,7 @@
 <meta property="article:tag" content="assembly">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://zhoukaiqi.gitee.io/movaps%E6%8C%87%E4%BB%A4%E5%BC%95%E8%B5%B7%E7%9A%84%E5%A4%8D%E4%BD%8D/">
+<link rel="canonical" href="https://zhoukaiqi.gitee.io/82d7b7baa849/">
 
 
 <script id="page-configurations">
@@ -168,7 +168,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhoukaiqi.gitee.io/movaps%E6%8C%87%E4%BB%A4%E5%BC%95%E8%B5%B7%E7%9A%84%E5%A4%8D%E4%BD%8D/">
+    <link itemprop="mainEntityOfPage" href="https://zhoukaiqi.gitee.io/82d7b7baa849/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/zhoukaiqi/images/header.png">
@@ -204,7 +204,7 @@
             </span>
 
           
-            <span id="/zhoukaiqi/movaps%E6%8C%87%E4%BB%A4%E5%BC%95%E8%B5%B7%E7%9A%84%E5%A4%8D%E4%BD%8D/" class="post-meta-item leancloud_visitors" data-flag-title="movaps指令引起的复位" title="阅读次数">
+            <span id="/zhoukaiqi/82d7b7baa849/" class="post-meta-item leancloud_visitors" data-flag-title="movaps指令引起的复位" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -219,8 +219,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/zhoukaiqi/movaps%E6%8C%87%E4%BB%A4%E5%BC%95%E8%B5%B7%E7%9A%84%E5%A4%8D%E4%BD%8D/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/zhoukaiqi/movaps%E6%8C%87%E4%BB%A4%E5%BC%95%E8%B5%B7%E7%9A%84%E5%A4%8D%E4%BD%8D/" itemprop="commentCount"></span>
+    <a title="valine" href="/zhoukaiqi/82d7b7baa849/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/zhoukaiqi/82d7b7baa849/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -294,11 +294,11 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/zhoukaiqi/leaf-function/" rel="prev" title="调用者与被调用者的寄存器优化">
+    <a href="/zhoukaiqi/e89ef2b48b02/" rel="prev" title="调用者与被调用者的寄存器优化">
       <i class="fa fa-chevron-left"></i> 调用者与被调用者的寄存器优化
     </a></div>
       <div class="post-nav-item">
-    <a href="/zhoukaiqi/thread-burst-stack/" rel="next" title="线程爆栈引起的复位">
+    <a href="/zhoukaiqi/761b5f08fe29/" rel="next" title="线程爆栈引起的复位">
       线程爆栈引起的复位 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
@@ -375,7 +375,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/zhoukaiqi/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -425,13 +425,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">34k</span>
+    <span title="站点总字数">39k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">31 分钟</span>
+    <span title="站点阅读时长">36 分钟</span>
 </div><div>
     <!--添加总阅读次数-->
     <div>
