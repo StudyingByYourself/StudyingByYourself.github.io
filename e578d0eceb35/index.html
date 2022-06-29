@@ -22,7 +22,7 @@
 
   <meta name="description" content="本文介绍了x86_64推栈原理和具体代码实现。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="x86_64推栈原理与实现">
+<meta property="og:title" content="x86_64推栈原理与实现1">
 <meta property="og:url" content="https://zhoukaiqi.gitee.io/e578d0eceb35/index.html">
 <meta property="og:site_name" content="数风流人物，还看今朝">
 <meta property="og:description" content="本文介绍了x86_64推栈原理和具体代码实现。">
@@ -47,7 +47,7 @@
   };
 </script>
 
-  <title>x86_64推栈原理与实现 | 数风流人物，还看今朝</title>
+  <title>x86_64推栈原理与实现1 | 数风流人物，还看今朝</title>
   
 
 
@@ -182,7 +182,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          x86_64推栈原理与实现
+          x86_64推栈原理与实现1
         </h1>
 
         <div class="post-meta">
@@ -196,7 +196,7 @@
             </span>
 
           
-            <span id="/zhoukaiqi/e578d0eceb35/" class="post-meta-item leancloud_visitors" data-flag-title="x86_64推栈原理与实现" title="阅读次数">
+            <span id="/zhoukaiqi/e578d0eceb35/" class="post-meta-item leancloud_visitors" data-flag-title="x86_64推栈原理与实现1" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -244,7 +244,7 @@
         <p>本文介绍了x86_64推栈原理和具体代码实现。</p>
 <span id="more"></span>
 <h4 id="推栈原理">推栈原理</h4>
-<p>x86_64推栈需要添加编译选项<code>-fno-omit-frame-pointer</code>，否则rbp不作为栈帧寄存器使用，无法正确推栈。</p>
+<p>x86_64的rbp推栈需要添加编译选项<code>-fno-omit-frame-pointer</code>，否则rbp不作为栈帧寄存器使用，无法正确推栈。</p>
 <p><img src="https://s1.daohangmao.net/2022/06/26/62b7cdf3eb89f.png" alt=""></p>
 <p>开栈（从高地址到低地址）：当函数A callq 函数B时，会先将函数A的下一条指令存入rsp(即后续返回到A函数的地址)。而调用到函数B后，会将函数A的寄存器rbp存入rsp并且将rsp赋值给rbp。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// callq addr的具体实现</span><br><span class="line">rsp = rsp - 8</span><br><span class="line">*(unsigned long*)rsp = rip + sizeof(inst)</span><br><span class="line">rip = addr</span><br><span class="line"></span><br><span class="line">// push rbp的具体实现</span><br><span class="line">rsp = rsp - 8</span><br><span class="line">*(unsigned long*)rsp = rbp</span><br><span class="line"></span><br><span class="line">// 函数的入口指令</span><br><span class="line">(gdb) disassemble FuncC</span><br><span class="line">Dump of assembler code <span class="keyword">for</span> <span class="keyword">function</span> FuncC:</span><br><span class="line">   0x000055555555471a &lt;+0&gt;:     push   %rbp</span><br><span class="line">   0x000055555555471b &lt;+1&gt;:     mov    %rsp,%rbp</span><br></pre></td></tr></table></figure>
@@ -289,7 +289,10 @@
     <a href="/zhoukaiqi/761b5f08fe29/" rel="prev" title="线程爆栈引起的复位">
       <i class="fa fa-chevron-left"></i> 线程爆栈引起的复位
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/zhoukaiqi/5402692fe700/" rel="next" title="x86_64推栈原理与实现2">
+      x86_64推栈原理与实现2 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -365,7 +368,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/zhoukaiqi/archives/">
         
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -415,13 +418,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">39k</span>
+    <span title="站点总字数">46k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">36 分钟</span>
+    <span title="站点阅读时长">42 分钟</span>
 </div><div>
     <!--添加总阅读次数-->
     <div>
