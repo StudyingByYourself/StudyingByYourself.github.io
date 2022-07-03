@@ -243,7 +243,7 @@
       
         <p>本文介绍了x86_64推栈原理和具体代码实现。</p>
 <span id="more"></span>
-<h4 id="推栈原理">推栈原理</h4>
+<h4 id="推栈原理-2">推栈原理</h4>
 <p>x86_64的rbp推栈需要添加编译选项<code>-fno-omit-frame-pointer</code>，否则rbp不作为栈帧寄存器使用，无法正确推栈。</p>
 <p><img src="https://s1.daohangmao.net/2022/06/26/62b7cdf3eb89f.png" alt=""></p>
 <p>开栈（从高地址到低地址）：当函数A callq 函数B时，会先将函数A的下一条指令存入rsp(即后续返回到A函数的地址)。而调用到函数B后，会将函数A的寄存器rbp存入rsp并且将rsp赋值给rbp。</p>
@@ -352,7 +352,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%A8%E6%A0%88%E5%8E%9F%E7%90%86"><span class="nav-text">推栈原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%E6%8E%A8%E6%A0%88"><span class="nav-text">代码实现推栈</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%A8%E6%A0%88%E5%8E%9F%E7%90%86-2"><span class="nav-text">推栈原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%E6%8E%A8%E6%A0%88"><span class="nav-text">代码实现推栈</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
