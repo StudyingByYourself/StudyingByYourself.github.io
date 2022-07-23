@@ -291,14 +291,14 @@
 <p>以下pthread_cond_wait和pthread_cond_signal的通常用法的伪代码(条件为：value是不是大于0)：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">lock(&amp;mutex);</span><br><span class="line"><span class="keyword">while</span>(value&lt;=<span class="number">0</span>)<span class="comment">//需要value&gt;0所以 value&lt;=0就条件不满足</span></span><br><span class="line">&#123;</span><br><span class="line">    pthread_cond_wait(&amp;cond,&amp;mutex);</span><br><span class="line">&#125;</span><br><span class="line">unlock(&amp;mutex);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">lock(&amp;mutex);</span><br><span class="line"><span class="keyword">if</span>(value==<span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">	value++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(value&gt;<span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">	pthread_cond_signal(&amp;cond);</span><br><span class="line">&#125;</span><br><span class="line">unlock(&amp;mutex);</span><br></pre></td></tr></table></figure>
-<p>传入前锁mutex</p>
+<p><strong>传入前锁mutex</strong></p>
 <p>传入前锁mutex是为了保证线程从条件判断到进入pthread_cond_wait前，条件不被改变。</p>
 <p>如果没有传入前的锁。就会有这样的情况：线程A判断条件不满足之后，调用pthread_cond_wait之前，A因为休眠，或者因为多线程下，多个线程执行顺序和快慢的因素，令线程B更改了条件，使得条件满足。但此时线程A还没有调用pthread_cond_wait。等到线程A又启动调用pthread_cond_wait后虽然条件满足，但却收不到pthread_cond_signal的唤醒，就一直阻塞下去。</p>
-<p>传入后解锁mutex</p>
+<p><strong>传入后解锁mutex</strong></p>
 <p>传入后解锁是为了条件能够被改变</p>
 <p>传入后的解锁，是因为调用pthread_cond_signal的那部分，需要先加锁更改条件后才调用pthread_cond_signal。（更改条件与等待条件满足，都是针对条件这一个资源的竞争，所以调用pthread_cond_wait和调用pthread_cond_signal的两个线程需要同一把锁）</p>
 <p>如果pthread_cond_wait内不对mutex解锁，那么在调用pthread_cond_wait后，其他线程就不能更改条件，条件就会一直不满足。</p>
-<p>返回前再次锁mutex</p>
+<p><strong>返回前再次锁mutex</strong></p>
 <ol>
 <li>
 <p>返回前再次锁mutex是为了保证线程从pthread_cond_wait返回后 到 再次条件判断前不被改变。</p>
