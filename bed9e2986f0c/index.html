@@ -20,20 +20,20 @@
     var CONFIG = {"hostname":"zhoukaiqi.gitee.io","root":"/zhoukaiqi/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="最近定位了一个bolt优化导致进程异常复位的问题。disassemble复位函数发现是运行到movaps指令时挂了。movaps是SSE指令，要求访问的地址是16字节对齐的。由于bolt优化多开了一层8字节的栈，后续的rbp非16字节对齐。当movaps访问非16字节对齐的rbp时，指令异常，进程复位。">
+  <meta name="description" content="本文介绍了C语言地址偏移的巧妙使用。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="movaps指令引起的复位">
-<meta property="og:url" content="https://zhoukaiqi.gitee.io/82d7b7baa849/index.html">
+<meta property="og:title" content="C语言灵活使用地址偏移">
+<meta property="og:url" content="https://zhoukaiqi.gitee.io/bed9e2986f0c/index.html">
 <meta property="og:site_name" content="数风流人物，还看今朝">
-<meta property="og:description" content="最近定位了一个bolt优化导致进程异常复位的问题。disassemble复位函数发现是运行到movaps指令时挂了。movaps是SSE指令，要求访问的地址是16字节对齐的。由于bolt优化多开了一层8字节的栈，后续的rbp非16字节对齐。当movaps访问非16字节对齐的rbp时，指令异常，进程复位。">
+<meta property="og:description" content="本文介绍了C语言地址偏移的巧妙使用。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-06-17T16:07:22.000Z">
-<meta property="article:modified_time" content="2022-06-17T16:07:22.000Z">
+<meta property="article:published_time" content="2022-07-29T14:00:03.000Z">
+<meta property="article:modified_time" content="2022-07-29T14:00:03.000Z">
 <meta property="article:author" content="CodeKai">
-<meta property="article:tag" content="assembly">
+<meta property="article:tag" content="C">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://zhoukaiqi.gitee.io/82d7b7baa849/">
+<link rel="canonical" href="https://zhoukaiqi.gitee.io/bed9e2986f0c/">
 
 
 <script id="page-configurations">
@@ -46,7 +46,7 @@
   };
 </script>
 
-  <title>movaps指令引起的复位 | 数风流人物，还看今朝</title>
+  <title>C语言灵活使用地址偏移 | 数风流人物，还看今朝</title>
   
 
 
@@ -168,7 +168,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhoukaiqi.gitee.io/82d7b7baa849/">
+    <link itemprop="mainEntityOfPage" href="https://zhoukaiqi.gitee.io/bed9e2986f0c/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/zhoukaiqi/images/header.png">
@@ -181,7 +181,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          movaps指令引起的复位
+          C语言灵活使用地址偏移
         </h1>
 
         <div class="post-meta">
@@ -191,7 +191,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-06-18 00:07:22" itemprop="dateCreated datePublished" datetime="2022-06-18T00:07:22+08:00">2022-06-18</time>
+              <time title="创建时间：2022-07-29 22:00:03" itemprop="dateCreated datePublished" datetime="2022-07-29T22:00:03+08:00">2022-07-29</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -199,12 +199,12 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/zhoukaiqi/categories/assembly/" itemprop="url" rel="index"><span itemprop="name">assembly</span></a>
+                  <a href="/zhoukaiqi/categories/C/" itemprop="url" rel="index"><span itemprop="name">C</span></a>
                 </span>
             </span>
 
           
-            <span id="/zhoukaiqi/82d7b7baa849/" class="post-meta-item leancloud_visitors" data-flag-title="movaps指令引起的复位" title="阅读次数">
+            <span id="/zhoukaiqi/bed9e2986f0c/" class="post-meta-item leancloud_visitors" data-flag-title="C语言灵活使用地址偏移" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -219,8 +219,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/zhoukaiqi/82d7b7baa849/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/zhoukaiqi/82d7b7baa849/" itemprop="commentCount"></span>
+    <a title="valine" href="/zhoukaiqi/bed9e2986f0c/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/zhoukaiqi/bed9e2986f0c/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -230,14 +230,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.1k</span>
+              <span>613</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>1 分钟</span>
             </span>
 
         </div>
@@ -249,17 +249,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>最近定位了一个bolt优化导致进程异常复位的问题。disassemble复位函数发现是运行到movaps指令时挂了。movaps是SSE指令，要求访问的地址是16字节对齐的。由于bolt优化多开了一层8字节的栈，后续的rbp非16字节对齐。当movaps访问非16字节对齐的rbp时，指令异常，进程复位。</p>
+        <p>本文介绍了C语言地址偏移的巧妙使用。</p>
 <span id="more"></span>
-<p>这里忽略bolt优化，只用汇编模拟movaps指令异常。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">0</span>;</span><br><span class="line">    __asm__ __volatile__ (<span class="string">&quot;movaps 0x04(%rdx), %xmm0&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">(gdb) disassemble main</span><br><span class="line">Dump of assembler code <span class="keyword">for</span> function main:</span><br><span class="line">   <span class="number">0x0000000008001129</span> &lt;+<span class="number">0</span>&gt;:     endbr64</span><br><span class="line">   <span class="number">0x000000000800112d</span> &lt;+<span class="number">4</span>&gt;:     push   %rbp</span><br><span class="line">   <span class="number">0x000000000800112e</span> &lt;+<span class="number">5</span>&gt;:     mov    %rsp,%rbp</span><br><span class="line">   <span class="number">0x0000000008001131</span> &lt;+<span class="number">8</span>&gt;:     movl   $<span class="number">0x0</span>,<span class="number">-0x4</span>(%rbp)</span><br><span class="line">=&gt; <span class="number">0x0000000008001138</span> &lt;+<span class="number">15</span>&gt;:    movaps <span class="number">0x4</span>(%rdx),%xmm0</span><br><span class="line">   <span class="number">0x000000000800113c</span> &lt;+<span class="number">19</span>&gt;:    mov    $<span class="number">0x0</span>,%eax</span><br><span class="line">   <span class="number">0x0000000008001141</span> &lt;+<span class="number">24</span>&gt;:    pop    %rbp</span><br><span class="line">   <span class="number">0x0000000008001142</span> &lt;+<span class="number">25</span>&gt;:    retq</span><br><span class="line">End of assembler dump.</span><br><span class="line">(gdb) i r rdx</span><br><span class="line">rdx            <span class="number">0x7ffffffee168</span>      <span class="number">140737488281960</span></span><br></pre></td></tr></table></figure>
-<p>rdx寄存器是0x7ffffffee168， 0x7ffffffee168+0x4=0x7ffffffee16c不是16字节对齐，所以会出现段错误。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">(gdb) c</span><br><span class="line">Continuing.</span><br><span class="line"></span><br><span class="line">Program received signal SIGSEGV, Segmentation fault.</span><br><span class="line">main () at demo.c:<span class="number">4</span></span><br><span class="line"><span class="number">4</span>           __asm__ __volatile__ (<span class="string">&quot;movaps 0x04(%rdx), %xmm0&quot;</span>);</span><br><span class="line">(gdb) disassemble main</span><br><span class="line">Dump of assembler code <span class="keyword">for</span> function main:</span><br><span class="line">   <span class="number">0x0000000008001129</span> &lt;+<span class="number">0</span>&gt;:     endbr64</span><br><span class="line">   <span class="number">0x000000000800112d</span> &lt;+<span class="number">4</span>&gt;:     push   %rbp</span><br><span class="line">   <span class="number">0x000000000800112e</span> &lt;+<span class="number">5</span>&gt;:     mov    %rsp,%rbp</span><br><span class="line">   <span class="number">0x0000000008001131</span> &lt;+<span class="number">8</span>&gt;:     movl   $<span class="number">0x0</span>,<span class="number">-0x4</span>(%rbp)</span><br><span class="line">=&gt; <span class="number">0x0000000008001138</span> &lt;+<span class="number">15</span>&gt;:    movaps <span class="number">0x4</span>(%rdx),%xmm0</span><br><span class="line">   <span class="number">0x000000000800113c</span> &lt;+<span class="number">19</span>&gt;:    mov    $<span class="number">0x0</span>,%eax</span><br><span class="line">   <span class="number">0x0000000008001141</span> &lt;+<span class="number">24</span>&gt;:    pop    %rbp</span><br><span class="line">   <span class="number">0x0000000008001142</span> &lt;+<span class="number">25</span>&gt;:    retq</span><br><span class="line">End of assembler dump.</span><br></pre></td></tr></table></figure>
-<p>如果给rdx寄存器减去12字节，使得rdx+4是16字节对齐的，则能正常执行。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">(gdb) disassemble main</span><br><span class="line">Dump of assembler code <span class="keyword">for</span> function main:</span><br><span class="line">   <span class="number">0x0000000008001129</span> &lt;+<span class="number">0</span>&gt;:     endbr64</span><br><span class="line">   <span class="number">0x000000000800112d</span> &lt;+<span class="number">4</span>&gt;:     push   %rbp</span><br><span class="line">   <span class="number">0x000000000800112e</span> &lt;+<span class="number">5</span>&gt;:     mov    %rsp,%rbp</span><br><span class="line">   <span class="number">0x0000000008001131</span> &lt;+<span class="number">8</span>&gt;:     movl   $<span class="number">0x0</span>,<span class="number">-0x4</span>(%rbp)</span><br><span class="line">=&gt; <span class="number">0x0000000008001138</span> &lt;+<span class="number">15</span>&gt;:    movaps <span class="number">0x4</span>(%rdx),%xmm0</span><br><span class="line">   <span class="number">0x000000000800113c</span> &lt;+<span class="number">19</span>&gt;:    mov    $<span class="number">0x0</span>,%eax</span><br><span class="line">   <span class="number">0x0000000008001141</span> &lt;+<span class="number">24</span>&gt;:    pop    %rbp</span><br><span class="line">   <span class="number">0x0000000008001142</span> &lt;+<span class="number">25</span>&gt;:    retq</span><br><span class="line">End of assembler dump.</span><br><span class="line">(gdb) i r $rdx</span><br><span class="line">rdx            <span class="number">0x7ffffffee168</span>      <span class="number">140737488281960</span></span><br><span class="line">(gdb) <span class="built_in">set</span> $rdx = $rdx - <span class="number">12</span></span><br><span class="line">(gdb) i r $rdx</span><br><span class="line">rdx            <span class="number">0x7ffffffee15c</span>      <span class="number">140737488281948</span></span><br><span class="line">(gdb) c</span><br><span class="line">Continuing.</span><br><span class="line">[Inferior <span class="number">1</span> (process <span class="number">396</span>) exited normally]</span><br></pre></td></tr></table></figure>
-<p>补充：movups	<code>u表示不必16字节对齐，替换成a表示必须16字节对齐。</code></p>
-<p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/u010659887/article/details/113802005">https://blog.csdn.net/u010659887/article/details/113802005</a></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">((type *)<span class="number">0</span>)</span><br><span class="line">(((type *)<span class="number">0</span>)-&gt;member)</span><br><span class="line">&amp;(((type *)<span class="number">0</span>)-&gt;member)</span><br><span class="line"><span class="comment">// 表示某个结构体成员在结构体中的偏移量</span></span><br><span class="line">(<span class="type">char</span> *)(&amp;(((type *)<span class="number">0</span>)-&gt;member))</span><br><span class="line">(type *)((<span class="type">char</span> *)(item) - (<span class="type">char</span> *)(&amp;(((type *)<span class="number">0</span>)-&gt;member)))</span><br></pre></td></tr></table></figure>
+<p>测试demo</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> *<span class="title">next</span>,*<span class="title">prev</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">DataEntry</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> key;</span><br><span class="line">    <span class="type">int</span> value;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> <span class="title">node</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> NODE_ENTRY(item, type, member) \</span></span><br><span class="line"><span class="meta">    ((type *)((char *)(item) - (char *)(&amp;(((type *)0)-&gt;member))))</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">DataEntry</span> <span class="title">e</span>;</span></span><br><span class="line">    <span class="comment">/* 使用node的地址，获取key和value的值*/</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">DataEntry</span> *<span class="title">p</span> =</span> NODE_ENTRY(&amp;e.node, DataEntry, node);</span><br><span class="line">    <span class="type">int</span> key = p-&gt;key;</span><br><span class="line">    <span class="type">int</span> value = p-&gt;value;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -285,7 +279,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/zhoukaiqi/tags/assembly/" rel="tag"><i class="fa fa-tag"></i> assembly</a>
+              <a href="/zhoukaiqi/tags/C/" rel="tag"><i class="fa fa-tag"></i> C</a>
           </div>
 
         
@@ -294,13 +288,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/zhoukaiqi/e89ef2b48b02/" rel="prev" title="调用者与被调用者的寄存器优化">
-      <i class="fa fa-chevron-left"></i> 调用者与被调用者的寄存器优化
+    <a href="/zhoukaiqi/7508e955a9b1/" rel="prev" title="静态链接">
+      <i class="fa fa-chevron-left"></i> 静态链接
     </a></div>
-      <div class="post-nav-item">
-    <a href="/zhoukaiqi/761b5f08fe29/" rel="next" title="线程爆栈引起的复位">
-      线程爆栈引起的复位 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     

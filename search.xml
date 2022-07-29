@@ -646,7 +646,16 @@ R_X86_64_32：  重定位一个使用32位绝对地址的引用，计算方式�
     <content><![CDATA[<p>本文介绍了条件变量。</p>
 <span id="more"></span>
 <h5 id="1-什么是条件变量">1. 什么是条件变量</h5>
-<p>条件变量是利用线程间共享的全局变量进行同步的一种机制，主要包括以下两个动作：一个线程等待”条件变量的条件成立“而被阻塞；另一个线程”使条件成立“来唤醒被阻塞的线程。为了防止竞争，条件变量的使用总是和一个互斥锁结合在一起使用。</p>
+<p>条件变量是利用线程间共享的全局变量进行同步的一种机制，主要包括以下两个动作：</p>
+<ul>
+<li>
+<p>一个线程等待”条件变量的条件成立“而被阻塞；</p>
+</li>
+<li>
+<p>另一个线程”使条件成立“来唤醒被阻塞的线程。</p>
+</li>
+</ul>
+<p>为了防止竞争，条件变量的使用总是和一个互斥锁结合在一起使用。</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 48字节</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> __SIZEOF_PTHREAD_COND_T 48</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">union</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">    &#123;</span></span><br><span class="line">        <span class="type">int</span> __lock;</span><br><span class="line">        <span class="type">unsigned</span> <span class="type">int</span> __futex;</span><br><span class="line">        __externsion__ <span class="type">unsigned</span> <span class="type">long</span> <span class="type">long</span> <span class="type">int</span> __total_seq;</span><br><span class="line">        __externsion__ <span class="type">unsigned</span> <span class="type">long</span> <span class="type">long</span> <span class="type">int</span> __wakeup_seq;</span><br><span class="line">        __externsion__ <span class="type">unsigned</span> <span class="type">long</span> <span class="type">long</span> <span class="type">int</span> __woken_seq;</span><br><span class="line">        <span class="type">void</span> *__mutex;</span><br><span class="line">        <span class="type">unsigned</span> <span class="type">int</span> __nwaiters;</span><br><span class="line">        <span class="type">unsigned</span> <span class="type">int</span> __broadcast_seq;</span><br><span class="line">    &#125; __data;</span><br><span class="line">    <span class="type">char</span> __size[__SIZEOF_PTHREAD_COND_T];</span><br><span class="line">    __externsion__ <span class="type">unsigned</span> <span class="type">long</span> <span class="type">long</span> <span class="type">int</span> __align;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h5 id="2-如何创建条件变量">2. 如何创建条件变量</h5>
 <ul>
@@ -808,6 +817,22 @@ R_X86_64_32：  重定位一个使用32位绝对地址的引用，计算方式�
       </categories>
       <tags>
         <tag>tools</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C语言灵活使用地址偏移</title>
+    <url>/zhoukaiqi/bed9e2986f0c/</url>
+    <content><![CDATA[<p>本文介绍了C语言地址偏移的巧妙使用。</p>
+<span id="more"></span>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">((type *)<span class="number">0</span>)</span><br><span class="line">(((type *)<span class="number">0</span>)-&gt;member)</span><br><span class="line">&amp;(((type *)<span class="number">0</span>)-&gt;member)</span><br><span class="line"><span class="comment">// 表示某个结构体成员在结构体中的偏移量</span></span><br><span class="line">(<span class="type">char</span> *)(&amp;(((type *)<span class="number">0</span>)-&gt;member))</span><br><span class="line">(type *)((<span class="type">char</span> *)(item) - (<span class="type">char</span> *)(&amp;(((type *)<span class="number">0</span>)-&gt;member)))</span><br></pre></td></tr></table></figure>
+<p>测试demo</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> *<span class="title">next</span>,*<span class="title">prev</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">DataEntry</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> key;</span><br><span class="line">    <span class="type">int</span> value;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> <span class="title">node</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> NODE_ENTRY(item, type, member) \</span></span><br><span class="line"><span class="meta">    ((type *)((char *)(item) - (char *)(&amp;(((type *)0)-&gt;member))))</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">DataEntry</span> <span class="title">e</span>;</span></span><br><span class="line">    <span class="comment">/* 使用node的地址，获取key和value的值*/</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">DataEntry</span> *<span class="title">p</span> =</span> NODE_ENTRY(&amp;e.node, DataEntry, node);</span><br><span class="line">    <span class="type">int</span> key = p-&gt;key;</span><br><span class="line">    <span class="type">int</span> value = p-&gt;value;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>C</category>
+      </categories>
+      <tags>
+        <tag>C</tag>
       </tags>
   </entry>
 </search>
