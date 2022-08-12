@@ -230,7 +230,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.1k</span>
+              <span>1.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -298,6 +298,7 @@
 <p>wireshark抓包过滤指定的字节数据     <a target="_blank" rel="noopener" href="https://blog.csdn.net/andrewgithub/article/details/103444611">https://blog.csdn.net/andrewgithub/article/details/103444611</a></p>
 <p>data[61:3]==0a:39:00</p>
 <p>data数据报文中，以第61字节开始，之后的3个字节的数据为 0a:39:00</p>
+<p>IP分片报文中端口信息在data数据中</p>
 <h6 id="2-strace">2. strace</h6>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">strace -ff -tt -T -o <span class="built_in">log</span> -p 17720</span><br><span class="line">strace -ft -o <span class="built_in">log</span> -p 35332</span><br><span class="line">// 跟踪单个线程</span><br><span class="line">strace -tt -T -o strace.log -p pid(线程的pid)</span><br><span class="line">// 跟踪整个进程</span><br><span class="line">strace -f -tt -T -o strace.log -p pid(进程的pid)</span><br></pre></td></tr></table></figure>
 <table>
@@ -338,6 +339,8 @@
 </tr>
 </tbody>
 </table>
+<h6 id="3-top">3. top</h6>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查线程的CPU占用率</span></span><br><span class="line">top -H -p pid</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 抓某时刻CPU升高的调用栈信息</span></span><br><span class="line"><span class="comment"># 实时查询CPU</span></span><br><span class="line"><span class="built_in">nohup</span> top -H -d 1 -b -n 600 -p pid &gt; top_cpu.log</span><br><span class="line"><span class="comment"># 实时查询调用栈</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">true</span>;<span class="keyword">do</span> gstack tid(pid);<span class="built_in">date</span>;<span class="built_in">sleep</span> 1;<span class="keyword">done</span> &gt; stack.log</span><br><span class="line"><span class="comment"># 与上面查询调用栈的方式结合分析</span></span><br><span class="line">perf record -a -F 1000 -g -e cycles (-t tid) -p pid <span class="built_in">sleep</span> 60</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -438,7 +441,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-tcpdump"><span class="nav-text">1. tcpdump</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-strace"><span class="nav-text">2. strace</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-tcpdump"><span class="nav-text">1. tcpdump</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-strace"><span class="nav-text">2. strace</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-top"><span class="nav-text">3. top</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -504,13 +507,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">77k</span>
+    <span title="站点总字数">79k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:10</span>
+    <span title="站点阅读时长">1:11</span>
 </div><div>
     <!--添加总阅读次数-->
     <div>

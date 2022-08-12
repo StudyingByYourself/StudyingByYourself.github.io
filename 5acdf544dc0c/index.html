@@ -251,7 +251,7 @@
       
         <p>本文介绍了互斥锁的使用。</p>
 <span id="more"></span>
-<h5 id="1-pthread-mutex-t结构体">1. pthread_mutex_t结构体</h5>
+<h5 id="1-pthread-mutex-t结构体-x86-64位-40字节">1. pthread_mutex_t结构体(x86_64位:40字节)</h5>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">union</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> __<span class="title">pthread_mutex_s</span></span></span><br><span class="line"><span class="class">    &#123;</span></span><br><span class="line">        <span class="type">int</span> __lock;</span><br><span class="line">        <span class="type">unsigned</span> <span class="type">int</span> __count;</span><br><span class="line">        <span class="type">int</span> __owner;</span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> __x86_64__</span></span><br><span class="line">        <span class="type">unsigned</span> <span class="type">int</span> __nusers;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">        <span class="comment">/* KIND must stay at this position in the structure to maintain</span></span><br><span class="line"><span class="comment">           binary compatibility with static initializers.  */</span></span><br><span class="line">        <span class="type">int</span> __kind;</span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> __x86_64__</span></span><br><span class="line">        <span class="type">short</span> __spins;</span><br><span class="line">        <span class="type">short</span> __elision;</span><br><span class="line">        <span class="type">__pthread_list_t</span> __list;</span><br><span class="line"><span class="meta"># <span class="keyword">define</span> __PTHREAD_MUTEX_HAVE_PREV      1</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">    &#125; __data;</span><br><span class="line">    <span class="type">char</span> __size[__SIZEOF_PTHREAD_MUTEX_T];</span><br><span class="line">    <span class="type">long</span> <span class="type">int</span> __align;</span><br><span class="line">&#125; <span class="type">pthread_mutex_t</span>;</span><br></pre></td></tr></table></figure>
 <table>
 <thead>
@@ -418,7 +418,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-pthread-mutex-t%E7%BB%93%E6%9E%84%E4%BD%93"><span class="nav-text">1. pthread_mutex_t结构体</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-%E5%88%9B%E5%BB%BA%E4%BA%92%E6%96%A5%E9%94%81"><span class="nav-text">2. 创建互斥锁</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-%E6%B3%A8%E9%94%80%E4%BA%92%E6%96%A5%E9%94%81"><span class="nav-text">3. 注销互斥锁</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-%E9%94%81%E7%9A%84%E5%B1%9E%E6%80%A7"><span class="nav-text">4. 锁的属性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-%E9%94%81%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="nav-text">5. 锁的操作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-%E5%85%B6%E4%BB%96"><span class="nav-text">6. 其他</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7-%E6%AD%BB%E9%94%81%E6%9E%84%E9%80%A0"><span class="nav-text">7. 死锁构造</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-pthread-mutex-t%E7%BB%93%E6%9E%84%E4%BD%93-x86-64%E4%BD%8D-40%E5%AD%97%E8%8A%82"><span class="nav-text">1. pthread_mutex_t结构体(x86_64位:40字节)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-%E5%88%9B%E5%BB%BA%E4%BA%92%E6%96%A5%E9%94%81"><span class="nav-text">2. 创建互斥锁</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-%E6%B3%A8%E9%94%80%E4%BA%92%E6%96%A5%E9%94%81"><span class="nav-text">3. 注销互斥锁</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-%E9%94%81%E7%9A%84%E5%B1%9E%E6%80%A7"><span class="nav-text">4. 锁的属性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-%E9%94%81%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="nav-text">5. 锁的操作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-%E5%85%B6%E4%BB%96"><span class="nav-text">6. 其他</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7-%E6%AD%BB%E9%94%81%E6%9E%84%E9%80%A0"><span class="nav-text">7. 死锁构造</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -484,13 +484,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">77k</span>
+    <span title="站点总字数">79k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:10</span>
+    <span title="站点阅读时长">1:11</span>
 </div><div>
     <!--添加总阅读次数-->
     <div>
