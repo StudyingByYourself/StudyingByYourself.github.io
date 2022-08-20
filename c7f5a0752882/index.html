@@ -230,14 +230,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.3k</span>
+              <span>1.8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -341,6 +341,9 @@
 </table>
 <h6 id="3-top">3. top</h6>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查线程的CPU占用率</span></span><br><span class="line">top -H -p pid</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 抓某时刻CPU升高的调用栈信息</span></span><br><span class="line"><span class="comment"># 实时查询CPU</span></span><br><span class="line"><span class="built_in">nohup</span> top -H -d 1 -b -n 600 -p pid &gt; top_cpu.log</span><br><span class="line"><span class="comment"># 实时查询调用栈</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">true</span>;<span class="keyword">do</span> gstack tid(pid);<span class="built_in">date</span>;<span class="built_in">sleep</span> 1;<span class="keyword">done</span> &gt; stack.log</span><br><span class="line"><span class="comment"># 与上面查询调用栈的方式结合分析</span></span><br><span class="line">perf record -a -F 1000 -g -e cycles (-t tid) -p pid <span class="built_in">sleep</span> 60</span><br></pre></td></tr></table></figure>
+<h6 id="4-iptables">4. iptables</h6>
+<p>iptables是Linux上常见的防火墙软件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">-A 规则链的末尾加入新规则</span><br><span class="line">-D 删除某一个规则</span><br><span class="line">INPUT链：处理输入数据包 </span><br><span class="line">OUTPUT链：处理输出数据包</span><br><span class="line">-s 匹配源地址</span><br><span class="line">-d 匹配目的地址</span><br><span class="line">-p 匹配协议，如tcp,udp,icmp</span><br><span class="line">--sport 匹配源端口</span><br><span class="line">--dport 匹配目的端口</span><br><span class="line">-j 指定动作，ACCEPT 接收数据包;DROP 丢弃数据包</span><br><span class="line"></span><br><span class="line">iptables -t 表名 &lt;-A/I/D/R&gt; 规则链名 &lt;-i/o 网卡名&gt; -p 协议名 &lt;-s 源IP/源子网&gt; --sport 源端口 &lt;-d 目的IP/目的子网&gt; --dport 目的端口 -j 动作</span><br><span class="line"></span><br><span class="line">iptables -L -n --line-number</span><br><span class="line">iptables -A INPUT -p tcp --dport 1024:65535 -j drop</span><br><span class="line">iptables -A OUTPUT -p tcp -s srcIP -d dstIP --dport 20000:20050 -j drop</span><br><span class="line">iptables -D OUTPUT num</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -441,7 +444,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-tcpdump"><span class="nav-text">1. tcpdump</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-strace"><span class="nav-text">2. strace</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-top"><span class="nav-text">3. top</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-tcpdump"><span class="nav-text">1. tcpdump</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-strace"><span class="nav-text">2. strace</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-top"><span class="nav-text">3. top</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#4-iptables"><span class="nav-text">4. iptables</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -457,7 +460,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/zhoukaiqi/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -507,13 +510,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">79k</span>
+    <span title="站点总字数">83k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:11</span>
+    <span title="站点阅读时长">1:15</span>
 </div><div>
     <!--添加总阅读次数-->
     <div>
