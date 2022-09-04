@@ -230,7 +230,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.8k</span>
+              <span>2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -252,7 +252,7 @@
         <p>本文介绍了常见工具的使用</p>
 <span id="more"></span>
 <h6 id="1-tcpdump">1. tcpdump</h6>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// 指定网口</span><br><span class="line">tcpdump -x -n -v -s 0 -i eth2 -w demo.cap</span><br><span class="line">// 指定IP + 端口</span><br><span class="line">tcpdump -x -n -v -s 0 -i any host IP and port 21 -w demo.cap</span><br><span class="line">tcpdump -x -n -v -s 0 -i any src host srcIP and host dstIP and port 21 -w demo.cap</span><br><span class="line">// 环回网口</span><br><span class="line">tcpdump -x -n -v -s 0 -i lo -w demo.cap</span><br><span class="line">// 指定协议类型</span><br><span class="line">tcpdump -x -n -v -s 0 -i any ether proto 56320 -w demo.cap</span><br><span class="line">// 指定物理地址</span><br><span class="line">tcpdump -x -n -v -s 0 -i eth2 not tcp and not udp and ether host macaddr -w demo.cap</span><br><span class="line"></span><br><span class="line">tcpdump -x -n -v -s 0 -i any \(host IP and port 20015 \) or \(host IP \) -w demo.cap</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// 指定网口</span><br><span class="line">tcpdump -x -n -v -s 0 -i eth2 -w demo.cap</span><br><span class="line">// 指定IP + 端口</span><br><span class="line">tcpdump -x -n -v -s 0 -i any host IP and port portnum -w demo.cap</span><br><span class="line">tcpdump -x -n -v -s 0 -i any src host srcIP and dst host dstIP and port portnum -w demo.cap</span><br><span class="line">// 环回网口</span><br><span class="line">tcpdump -x -n -v -s 0 -i lo -w demo.cap</span><br><span class="line">// 指定协议类型</span><br><span class="line">tcpdump -x -n -v -s 0 -i any ether proto 56320 -w demo.cap</span><br><span class="line">// 指定物理地址</span><br><span class="line">tcpdump -x -n -v -s 0 -i eth2 not tcp and not udp and ether host macaddr -w demo.cap</span><br><span class="line"></span><br><span class="line">tcpdump -x -n -v -s 0 -i any \(host IP and port 20015 \) or \(host IP \) -w demo.cap</span><br></pre></td></tr></table></figure>
 <table>
 <thead>
 <tr>
@@ -344,6 +344,38 @@
 <h6 id="4-iptables">4. iptables</h6>
 <p>iptables是Linux上常见的防火墙软件。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">-A 规则链的末尾加入新规则</span><br><span class="line">-D 删除某一个规则</span><br><span class="line">INPUT链：处理输入数据包 </span><br><span class="line">OUTPUT链：处理输出数据包</span><br><span class="line">-s 匹配源地址</span><br><span class="line">-d 匹配目的地址</span><br><span class="line">-p 匹配协议，如tcp,udp,icmp</span><br><span class="line">--sport 匹配源端口</span><br><span class="line">--dport 匹配目的端口</span><br><span class="line">-j 指定动作，ACCEPT 接收数据包;DROP 丢弃数据包</span><br><span class="line"></span><br><span class="line">iptables -t 表名 &lt;-A/I/D/R&gt; 规则链名 &lt;-i/o 网卡名&gt; -p 协议名 &lt;-s 源IP/源子网&gt; --sport 源端口 &lt;-d 目的IP/目的子网&gt; --dport 目的端口 -j 动作</span><br><span class="line"></span><br><span class="line">iptables -L -n --line-number</span><br><span class="line">iptables -A INPUT -p tcp --dport 1024:65535 -j drop</span><br><span class="line">iptables -A OUTPUT -p tcp -s srcIP -d dstIP --dport 20000:20050 -j drop</span><br><span class="line">iptables -D OUTPUT num</span><br></pre></td></tr></table></figure>
+<h6 id="5-netstat">5. netstat</h6>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -anp | grep -aE <span class="string">&quot;Recv-Q&quot;</span></span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-a, --all</td>
+<td>display all sockets (default: connected)</td>
+</tr>
+<tr>
+<td>-n, --numeric</td>
+<td>don’t resolve names(-n会显示端口，不加显示的是协议名)</td>
+</tr>
+<tr>
+<td>-p, --programs</td>
+<td>display PID/Program name for sockets</td>
+</tr>
+<tr>
+<td></td>
+<td><Socket>={-t|–tcp} {-u|–udp}</td>
+</tr>
+<tr>
+<td>-W, --wide</td>
+<td>don’t truncate IP addresses(显示IP地址全名)</td>
+</tr>
+</tbody>
+</table>
 
     </div>
 
@@ -444,7 +476,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-tcpdump"><span class="nav-text">1. tcpdump</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-strace"><span class="nav-text">2. strace</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-top"><span class="nav-text">3. top</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#4-iptables"><span class="nav-text">4. iptables</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-tcpdump"><span class="nav-text">1. tcpdump</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-strace"><span class="nav-text">2. strace</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-top"><span class="nav-text">3. top</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#4-iptables"><span class="nav-text">4. iptables</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#5-netstat"><span class="nav-text">5. netstat</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -460,7 +492,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/zhoukaiqi/archives/">
         
-          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-count">20</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -510,13 +542,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">83k</span>
+    <span title="站点总字数">87k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:15</span>
+    <span title="站点阅读时长">1:19</span>
 </div><div>
     <!--添加总阅读次数-->
     <div>
