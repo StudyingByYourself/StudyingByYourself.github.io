@@ -544,13 +544,8 @@
 <tbody>
 <tr>
 <td>mov</td>
-<td>mov x1, x0</td>
-<td>将寄存器x0的值复制给寄存器x1</td>
-</tr>
-<tr>
-<td>movk</td>
-<td>movk x0, #1234, lsl #16</td>
-<td>lsl：向左移位，即x0 = 0x12340000</td>
+<td>mov x0, 0x1f88<br/>movk x0, #0x1234, lsl #16<br/></td>
+<td>将0x1f88赋值给寄存器x0<br/>movk移动时保持其他位不变<br/>和mov一起使用时：x0 = 0x12341f88，lsl（向左移位）<br/></td>
 </tr>
 <tr>
 <td>stp</td>
@@ -604,13 +599,18 @@
 </tr>
 <tr>
 <td>b</td>
-<td>bl<br/>b.eq<br/>b.ls<br/>b.ne<br/></td>
-<td>无条件跳转<br/>BEQ Branch if EQual<br/>BLS Branch if Lower or the Same<br/>BNE Branch if Not Equal<br/></td>
+<td>bl<br/>b.eq<br/>b.ls<br/>b.ne<br/>b.hi<br/></td>
+<td>无条件跳转<br/>BEQ Branch if EQual<br/>BLS Branch if Lower or the Same<br/>BNE Branch if Not Equal<br/>无符号大于跳转<br/></td>
 </tr>
 <tr>
 <td>ccmp</td>
 <td>cmp     w1, #0x0<br/>ccmp    w2, #0x0, #0x0<br/></td>
 <td>前一个条件满足的情况下再次比较</td>
+</tr>
+<tr>
+<td>sxtw</td>
+<td>sxtw  x0, w0</td>
+<td>将w0进行符号扩展，并赋值给x0</td>
 </tr>
 </tbody>
 </table>
