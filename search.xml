@@ -100,7 +100,7 @@ Usually ABIs reserve some registers as not needed to be saved by the callee (a.k
 <tr>
 <td>lea</td>
 <td>leaq a(b, c, d), %rax</td>
-<td>先计算地址a + b + c * d，然后把最终地址赋值给寄存器rax</td>
+<td>先计算地址a + b + c * d，然后把最终地址赋值给rax</td>
 </tr>
 <tr>
 <td>shr</td>
@@ -110,7 +110,7 @@ Usually ABIs reserve some registers as not needed to be saved by the callee (a.k
 <tr>
 <td>mov</td>
 <td>mov    %rax,-0x10(%rbp)</td>
-<td>将rax载入rbp-16的地址，变型：movb, movq, movl, movq</td>
+<td>将rax存入rbp-16的地址，变型：movb, movq, movl, movq</td>
 </tr>
 <tr>
 <td>movz</td>
@@ -1088,5 +1088,16 @@ R_X86_64_32：  重定位一个使用32位绝对地址的引用，计算方式�
       <tags>
         <tag>pthread</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>assembly-x86_64_2</title>
+    <url>/zhoukaiqi/c14a259d492f/</url>
+    <content><![CDATA[<p>xx</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// gcc array.c -O2 -fno-omit-frame-pointer -o array</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">Array</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> val[<span class="number">50</span>];</span><br><span class="line">&#125; Array;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> sessionId;</span><br><span class="line">    <span class="type">int</span> value;</span><br><span class="line">    Array <span class="built_in">array</span>[<span class="number">2</span>];</span><br><span class="line">&#125; Session;</span><br><span class="line"></span><br><span class="line">Session *g_session;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">InitSession</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    g_session = (Session *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(Session) * <span class="number">10</span>);</span><br><span class="line">    <span class="built_in">memset</span>(g_session, <span class="number">0</span>, <span class="keyword">sizeof</span>(Session) * <span class="number">10</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">GetSessionValue</span><span class="params">(<span class="type">int</span> index)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> value;</span><br><span class="line">    value = g_session[index].value;</span><br><span class="line">    <span class="keyword">return</span> value;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    InitSession();</span><br><span class="line">    GetSessionValue(<span class="number">2</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>完整汇编</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">(gdb) disassemble GetSessionValue</span><br><span class="line">Dump of assembler code <span class="keyword">for</span> <span class="keyword">function</span> GetSessionValue:</span><br><span class="line">   0x0000000000401170 &lt;+0&gt;:     movslq %edi,%rdi</span><br><span class="line">   0x0000000000401173 &lt;+3&gt;:     push   %rbp</span><br><span class="line">   0x0000000000401174 &lt;+4&gt;:     imul   <span class="variable">$0x198</span>,%rdi,%rdi</span><br><span class="line">   0x000000000040117b &lt;+11&gt;:    add    0x2eb6(%rip),%rdi        <span class="comment"># 0x404038 &lt;g_session&gt;</span></span><br><span class="line">   0x0000000000401182 &lt;+18&gt;:    mov    %rsp,%rbp</span><br><span class="line">   0x0000000000401185 &lt;+21&gt;:    pop    %rbp</span><br><span class="line">   0x0000000000401186 &lt;+22&gt;:    mov    0x4(%rdi),%eax</span><br><span class="line">   0x0000000000401189 &lt;+25&gt;:    retq</span><br><span class="line">End of assembler dump.</span><br></pre></td></tr></table></figure>
+<p>数组汇编</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">g_session对应的结构体的大小是408(0x198)字节</span><br><span class="line">imul   <span class="variable">$0x198</span>,%rdi,%rdi         // sizeof(Session) * index</span><br><span class="line">0x2eb6(%rip)                    // g_session</span><br><span class="line">add    0x2eb6(%rip),%rdi        // 0x2eb6(%rip) + sizeof(Session) * index = g_session[index]</span><br></pre></td></tr></table></figure>
+]]></content>
   </entry>
 </search>
