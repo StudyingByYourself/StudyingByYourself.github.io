@@ -292,7 +292,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/zhoukaiqi/1d4d4cadb785/" class="post-title-link" itemprop="url">x86_84常见汇编指令</a>
+            <a href="/zhoukaiqi/1d4d4cadb785/" class="post-title-link" itemprop="url">x86_64常见汇编指令</a>
         </h2>
 
         <div class="post-meta">
@@ -315,7 +315,7 @@
             </span>
 
           
-            <span id="/zhoukaiqi/1d4d4cadb785/" class="post-meta-item leancloud_visitors" data-flag-title="x86_84常见汇编指令" title="阅读次数">
+            <span id="/zhoukaiqi/1d4d4cadb785/" class="post-meta-item leancloud_visitors" data-flag-title="x86_64常见汇编指令" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -360,7 +360,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>本文介绍了x86_84常见汇编指令</p>
+          <p>本文介绍了x86_64常见汇编指令</p>
 <table>
 <thead>
 <tr>
@@ -373,7 +373,7 @@
 <tr>
 <td>lea</td>
 <td>leaq a(b, c, d), %rax</td>
-<td>先计算地址a + b + c * d，然后把最终地址赋值给rax</td>
+<td>rax = a + b + c * d</td>
 </tr>
 <tr>
 <td>shr</td>
@@ -381,24 +381,9 @@
 <td>右移：rdi &gt;&gt; 4</td>
 </tr>
 <tr>
-<td>mov</td>
-<td>mov    %rax,-0x10(%rbp)</td>
-<td>将rax存入rbp-16的地址，变型：movb, movq, movl, movq</td>
-</tr>
-<tr>
-<td>movz</td>
-<td>movzwl %dx %eax</td>
-<td>将源操作数做零扩展后，再复制到目的操作数中</td>
-</tr>
-<tr>
-<td>movs</td>
-<td>movswl %dx %eax</td>
-<td>将源操作数做符号扩展后，再复制到目的操作数中</td>
-</tr>
-<tr>
-<td>movaps</td>
-<td>movaps %xmm0, -0x80(%rbp)</td>
-<td>SSE指令，一次移动16字节，<code>要求寄存器地址16字节对齐</code></td>
+<td>mov<br/>movz<br/>movs<br/>movaps<br/></td>
+<td>mov    %rax,-0x10(%rbp)<br/>movzwl %dx %eax<br/>movswl %dx %eax<br/>movaps %xmm0, -0x80(%rbp)<br/></td>
+<td>将rax存入rbp-16的地址，变型：movb, movq, movl, movq<br/>将源操作数做零扩展后，再复制到目的操作数中<br/>将源操作数做符号扩展后，再复制到目的操作数中<br/>SSE指令，一次移动16字节，<code>要求寄存器地址16字节对齐</code><br/></td>
 </tr>
 <tr>
 <td>xor</td>
