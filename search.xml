@@ -375,7 +375,7 @@ Usually ABIs reserve some registers as not needed to be saved by the callee (a.k
     <url>/StudyingByYourself.github.io/e578d0eceb35/</url>
     <content><![CDATA[<p>本文介绍了x86_64推栈原理和具体代码实现。</p>
 <span id="more"></span>
-<h4 id="推栈原理">推栈原理</h4>
+<h4 id="推栈原理-2">推栈原理</h4>
 <p>x86_64的rbp推栈需要添加编译选项<code>-fno-omit-frame-pointer</code>，否则rbp不作为栈帧寄存器使用，无法正确推栈。</p>
 <p><img src="https://s1.daohangmao.net/2022/06/26/62b7cdf3eb89f.png" alt=""></p>
 <p>开栈（从高地址到低地址）：当函数A callq 函数B时，会先将函数A的下一条指令存入rsp(即后续返回到A函数的地址)。而调用到函数B后，会将函数A的寄存器rbp存入rsp并且将rsp赋值给rbp。</p>
@@ -395,7 +395,7 @@ Usually ABIs reserve some registers as not needed to be saved by the callee (a.k
     <url>/StudyingByYourself.github.io/5402692fe700/</url>
     <content><![CDATA[<p>本文介绍了x86_64如何用rsp推栈。</p>
 <span id="more"></span>
-<h4 id="推栈原理-2">推栈原理</h4>
+<h4 id="推栈原理">推栈原理</h4>
 <p>x86_64如果显式加了编译选项<code>-fomit-frame-pointer</code>或者没有加编译选项<code>-fno-omit-frame-pointer</code>，会导致rbp不压栈，这里考虑用rsp推栈。rsp推栈主要原理依赖callq指令。</p>
 <p><font color="#FF0000"> <strong>callq addr的具体实现</strong> </font></p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">rsp = rsp - <span class="number">8</span></span><br><span class="line">*(<span class="type">unsigned</span> <span class="type">long</span>*)rsp = rip + <span class="keyword">sizeof</span>(inst)</span><br><span class="line">rip = addr</span><br></pre></td></tr></table></figure>

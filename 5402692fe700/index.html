@@ -241,7 +241,7 @@
       
         <p>本文介绍了x86_64如何用rsp推栈。</p>
 <span id="more"></span>
-<h4 id="推栈原理-2">推栈原理</h4>
+<h4 id="推栈原理">推栈原理</h4>
 <p>x86_64如果显式加了编译选项<code>-fomit-frame-pointer</code>或者没有加编译选项<code>-fno-omit-frame-pointer</code>，会导致rbp不压栈，这里考虑用rsp推栈。rsp推栈主要原理依赖callq指令。</p>
 <p><font color="#FF0000"> <strong>callq addr的具体实现</strong> </font></p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rsp = rsp - <span class="number">8</span></span><br><span class="line">*(<span class="type">unsigned</span> <span class="type">long</span>*)rsp = rip + <span class="keyword">sizeof</span>(inst)</span><br><span class="line">rip = addr</span><br></pre></td></tr></table></figure>
@@ -366,7 +366,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%A8%E6%A0%88%E5%8E%9F%E7%90%86-2"><span class="nav-text">推栈原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%A8%E6%A0%88%E6%BC%94%E7%A4%BA"><span class="nav-text">推栈演示</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%A8%E6%A0%88%E5%8E%9F%E7%90%86"><span class="nav-text">推栈原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%A8%E6%A0%88%E6%BC%94%E7%A4%BA"><span class="nav-text">推栈演示</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
