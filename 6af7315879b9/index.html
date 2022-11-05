@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=consolas:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"studyingbyyourself.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="本文介绍了链接中的符号解析过程。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="符号解析">
+<meta property="og:url" content="https://studyingbyyourself.github.io/6af7315879b9/index.html">
+<meta property="og:site_name" content="数风流人物，还看今朝">
+<meta property="og:description" content="本文介绍了链接中的符号解析过程。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-07-13T17:25:05.000Z">
+<meta property="article:modified_time" content="2022-07-13T17:25:05.000Z">
+<meta property="article:author" content="CodeKai">
+<meta property="article:tag" content="link">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://studyingbyyourself.github.io/6af7315879b9/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>符号解析 | 数风流人物，还看今朝</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">数风流人物，还看今朝</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://studyingbyyourself.github.io/6af7315879b9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.png">
+      <meta itemprop="name" content="CodeKai">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="数风流人物，还看今朝">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          符号解析
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-07-14 01:25:05" itemprop="dateCreated datePublished" datetime="2022-07-14T01:25:05+08:00">2022-07-14</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/link/" itemprop="url" rel="index"><span itemprop="name">link</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/6af7315879b9/" class="post-meta-item leancloud_visitors" data-flag-title="符号解析" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/6af7315879b9/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/6af7315879b9/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本文介绍了链接中的符号解析过程。</p>
+<span id="more"></span>
+<h4 id="1-静态库">1 静态库</h4>
+<p>将.o目标文件打包成.a文件即静态库。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 打包静态库</span></span><br><span class="line">ar rcs libtest.a test1.o test2.o</span><br><span class="line"><span class="comment">// 加了-static会把系统的.a比如libc.a中需要的.o也链接到main中</span></span><br><span class="line">gcc main.o -<span class="type">static</span> -L. -ltest -o main1</span><br><span class="line">gcc main.o -L. -ltest -o main2</span><br><span class="line">-rwx------. <span class="number">1</span> root root <span class="number">750</span>K Jul  <span class="number">3</span> <span class="number">22</span>:<span class="number">49</span> main1</span><br><span class="line">-rwx------. <span class="number">1</span> root root  <span class="number">17</span>K Jul  <span class="number">3</span> <span class="number">22</span>:<span class="number">51</span> main2</span><br><span class="line"><span class="comment">// main1是完全链接的可执行目标文件，所以比较大；main2依赖的函数可以从so中获取，所以相对比较小</span></span><br><span class="line">[root@<span class="number">192</span> demo]<span class="meta"># ldd main1</span></span><br><span class="line">        not a dynamic executable</span><br><span class="line">[root@<span class="number">192</span> demo]<span class="meta"># ldd main2</span></span><br><span class="line">        linux-vdso.so<span class="number">.1</span> (<span class="number">0x00007ffccebc1000</span>)</span><br><span class="line">        libc.so<span class="number">.6</span> =&gt; /lib64/libc.so<span class="number">.6</span> (<span class="number">0x00007f7238d61000</span>)</span><br><span class="line">        /lib64/ld-linux-x86<span class="number">-64.</span>so<span class="number">.2</span> (<span class="number">0x00007f7238f2e000</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="2-符号解析">2 符号解析</h4>
+<p>在符号解析阶段，链接器从左到右按照它们在命令行上出现的顺序来扫描可重定位目标文件和.a静态库文件。</p>
+<h4 id="2-1-建立三个空的集合">2.1 建立三个空的集合</h4>
+<ul>
+<li>
+<p>集合E：放入该集合中的文件，后续将用于合成最终的可执行文件</p>
+</li>
+<li>
+<p>集合U：当前所有未解析的引用符号</p>
+</li>
+<li>
+<p>集合D：当前所有定义的符号</p>
+</li>
+</ul>
+<blockquote>
+<p>注：E\U\D，此处分别表示 Empty, Undefined, Defined</p>
+</blockquote>
+<h4 id="2-2-从左到右依次扫描每一个文件">2.2 从左到右依次扫描每一个文件</h4>
+<p>1） 按命令行指定顺序依次处理每个目标文件和库文件；</p>
+<p>2） 如果为.o文件，将其加入集合E，将其所有符号加入D，将引用但未定义的符号加入U；</p>
+<p>3） 如果为静态库文件，实际链接过程中是拆成单个的.o文件来扫描的。假设静态库中的第一个目标文件是 m 。</p>
+<h5 id="第一步：匹配">第一步：匹配</h5>
+<p>检查集合 U 中未定义的符号是否在目标文件 m 的符号表中</p>
+<p>若没有，抛弃 m，继续扫描静态库中的下一个目标文件；若有，则</p>
+<ul>
+<li>将 m 加入集合 E 中</li>
+<li>将 m 中定义的符号添加集合 D 中</li>
+<li>将 m 中引用但未定义的符号，添加到集合 U 中</li>
+</ul>
+<h5 id="第二步：重复">第二步：重复</h5>
+<p>继续扫描静态库中的下一个目标文件，重复上一步的匹配过程，直到 U 和 D 都不再发生变化</p>
+<p>4） 如果为动态库文件，移除U中得到解析的符号，在D中加入动态库中符号；</p>
+<p>5） 若集合U最终为空，链接成功，对E中文件进行合并和重定位处理，生成可执行文件，否则报告链接出错。</p>
+<h4 id="3-举例说明">3 举例说明</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># main.c</span></span><br><span class="line"><span class="keyword">extern</span> <span class="type">void</span> <span class="title function_">test1</span><span class="params">()</span>;</span><br><span class="line"><span class="keyword">extern</span> <span class="type">void</span> <span class="title function_">test2</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    test1();</span><br><span class="line">    test2();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># test1.c</span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">test1</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;test1\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># test2.cc</span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">test2</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;test2\n&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译命令：<code>gcc main.c test1.c test2.c -c</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">gcc main.c test1.c test2.c -c</span><br><span class="line">Coder:test$ ll *.o</span><br><span class="line">-rw-r--r-- <span class="number">1</span> coder coder <span class="number">1608</span> Jul <span class="number">17</span> <span class="number">22</span>:<span class="number">57</span> main.o</span><br><span class="line">-rw-r--r-- <span class="number">1</span> coder coder <span class="number">1680</span> Jul <span class="number">17</span> <span class="number">22</span>:<span class="number">57</span> test1.o</span><br><span class="line">-rw-r--r-- <span class="number">1</span> coder coder <span class="number">1680</span> Jul <span class="number">17</span> <span class="number">22</span>:<span class="number">57</span> test2.o</span><br></pre></td></tr></table></figure>
+<p>都是.o文件时，无顺序要求，都能编译成功。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Coder:test$ gcc main.o test1.o test2.o -o main</span><br><span class="line">Coder:test$</span><br><span class="line">Coder:test$ gcc test1.o main.o test2.o -o main</span><br><span class="line">Coder:test$</span><br></pre></td></tr></table></figure>
+<p>使用静态库或者动态库时，有顺序的要求。（使用动态库时，执行程序前需要执行动态库的路径<code>export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./</code>）</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">Coder:test$ ar rcs libtest.a test1.o test2.o</span><br><span class="line">Coder:test$ gcc libtest.a main.o -o main</span><br><span class="line">/usr/bin/ld: main.o: in function `main<span class="number">&#x27;</span>:</span><br><span class="line">main.c:(.text+<span class="number">0xe</span>): undefined reference to `test1<span class="number">&#x27;</span></span><br><span class="line">/usr/bin/ld: main.c:(.text+<span class="number">0x18</span>): undefined reference to `test2<span class="number">&#x27;</span></span><br><span class="line">collect2: error: ld returned <span class="number">1</span> <span class="built_in">exit</span> status</span><br><span class="line">Coder:test$ gcc main.o libtest.a -o main</span><br><span class="line">Coder:test$</span><br><span class="line">Coder:test$</span><br><span class="line">Coder:test$ gcc -shared -fPIC test1.o test2.o -o libtest.so</span><br><span class="line">Coder:test$ gcc libtest.so main.o -o main</span><br><span class="line">/usr/bin/ld: main.o: in function `main<span class="number">&#x27;</span>:</span><br><span class="line">main.c:(.text+<span class="number">0xe</span>): undefined reference to `test1<span class="number">&#x27;</span></span><br><span class="line">/usr/bin/ld: main.c:(.text+<span class="number">0x18</span>): undefined reference to `test2<span class="number">&#x27;</span></span><br><span class="line">collect2: error: ld returned <span class="number">1</span> <span class="built_in">exit</span> status</span><br><span class="line">Coder:test$ gcc main.o libtest.so -o main</span><br><span class="line">Coder:test$ ./main</span><br><span class="line">./main: error <span class="keyword">while</span> loading shared libraries: libtest.so: cannot open shared object file: No such file or directory</span><br><span class="line">Coder:test$ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./</span><br><span class="line">Coder:test$ ./main</span><br><span class="line">test1</span><br><span class="line">test2</span><br><span class="line">Coder:test$</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="CodeKai 微信支付">
+        <p>微信支付</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/link/" rel="tag"><i class="fa fa-tag"></i> link</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/5acdf544dc0c/" rel="prev" title="互斥锁">
+      <i class="fa fa-chevron-left"></i> 互斥锁
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/f75200d4167d/" rel="next" title="条件变量">
+      条件变量 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E9%9D%99%E6%80%81%E5%BA%93"><span class="nav-text">1 静态库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E7%AC%A6%E5%8F%B7%E8%A7%A3%E6%9E%90"><span class="nav-text">2 符号解析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-%E5%BB%BA%E7%AB%8B%E4%B8%89%E4%B8%AA%E7%A9%BA%E7%9A%84%E9%9B%86%E5%90%88"><span class="nav-text">2.1 建立三个空的集合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-%E4%BB%8E%E5%B7%A6%E5%88%B0%E5%8F%B3%E4%BE%9D%E6%AC%A1%E6%89%AB%E6%8F%8F%E6%AF%8F%E4%B8%80%E4%B8%AA%E6%96%87%E4%BB%B6"><span class="nav-text">2.2 从左到右依次扫描每一个文件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A%E5%8C%B9%E9%85%8D"><span class="nav-text">第一步：匹配</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A%E9%87%8D%E5%A4%8D"><span class="nav-text">第二步：重复</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E4%B8%BE%E4%BE%8B%E8%AF%B4%E6%98%8E"><span class="nav-text">3 举例说明</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="CodeKai"
+      src="/images/header.png">
+  <p class="site-author-name" itemprop="name">CodeKai</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">CodeKai</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">81k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">1:14</span>
+</div><div>
+    <!--添加总阅读次数-->
+    <div>
+        <span>本站总访问量</span>
+        <span id="site_total_read_count">Loading...</span>
+    </div>
+    <script>
+        async function sleep(ms = 1000) {
+            return await new Promise(resolve => {
+                const timer = setTimeout(() => {
+                    clearTimeout(timer)
+                    return resolve()
+                }, ms)
+            })
+        }
+        async function site_read_count() {
+            const className = 'Counter',
+                query = new AV.Query(className)
+            return query.find()
+                .then(_ => _.map(i => i.attributes.time))
+                .then(_ => _.reduce((a, b) => a + b))
+        }
+        new Promise(resolve => {
+            const timer = setInterval(() => {
+                if (typeof AV !== "undefined") {
+                    clearInterval(timer)
+                    return resolve()
+                }
+            }, 250)
+        })
+            .then(() => site_read_count())
+            .then(_ => {
+                const s = ` ${_} 次`
+                document.getElementById("site_total_read_count").innerHTML = s
+            })
+            .catch(e => console.error(e.message))
+    </script>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : true,
+      appId      : 'vhaMl8P0P4xJswMKyBQOipdV-9Nh9j0Va',
+      appKey     : 'AcrIkuQ87G3eyWyI9n6DVLwV',
+      placeholder: "写点什么...",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
